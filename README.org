@@ -14,3 +14,10 @@ I manage my emacs configuration with GNU stow [[file:dot-emacs.d/README.org::*Ho
 inside =dot-emacs.d/= for the description of the configuration itself,
 which is described in literate org file. =dot-emacs= is auxiliary file
 created by changing some emacs faces.
+
+** Screenshot
+
+   Ipython notebook running on remote server, remote =dired=
+   folder, org notes file, and aweshell pop-up terminal
+
+   [[file:photo_2021-10-16_18-28-35.jpg]]
