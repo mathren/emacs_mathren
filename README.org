@@ -17,7 +17,8 @@ created by changing some emacs faces.
 
 ** Screenshot
 
-   Ipython notebook running on remote server, remote =dired=
-   folder, org notes file, and aweshell pop-up terminal
+   Wombat theme, [[https://github.com/seagle0128/doom-modeline][doom line]]. [[https://github.com/millejoh/emacs-ipython-notebook][ein]] Ipython notebook running on remote
+   server showing inline plot with matplotlib, [[https://www.emacswiki.org/emacs/TrampMode][TRAMP]] remote folder,
+   org notes file, and [[https://github.com/manateelazycat/aweshell][aweshell]] pop-up terminal in the bottom.
 
    [[file:photo_2021-10-16_18-28-35.jpg]]
