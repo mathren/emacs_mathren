@@ -1,0 +1,104 @@
+#+Title: Emacs configuration
+
+ *Disclaimer* I am not a lisp programmer and this is a collection
+ of dirty hacks mostly inspired by stuff found online. *Do not take this
+ as an example of how things should be done*.
+
+ My setup aims at achieving the following:
+
+  - check if emacs server is already running.
+  - If not, start one and open a new frame.
+  - If yes, then check if there is an emacs frame already existing.
+  - If not create a new one to open. If yes, open the file in a new buffer in the existing frame.
+
+ To do so, define in your =~/.bashrc= (or equivalent) the following function:
+
+ #+begin_src bash
+function _emacs
+{
+
+    # Selected options for "emacsclient"
+    #
+    # -c          Create a new frame instead of trying to use the current
+    #             Emacs frame.
+    #
+    # -e          Evaluate the FILE arguments as ELisp expressions.
+    #
+    # -n          Don't wait for the server to return.
+    #
+    # -t          Open a new Emacs frame on the current terminal.
+    #
+    # Note that the "-t" and "-n" options are contradictory: "-t" says to
+    # take control of the current text terminal to create a new client frame,
+    # while "-n" says not to take control of the text terminal.  If you
+    # supply both options, Emacs visits the specified files(s) in an existing
+    # frame rather than a new client frame, negating the effect of "-t".
+
+    # check for running emacs server
+    pgrep -l "^emacs$" > /dev/null
+
+    # if not start emacs daemon
+    if [ $? -ne 0 ]; then
+	echo "starting emacs daemon..."
+	/usr/bin/emacs -l ~/.emacs.d/init.el --daemon
+    fi
+    # check for ipen frames
+    /usr/bin/emacsclient -e "(frames-on-display-list \"$DISPLAY\")" &>/dev/null
+    if [ $? -eq 0 ]; then
+	# echo "open frames detected"
+	/usr/bin/emacsclient -n -t "$@"
+    else
+	# echo "no open frame"
+	/usr/bin/emacsclient -n -c "$@"
+    fi
+
+}
+ #+end_src
+
+ then define the following alias
+
+ #+begin_src bash
+ alias e='/usr/bin/emacs -nw -Q -l ~/.emacs.d/minimal.el'
+ alias emacs='_emacs'
+ #+end_src
+
+ and for desktop launcher create a file =~/.local/share/applications/emacsclient.desktop= containing:
+
+ #+begin_src bash
+ [Desktop Entry]
+ Name=Emacs client
+ GenericName=Text Editor
+ Comment=Edit text
+ MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+ Exec=emacsclient --alternate-editor="emacs -l ~/.emacs.d/init.el" --create-frame %F
+ Icon=emacs
+ Type=Application
+ Terminal=false
+ Categories=Development;TextEditor;
+ StartupWMClass=Emacs
+ Keywords=Text;Editor;
+ #+end_src
+
+** How I manage my configuration
+
+ I manage my configuration with [[https://www.gnu.org/software/stow/][gnu stow]], which means I have a folder
+ =dotfiles/emacs= which contains my =.emacs.d=. I symlink this folder to
+ =$HOME/.emacs.d= with =stow --dotfiles -t $HOME emacs=).
+
+ My emacs config consists of two nested files:
+
+  1) =minimal.el= which is for quick lookup of things
+  2) =init.el= which is more comprehensive and loads =minimal.el= and adds a
+     lot of things.
+
+ I actually manage both as org files, so that I can comment and
+ annotate what I am doing, and then use =org-babel= to tangle the org
+ files to the config files =*.el=. Specifically:
+
+  - [[file:minimal_configuration.org][minimal_configuration.org]] is tangled to =minimal.el= and
+  - [[file:complete_configuration.org][complete_configuration.org]] is tangles to =init.el.=
+
+  So to update my configuration I first edit the relevant org file, then
+  invoke =M-x org-babel-tangle= to create the non-literate elisp =*.el=
+  files, and finally I stow it (i.e., symlink to =~/.emacs.d= with =stow
+  --dotfiles -t $HOME emacs= )

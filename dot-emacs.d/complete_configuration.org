@@ -1,0 +1,498 @@
+#+TITLE: Emacs complete configuration
+#+PROPERTIES: header-args:emacs-lisp :mkdirp yes
+
+When ready, tangle this file with
+=~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el= using (=C-c C-v t=
+which is bound to =org-babel-tangle=). This file is then managed using
+[[https://www.gnu.org/software/stow/][gnu stow]] and hyperlinked to =~/.emacs.d/init.el.=
+
+* Minimal configuration
+
+For quick lookup of things (typically using =emacs -nw=) I only load a
+minimal configuration. This is defined in [[~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal_configuration.org][minimal_configuration.org]]
+which is tangled to [[~/.emacs.d/minimal.el][minimal.el]].
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(load "~/.emacs.d/minimal.el")
+#+END_SRC
+
+
+* Start in server mode
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(server-start)
+#+END_SRC
+
+
+* Initialize packages
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(require 'package)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org"   . "https://orgmode.org/elpa/")
+                         ("elpa"  . "https://elpa.gnu.org/packages/")
+			 ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(package-initialize)
+#+END_SRC
+
+[[https://github.com/jwiegley/use-package][use-package]] is used to have a clean configuration for individual packages.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(require 'use-package)
+#+END_SRC
+
+
+* Packages I use
+
+** Avoid creating tons of hidden files
+
+[[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package no-littering)
+#+END_SRC
+
+
+** Icons for dired and doom-modeline
+
+[[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
+
+This might require running =M-x all-the-icons-install-fonts=
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package all-the-icons)
+#+END_SRC
+
+
+** Dired file manager
+
+Show icons in the dired file manager with [[https://github.com/jtbm37/all-the-icons-dired][all-the-icons-dired]].
+Reuse the same buffer for dired, instead of opening one per folder.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  )
+
+(use-package dired-single)
+
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+#+END_SRC
+
+
+** Bottom line
+
+ See [[https://github.com/seagle0128/doom-modeline][doom-modeline]]. Using daemon mode the icons are not loaded by
+ default, so if using daemon mode (=daemonp= is true) add a hook to set
+ =doom-modeline-icon t=.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package doom-modeline
+  :ensure t
+  :custom ((doom-modeline-height 10))
+  :init (doom-modeline-mode 1))
+(setq doom-modeline-icon t)
+#+END_SRC
+
+
+** Parenthesis handling
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+;; these are configured in minimal.el
+;; (electric-pair-mode 1)
+;; (setq electric-pair-preserve-balance nil)
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
+
+
+** Suggestions for key bindings
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
+#+END_SRC
+
+
+** Language server protocol
+
+I mostly use this for Fortran 90 coding. Note that you need to install
+the lsp server separately.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+(use-package lsp-ivy)
+#+END_SRC
+
+
+** LaTeX related stuff
+
+*** Spell checking
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(dolist (hook '(text-mode-hook LaTeX-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+(setq flyspell-sort-corrections nil)
+(setq flyspell-issue-message-flag nil)
+#+END_SRC
+
+*** References handling
+
+Fist use reftex
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package reftex
+  :ensure auctex
+  :after latex)
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTex-mode-hook 'flyspell-mode)
+(setq reftex-plug-into-AUCTeX t)
+(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+#+END_SRC
+
+*** No line breaks in math mode
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-to-list 'fill-nobreak-predicate 'texmathp)))
+#+END_SRC
+
+*** Okular forward/reverse search
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+  (load "~/.emacs.d/emacs_tools/okular-latex.el")
+  (load "~/.emacs.d/emacs_tools/okular-search.el")
+#+END_SRC
+
+
+** Org mode related stuff
+
+I unbind Shift+arrows from org mode, as I use these for navigating
+buffers (see =minimal.el=). I also want org-mode to start with inline
+images. And I configure three different kind of notes for =org-capture=.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package org
+  :config
+  (define-key org-mode-map (kbd "<S-left>") nil)
+  (define-key org-mode-map (kbd "<S-right>") nil)
+  (define-key org-mode-map (kbd "<S-down>") nil)
+  (define-key org-mode-map (kbd "<S-up>") nil)
+  (setq org-ellipsis " ▾ ")
+  (setq org-startup-with-inline-images t)
+  (setq org-image-actual-width 400)
+  (setq org-hide-emphasis-markers t)
+  (setq org-capture-templates
+	'(("n" "Research note" entry
+	   (file+headline "~/Documents/Research/Todos.org" "Research notes")
+	   "* %?\n %T")
+	  ("p" "Personal note" entry
+	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
+	   "* %?\n %T")
+	  ("f" "FLASH and PPISN" entry
+	   (file+headline "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "FLASH and PPISN notes")
+	   "* %?\n %T")
+	  ("r" "Random throwaway" entry
+	   (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
+	   "* %?\n %T")
+	  ))
+    )
+#+END_SRC
+
+Unbind Shift+arrows from org-agenda too.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package org-agenda
+   :config
+   (define-key org-agenda-mode-map (kbd "<S-left>") nil)
+   (define-key org-agenda-mode-map (kbd "<S-right>") nil)
+   (define-key org-agenda-mode-map (kbd "<S-down>") nil)
+   (define-key org-agenda-mode-map (kbd "<S-up>") nil)
+)
+#+END_SRC
+
+*** Nicer bullets and other eye-candy
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "●" "○" "●" "○" "●" "○")))
+
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  ;; (visual-fill-column-mode 1)
+  )
+
+(use-package visual-fill-column
+  :hook (org-mode . efs/org-mode-visual-fill))
+#+END_SRC
+
+*** Pasting images in the org files with org-download
+
+This allows to paste screenshots in emacs org mode. Pasting from the
+clipboard requires to install =wl-paste= which is usually available in
+your OS package manager (e.g., apt). To paste a screenshot from the
+clipboard use =M-x org-download-clipboard=.
+
+I configure this so that the image file is saved in a hidden folder
+=.org_notes_figures= in the same location of the org file the image is
+being pasted in. When moving/sharing the org file, remember to move or
+share that hidden folder content too.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package org-download
+  :config
+  (setq-default org-download-image-dir ".org_notes_figures/")
+  )
+#+END_SRC
+
+
+** Python
+
+*** Autocompletion
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+#+END_SRC
+
+*** Formatting
+
+Use [[https://pypi.org/project/black/][black]] to format code
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(load "~/.emacs.d/emacs_tools/blacken.el")
+#+END_SRC
+
+*** Flycheck completion
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+#+END_SRC
+
+
+** Git version control with magit
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package magit
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+#+END_SRC
+
+
+** Improve search with ivy
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
+#+END_SRC
+
+This below allows ivy to order auto-completion based on most common usage.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package ivy-prescient
+  :after counsel
+  :custom
+  (ivy-prescient-enable-filtering nil)
+  :config
+  ;; remember sorting across sessions
+  (prescient-persist-mode 1)
+  (ivy-prescient-mode 1))
+#+END_SRC
+
+
+** Counsel
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package counsel
+  :bind (("C-M-j" . 'counsel-switch-buffer)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history))
+  :custom
+  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+  :config
+  (counsel-mode 1))
+#+END_SRC
+
+
+** Company
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+#+END_SRC
+
+
+** Tramp
+
+Tramp allows to connect to a remote server and open remote files
+locally. It will read your =~/.ssh/config= appropriately.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package tramp
+  :config
+  (setq tramp-default-method "ssh"))
+#+END_SRC
+
+
+** Terminal
+
+I use [[https://github.com/manateelazycat/aweshell][aweshell]] as a terminal emulator and shell in emacs. I bind =M-s-t=
+to open/close a small buffer for this terminal.
+
+The prompt is using [[https://github.com/zwild/eshell-prompt-extras][eshell-prompt-extras]] available on MELPA.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(add-to-list 'load-path "~/.emacs.d/emacs_tools/aweshell/")
+
+(require 'aweshell)
+(global-set-key (kbd "M-s-t") 'aweshell-dedicated-toggle)
+(with-eval-after-load "esh-opt"
+  ;; (autoload 'epe-theme-lambda "eshell-prompt-extras")
+  (autoload 'epe-theme-multiline-with-status "eshell-prompt-extras")
+  (setq eshell-highlight-prompt nil
+        eshell-prompt-function 'epe-theme-lambda))
+
+#+END_SRC
+
+
+** Helpful to improve documentation
+
+This improves the documentation accessed with =M-x describe-key=, =M-x
+describe-function= and similar.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+#+END_SRC
+
+
+* TODO Configure recent files handling
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(recentf-mode 1)
+(setq recentf-max-menu-items 40)
+(setq recentf-max-saved-items 40)
+(global-set-key (kbd "M-]") 'recentf-open-files)
+#+END_SRC
+
+
+* Customized keybindings
+
+** org-mode related
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(define-key global-map "\C-cr" 'org-capture)
+(define-key global-map "\C-ctl" 'org-todo-list)
+#+END_SRC
+
+
+** jump to last line of a given column
+
+This is useful sometimes when looking up large data files.
+The way I obtained this is a bit convoluted.
+
+#+BEGIN_SRC :tangle no
+to define macro with user interaction
+(defun my-macro-query (arg)
+  "Prompt for input using minibuffer during kbd macro execution.
+ With prefix argument, allows you to select what prompt string to use.
+ If the input is non-empty, it is inserted at point."
+  (interactive "P")
+  (let* ((query (lambda () (kbd-macro-query t)))
+         (prompt (if arg (read-from-minibuffer "PROMPT: ") "Input: "))
+         (input (unwind-protect
+                    (progn
+                      (add-hook 'minibuffer-setup-hook query)
+                      (read-from-minibuffer prompt))
+                  (remove-hook 'minibuffer-setup-hook query))))
+    (unless (string= "" input) (insert input))))
+
+(global-set-key "\C-xQ" 'my-macro-query)
+see http://www.emacswiki.org/emacs/KeyboardMacros#toc4 to have an idea of how I came up with this solution
+#+END_SRC
+
+Using the macro query above, I defined a way to jump.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(defun go-to-column (column)
+  (interactive "nColumn: ")
+  (move-to-column column t))
+(global-set-key (kbd "M-g TAB") 'go-to-column)
+
+(fset 'last-line-which-col
+      "\C-[>\C-[OA\C-a\C-[g\C-i\C-u\C-xq[OB")
+
+(put 'last-line-which-col 'kmacro t)
+
+(global-set-key (kbd "C-c C-l") 'last-line-which-col)
+#+END_SRC
+
+
+* Outstanding minor issues

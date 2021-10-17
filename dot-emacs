@@ -1,0 +1,84 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(LaTeX-command "latex -synctex=1")
+ '(TeX-view-predicate-list (quote ((nil nil))))
+ '(TeX-view-program-list (quote (("Okular" ("okular --unique %o#src:%n%b") nil))) t)
+ '(TeX-view-program-selection
+   (quote
+    ((output-pdf "Okular")
+     (output-pdf "dvips and gv")
+     (output-dvi "Evince")
+     (output-html "xdg-open"))) t)
+ '(ansi-color-names-vector
+   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+ '(auth-source-save-behavior nil)
+ '(company-quickhelp-color-background "#4F4F4F")
+ '(company-quickhelp-color-foreground "#DCDCCC")
+ '(custom-safe-themes
+   (quote
+    ("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd" default)))
+ '(ein:output-area-inlined-images t)
+ '(fci-rule-color "#383838")
+ '(global-display-line-numbers-mode t)
+ '(inhibit-startup-screen t)
+ '(nrepl-message-colors
+   (quote
+    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+ '(org-agenda-files
+   (quote
+    ("~/Documents/dotfiles/emacs26.3/dot-emacs.d/complete_configuration.org" "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "~/Documents/Research/Todos.org" "~/Documents/Teaching/Master_theses/Chengcheng_project/Notes_chengcheng_project.org")))
+ '(package-selected-packages
+   (quote
+    (eshell-prompt-extras math-preview ivy-pass pass ein lsp-ivy org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired swiper ivy org-bullets rainbow-delimiters which-key lsp-origami dired-icon lsp-treemacs lsp-ui magit lsp-mode flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck elpy dashboard auctex)))
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+ '(safe-local-variable-values (quote ((TeX-master . zeta_ophiuchi\.tex))))
+ '(show-paren-mode t)
+ '(vc-annotate-background "#2B2B2B")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#BC8383")
+     (40 . "#CC9393")
+     (60 . "#DFAF8F")
+     (80 . "#D0BF8F")
+     (100 . "#E0CF9F")
+     (120 . "#F0DFAF")
+     (140 . "#5F7F5F")
+     (160 . "#7F9F7F")
+     (180 . "#8FB28F")
+     (200 . "#9FC59F")
+     (220 . "#AFD8AF")
+     (240 . "#BFEBBF")
+     (260 . "#93E0E3")
+     (280 . "#6CA0A3")
+     (300 . "#7CB8BB")
+     (320 . "#8CD0D3")
+     (340 . "#94BFF3")
+     (360 . "#DC8CC3"))))
+ '(vc-annotate-very-old-color "#DC8CC3"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(cursor ((t (:background "gray72"))))
+ '(eshell-prompt ((t (:foreground "chartreuse" :weight bold))))
+ '(font-latex-sectioning-0-face ((t (:inherit font-latex-sectioning-1-face :foreground "orange" :height 1.1))))
+ '(font-latex-sectioning-1-face ((t (:inherit font-latex-sectioning-2-face :foreground "orange" :height 1.1))))
+ '(font-latex-sectioning-2-face ((t (:inherit font-latex-sectioning-3-face :foreground "orange" :height 1.1))))
+ '(font-latex-sectioning-3-face ((t (:inherit font-latex-sectioning-4-face :foreground "orange" :height 1.1))))
+ '(font-latex-sectioning-4-face ((t (:inherit font-latex-sectioning-5-face :foreground "orange" :height 1.1))))
+ '(font-latex-sectioning-5-face ((t (:inherit variable-pitch :foreground "orange" :weight bold))))
+ '(ivy-cursor ((t (:background "gray72" :foreground "black"))))
+ '(org-level-1 ((t (:inherit outline-1 :box 2 :underline nil))))
+ '(org-level-2 ((t (:foreground "goldenrod1" :box 2))))
+ '(org-level-3 ((t (:foreground "orange red")))))
