@@ -19,6 +19,11 @@ which is tangled to [[~/.emacs.d/minimal.el][minimal.el]].
 
 * Start in server mode
 
+To minimize the impact of startup time (which is anyway short, 1.27
+sec on my machine), I run emacs in daemon mode: start a server in the
+background and keep on re-using it. See also [[file:README.org][here]] for my command line
+setup to have a smooth workflow.
+
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
 (server-start)
 #+END_SRC
@@ -46,7 +51,7 @@ which is tangled to [[~/.emacs.d/minimal.el][minimal.el]].
 
 ** Avoid creating tons of hidden files
 
-[[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
+   [[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
 (use-package no-littering)
@@ -57,7 +62,8 @@ which is tangled to [[~/.emacs.d/minimal.el][minimal.el]].
 
 [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 
-This might require running =M-x all-the-icons-install-fonts=
+This might require running =M-x all-the-icons-install-fonts= the first
+time you use it.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
 (use-package all-the-icons)
@@ -66,8 +72,9 @@ This might require running =M-x all-the-icons-install-fonts=
 
 ** Dired file manager
 
-Show icons in the dired file manager with [[https://github.com/jtbm37/all-the-icons-dired][all-the-icons-dired]].
-Reuse the same buffer for dired, instead of opening one per folder.
+   Show icons in the dired file manager with [[https://github.com/jtbm37/all-the-icons-dired][all-the-icons-dired]].
+   Reuse the same buffer for dired, instead of opening one per folder
+   (not working right now).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
 (use-package dired
