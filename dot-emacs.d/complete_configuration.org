@@ -220,6 +220,12 @@ images. And I configure three different kind of notes for =org-capture=.
 	  ("p" "Personal note" entry
 	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
 	   "* %?\n %T")
+	  ("i" "Future project idea" entry
+	   (file+headline "~/Documents/Research/Projects/ideas.org" "Future projects ideas")
+	   "* %?\n %T")
+	  ("j" "Job applications idea" entry
+	   (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
+	   "* %?\n %T")
 	  ("f" "FLASH and PPISN" entry
 	   (file+headline "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "FLASH and PPISN notes")
 	   "* %?\n %T")
@@ -306,6 +312,18 @@ Use [[https://pypi.org/project/black/][black]] to format code
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
+#+END_SRC
+
+
+*** Emacs ein
+
+[[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
+works for remote notebooks too.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+; ein
+(setq ein:worksheet-enable-undo t)
+(setq ein:output-area-inlined-images t)
 #+END_SRC
 
 
@@ -438,7 +456,7 @@ describe-function= and similar.
 #+END_SRC
 
 
-* TODO Configure recent files handling
+* Configure recent files handling
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
 (recentf-mode 1)

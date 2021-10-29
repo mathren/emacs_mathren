@@ -98,6 +98,12 @@
 	  ("p" "Personal note" entry
 	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
 	   "* %?\n %T")
+	  ("i" "Future project idea" entry
+	   (file+headline "~/Documents/Research/Projects/ideas.org" "Future projects ideas")
+	   "* %?\n %T")
+	  ("j" "Job applications idea" entry
+	   (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
+	   "* %?\n %T")
 	  ("f" "FLASH and PPISN" entry
 	   (file+headline "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "FLASH and PPISN notes")
 	   "* %?\n %T")
@@ -145,6 +151,10 @@
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+; ein
+(setq ein:worksheet-enable-undo t)
+(setq ein:output-area-inlined-images t)
 
 (use-package magit
   :custom
