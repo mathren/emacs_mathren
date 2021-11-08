@@ -289,7 +289,19 @@ share that hidden folder content too.
 
 ** Python
 
-*** Autocompletion
+*** elpy
+
+    To avoid the error:
+
+#+BEGIN_SRC emacs-lisp
+   Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
+   error in process sentinel: elpy-rpc--default-error-callback: peculiar error: "exited abnormally with code 1"
+   error in process sentinel: peculiar error: "exited abnormally with code 1"
+   Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
+#+END_SRC
+
+Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
+customize-variable elpy-rpc-python-command= and set it to =current=.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
 (use-package elpy
@@ -303,7 +315,17 @@ share that hidden folder content too.
 Use [[https://pypi.org/project/black/][black]] to format code
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(load "~/.emacs.d/emacs_tools/blacken.el")
+;; Install:
+;; pip install black
+;; pip install black-macchiato
+(use-package python-black
+  :demand t
+  :after python
+  :custom
+  (python-black-extra-args '("--line-length=120" "--skip-string-normalization"))
+  :bind
+  (:map python-mode-map
+    ("C-c C-l" . python-black-partial-dwim)))
 #+END_SRC
 
 *** Flycheck completion
@@ -313,7 +335,6 @@ Use [[https://pypi.org/project/black/][black]] to format code
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 #+END_SRC
-
 
 *** Emacs ein
 
@@ -326,6 +347,10 @@ works for remote notebooks too.
 (setq ein:output-area-inlined-images t)
 #+END_SRC
 
+
+** YAML mode
+
+*** Yaml mode
 
 ** Git version control with magit
 
