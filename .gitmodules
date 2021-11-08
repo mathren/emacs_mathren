@@ -1,0 +1,3 @@
+[submodule "dot-emacs.d/emacs_tools/aweshell"]
+	path = dot-emacs.d/emacs_tools/aweshell
+	url = git@github.com:manateelazycat/aweshell.git
