@@ -12,6 +12,7 @@
 (global-display-line-numbers-mode t)
 (load-theme 'wombat t)
 (set-default 'truncate-lines t)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (add-hook 'before-save-hook '(lambda()
                               (when (not (or (derived-mode-p 'markdown-mode)))
@@ -31,6 +32,13 @@
 (add-to-list 'auto-mode-alist '("/dot-bash[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/\.zsh[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/dot-zsh[^/]*$" . shell-script-mode))
+
+(add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . conf-mode))
+(add-to-list 'auto-mode-alist '("/rc[^/]*$" . conf-mode))
+(add-to-list 'auto-mode-alist '("/\.par[^/]*$" . conf-mode))
+
+(add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (defun zoom-in ()

@@ -91,6 +91,7 @@
   (setq org-startup-with-inline-images t)
   (setq org-image-actual-width 400)
   (setq org-hide-emphasis-markers t)
+  (setq org-startup-folded 'overview)
   (setq org-capture-templates
 	'(("n" "Research note" entry
 	   (file+headline "~/Documents/Research/Todos.org" "Research notes")
@@ -146,7 +147,17 @@
   :init
   (elpy-enable))
 
-(load "~/.emacs.d/emacs_tools/blacken.el")
+;; Install:
+;; pip install black
+;; pip install black-macchiato
+(use-package python-black
+  :demand t
+  :after python
+  :custom
+  (python-black-extra-args '("--line-length=120" "--skip-string-normalization"))
+  :bind
+  (:map python-mode-map
+    ("C-c C-l" . python-black-partial-dwim)))
 
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))

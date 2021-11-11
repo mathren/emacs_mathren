@@ -43,6 +43,7 @@ default Emacs.
 (global-display-line-numbers-mode t)
 (load-theme 'wombat t)
 (set-default 'truncate-lines t)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
 * Remove trailing white spaces when saving
@@ -53,7 +54,6 @@ Except for markdown.
 (add-hook 'before-save-hook '(lambda()
                               (when (not (or (derived-mode-p 'markdown-mode)))
                                 (delete-trailing-whitespace))))
-
 #+END_SRC
 
 * Buffer navigation
@@ -87,18 +87,33 @@ configuration between here and there.
 (setq electric-pair-preserve-balance nil)
 #+END_SRC
 
-* Open dot-files in =shell-script-mode=
+* Open certain files in given mode
+
+  =dot-*= files in =shell-script-mode=
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
 (add-to-list 'auto-mode-alist '("/\.bash[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/dot-bash[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/\.zsh[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/dot-zsh[^/]*$" . shell-script-mode))
+#+END_SRC
+
+   configuration files in =conf-mode=
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
 (add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/rc[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/\.par[^/]*$" . conf-mode))
+#+END_SRC
+
+   yaml files in =yaml-mode
+=
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+(add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
+
 
 * Some custom keybindings
 
