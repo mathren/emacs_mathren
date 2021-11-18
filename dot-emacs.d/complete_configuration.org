@@ -1,5 +1,6 @@
 #+TITLE: Emacs complete configuration
 #+PROPERTIES: header-args:emacs-lisp :mkdirp yes
+#+STARTUP: overview
 
 When ready, tangle this file with
 =~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el= using (=C-c C-v t=
@@ -77,17 +78,17 @@ time you use it.
    (not working right now).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package dired
-  :ensure nil
-  :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
-  )
+  (use-package dired
+    :ensure nil
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :custom ((dired-listing-switches "-agho --group-directories-first"))
+    )
 
-(use-package dired-single)
+  (use-package dired-single)
 
-(use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
 #+END_SRC
 
 
@@ -211,9 +212,12 @@ images. And I configure three different kind of notes for =org-capture=.
   (define-key org-mode-map (kbd "<S-up>") nil)
   (setq org-ellipsis " ▾ ")
   (setq org-startup-with-inline-images t)
+  (setq org-toggle-pretty-entities t)
+  (setq org-pretty-entities-include-sub-superscripts t)
+  (setq org-use-sub-superscripts "{}")
   (setq org-image-actual-width 400)
   (setq org-hide-emphasis-markers t)
-  (setq org-startup-folded 'overview)
+  (setq org-startup-folded t)
   (setq org-capture-templates
 	'(("n" "Research note" entry
 	   (file+headline "~/Documents/Research/Todos.org" "Research notes")
@@ -286,7 +290,6 @@ share that hidden folder content too.
   (setq-default org-download-image-dir ".org_notes_figures/")
   )
 #+END_SRC
-
 
 ** Python
 

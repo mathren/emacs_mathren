@@ -29,32 +29,41 @@
 (package-initialize)
 
 ;; define list of my packages
-(setq package-list '(which-key
-		     use-package
-		     swiper
-		     rainbow-delimiters
-		     org-download
-		     org-bullets
-		     major-mode-icons
-		     magit
-		     lsp-ui
-		     lsp-treemacs
-		     lsp-origami
-		     lsp-mode
-		     ivy-prescient
-		     ivy
-		     elpy
-		     ein
-		     doom-modeline
-		     dired-icon
-		     counsel
-		     company-box
-		     auctex
-		     all-the-icons-ivy-rich
-		     all-the-icons-ivy
+(setq package-list '(all-the-icons-dired
 		     all-the-icons-ibuffer
-		     all-the-icons-dired
-		     no-littering))
+		     all-the-icons-ivy
+		     all-the-icons-ivy-rich
+		     auctex
+		     company-box
+		     counsel
+		     dired-icon
+		     dired-single
+		     doom-modeline
+		     ein
+		     elpy
+		     eshell-prompt-extras
+		     helpful
+		     ivy
+		     ivy-prescient
+		     jedi
+		     jedi-core
+		     lsp-ivy
+		     lsp-mode
+		     lsp-origami
+		     lsp-treemacs
+		     lsp-ui
+		     magit
+		     major-mode-icons
+		     math-preview
+		     no-littering
+		     org-bullets
+		     org-download
+		     python-black
+		     rainbow-delimiters
+		     swiper
+		     use-package
+		     which-key
+		     yaml-mode         ))
 
 ; install the missing packages
 (dolist (package package-list)

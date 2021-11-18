@@ -2,12 +2,7 @@
 
 (server-start)
 
-(require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org"   . "https://orgmode.org/elpa/")
-                         ("elpa"  . "https://elpa.gnu.org/packages/")
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")))
-(package-initialize)
+(load "~/.emacs.d/install_packages.el")
 
 (require 'use-package)
 
@@ -89,9 +84,12 @@
   (define-key org-mode-map (kbd "<S-up>") nil)
   (setq org-ellipsis " ▾ ")
   (setq org-startup-with-inline-images t)
+  (setq org-toggle-pretty-entities t)
+  (setq org-pretty-entities-include-sub-superscripts t)
+  (setq org-use-sub-superscripts "{}")
   (setq org-image-actual-width 400)
   (setq org-hide-emphasis-markers t)
-  (setq org-startup-folded 'overview)
+  (setq org-startup-folded t)
   (setq org-capture-templates
 	'(("n" "Research note" entry
 	   (file+headline "~/Documents/Research/Todos.org" "Research notes")
