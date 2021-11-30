@@ -5,7 +5,7 @@
 When ready, tangle this file with
 =~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el= using (=C-c C-v t=
 which is bound to =org-babel-tangle=). This file is then managed using
-[[https://www.gnu.org/software/stow/][gnu stow]] and hyperlinked to =~/.emacs.d/init.el.=
+[[https://www.gnu.org/software/stow/][gnu stow]] and hyperlinked to [[~/.emacs.d/init.el][~/.emacs.d/init.el]].
 
 * Minimal configuration
 
@@ -32,14 +32,28 @@ setup to have a smooth workflow.
 
 * Initialize packages
 
+Define a list of packages I use, and install them if they are not
+already. For clarity, this leaves in a separate =install_packages.el=
+that I load.
+
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org"   . "https://orgmode.org/elpa/")
-                         ("elpa"  . "https://elpa.gnu.org/packages/")
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")))
-(package-initialize)
+(load "~/.emacs.d/install_packages.el")
 #+END_SRC
+
+The above can be a little slow the first time. If you prefer
+installing packages manually, comment the line above and just use the
+lines below instead (note that the block below is not tangled to
+[[~/.emacs.d/init.el][~/.emacs.d/init.el]]).
+
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			   ("org"   . "https://orgmode.org/elpa/")
+			   ("elpa"  . "https://elpa.gnu.org/packages/")
+			   ("melpa-stable" . "https://stable.melpa.org/packages/")))
+  (package-initialize)
+#+END_SRC
+
 
 [[https://github.com/jwiegley/use-package][use-package]] is used to have a clean configuration for individual packages.
 
@@ -212,7 +226,7 @@ images. And I configure three different kind of notes for =org-capture=.
   (define-key org-mode-map (kbd "<S-up>") nil)
   (setq org-ellipsis " ▾ ")
   (setq org-startup-with-inline-images t)
-  (setq org-toggle-pretty-entities t)
+  (setq org-pretty-entities t)
   (setq org-pretty-entities-include-sub-superscripts t)
   (setq org-use-sub-superscripts "{}")
   (setq org-image-actual-width 400)
@@ -291,6 +305,7 @@ share that hidden folder content too.
   )
 #+END_SRC
 
+
 ** Python
 
 *** elpy
@@ -355,6 +370,7 @@ works for remote notebooks too.
 ** YAML mode
 
 *** Yaml mode
+
 
 ** Git version control with magit
 
@@ -482,6 +498,46 @@ describe-function= and similar.
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
+#+END_SRC
+
+
+* Spell checking with multiple languages
+
+  I took this from [[https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html][here]], but I configure Italian, French, and English
+  (US and GB). First you want to install the =hunspell= dictionaries
+  with:
+
+#+BEGIN_SRC bash
+apt install hunspell hunspell-it hunspell-fr hunspell-en-us hunspell-en-gb
+#+END_SRC
+
+  Then configure =ispell= to use this
+
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+  (with-eval-after-load "ispell"
+    ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
+    ;; dictionary' even though multiple dictionaries will be configured
+    ;; in next line.
+    (setenv "LANG" "en_US.UTF-8")
+    (setq ispell-program-name "hunspell")
+    ;; Configure two variants of English, French and Italian
+    (setq ispell-dictionary "en_US,en_GB,fr_FR,it_IT")
+    ;; ispell-set-spellchecker-params has to be called
+    ;; before ispell-hunspell-add-multi-dic will work
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,en_GB,fr_FR,it_IT")
+    ;; For saving words to the personal dictionary, don't infer it from
+    ;; the locale
+    (setq ispell-personal-dictionary "~/.emacs.d/emacs_tools/hunspell_personal"))
+#+END_SRC
+
+The personal dictionary file has to exist, otherwise hunspell will
+silently not use it. However, the lines below make =--daemon= crash.
+For now I manually make sure the file exists.
+
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+  ;; (unless (file-exists-p ispell-personal-dictionary)
+  ;; (write-region " " nil ispell-personal-dictionary nil 0))
 #+END_SRC
 
 

@@ -84,7 +84,7 @@
   (define-key org-mode-map (kbd "<S-up>") nil)
   (setq org-ellipsis " ▾ ")
   (setq org-startup-with-inline-images t)
-  (setq org-toggle-pretty-entities t)
+  (setq org-pretty-entities t)
   (setq org-pretty-entities-include-sub-superscripts t)
   (setq org-use-sub-superscripts "{}")
   (setq org-image-actual-width 400)
@@ -242,6 +242,25 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
+
+(with-eval-after-load "ispell"
+  ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
+  ;; dictionary' even though multiple dictionaries will be configured
+  ;; in next line.
+  (setenv "LANG" "en_US.UTF-8")
+  (setq ispell-program-name "hunspell")
+  ;; Configure two variants of English, French and Italian
+  (setq ispell-dictionary "en_US,en_GB,fr_FR,it_IT")
+  ;; ispell-set-spellchecker-params has to be called
+  ;; before ispell-hunspell-add-multi-dic will work
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,en_GB,fr_FR,it_IT")
+  ;; For saving words to the personal dictionary, don't infer it from
+  ;; the locale
+  (setq ispell-personal-dictionary "~/.emacs.d/emacs_tools/hunspell_personal"))
+
+;; (unless (file-exists-p ispell-personal-dictionary)
+;; (write-region " " nil ispell-personal-dictionary nil 0))
 
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)

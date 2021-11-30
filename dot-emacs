@@ -27,7 +27,7 @@
  '(custom-safe-themes
    (quote
     ("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd" default)))
- '(ein:output-area-inlined-images t)
+ '(ein:output-area-inlined-images t t)
  '(elpy-rpc-python-command "python3")
  '(elpy-rpc-virtualenv-path (quote current))
  '(fci-rule-color "#383838")
@@ -38,7 +38,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(org-agenda-files
    (quote
-    ("~/Documents/Research/Todos.org" "~/Documents/Teaching/AstrocomNY/XRB_GW_connection/Nachi_summer2021.org" "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "~/Documents/Teaching/Master_theses/Chengcheng_project/Notes_chengcheng_project.org" "~/Documents/dotfiles/emacs26.3/dot-emacs.d/complete_configuration.org")))
+    ("~/Documents/Research/Conferences/21/KITP_transport_in_stars/notes/Transtars21.org" "~/Documents/Research/Todos.org" "~/Documents/Teaching/AstrocomNY/XRB_GW_connection/Nachi_summer2021.org" "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "~/Documents/Teaching/Master_theses/Chengcheng_project/Notes_chengcheng_project.org" "~/Documents/dotfiles/emacs26.3/dot-emacs.d/complete_configuration.org")))
  '(package-selected-packages
    (quote
     (python-black yaml-mode jedi elpy eshell-prompt-extras math-preview ivy-pass pass ein lsp-ivy org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired swiper ivy org-bullets rainbow-delimiters which-key lsp-origami dired-icon lsp-treemacs lsp-ui magit lsp-mode flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex)))

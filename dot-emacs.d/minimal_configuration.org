@@ -106,8 +106,8 @@ configuration between here and there.
 (add-to-list 'auto-mode-alist '("/\.par[^/]*$" . conf-mode))
 #+END_SRC
 
-   yaml files in =yaml-mode
-=
+   yaml files in =yaml-mode=
+
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
 (add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
@@ -161,6 +161,28 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
+#+END_SRC
+
+* Follow symlinks
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+(setq vc-follow-symlinks t)
+#+END_SRC
+
+* Auto-revert files on change
+
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+(global-auto-revert-mode t)
+#+END_SRC
+
+
+* Winner mode
+
+Use =C-c right= and =C-c left= to cycle between window setups
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
 #+END_SRC
 
 * MESA related stuff
