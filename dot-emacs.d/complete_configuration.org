@@ -64,12 +64,12 @@ lines below instead (note that the block below is not tangled to
 
 * Packages I use
 
-** Avoid creating tons of hidden files
+** TODO Avoid creating tons of hidden files
 
    [[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
-
+   however, this conflicts with emacs ein, deactivated for now
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package no-littering)
+;; (use-package no-littering)
 #+END_SRC
 
 
