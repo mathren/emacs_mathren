@@ -14,7 +14,7 @@
  To do so, define in your =~/.bashrc= (or equivalent) the following function:
 
  #+begin_src bash
-function _emacs
+function emacs_launcher
 {
 
     # Selected options for "emacsclient"
@@ -59,7 +59,7 @@ function _emacs
 
  #+begin_src bash
  alias e='/usr/bin/emacs -nw -Q -l ~/.emacs.d/minimal.el'
- alias emacs='_emacs'
+ alias emacs='emacs_launcher'
  #+end_src
 
  and for desktop launcher create a file =~/.local/share/applications/emacsclient.desktop= containing:
