@@ -11,44 +11,46 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
- '(TeX-view-predicate-list (quote ((nil nil))))
- '(TeX-view-program-list (quote (("Okular" ("okular --unique %o#src:%n%b") nil))))
+ '(TeX-view-predicate-list '((nil nil)))
+ '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)) t)
  '(TeX-view-program-selection
-   (quote
-    ((output-pdf "Okular")
+   '((output-pdf "Okular")
      (output-pdf "dvips and gv")
      (output-dvi "Evince")
-     (output-html "xdg-open"))))
+     (output-html "xdg-open")) t)
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
  '(auth-source-save-behavior nil)
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
-   (quote
-    ("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd" default)))
- '(ein:output-area-inlined-images t t)
+   '("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd" default))
+ '(ein:output-area-inlined-images t)
+ '(elfeed-show-entry-switch 'pop-to-buffer)
  '(elpy-rpc-python-command "python3")
- '(elpy-rpc-virtualenv-path (quote current))
+ '(elpy-rpc-virtualenv-path 'current)
  '(fci-rule-color "#383838")
  '(global-display-line-numbers-mode t)
  '(inhibit-startup-screen t)
  '(nrepl-message-colors
-   (quote
-    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+   '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
-   (quote
-    ("~/Documents/Research/Conferences/21/KITP_transport_in_stars/notes/Transtars21.org" "~/Documents/Research/Todos.org" "~/Documents/Teaching/AstrocomNY/XRB_GW_connection/Nachi_summer2021.org" "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "~/Documents/Teaching/Master_theses/Chengcheng_project/Notes_chengcheng_project.org" "~/Documents/dotfiles/emacs26.3/dot-emacs.d/complete_configuration.org")))
+   '("/home/math/Documents/Research/Todos.org" "~/Documents/Research/Travel_summer22.org" "/home/math/Documents/Teaching/Master_theses/Chengcheng_project/Notes_chengcheng_project.org" "/home/math/Documents/Teaching/AstrocomNY/XRB_GW_connection/Nachi_summer2021.org" "/home/math/Documents/Research/Projects/weak_G_stars/private_notes.org" "/home/math/Documents/Research/Projects/weak_G_stars/README.org" "/home/math/Documents/Mathieu/personale/US_bureaucracy/housing_docs/Housing_search.org" "/home/math/Documents/Research/Conferences/21/KITP_transport_in_stars/notes/Transtars21.org" "/home/math/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "/home/math/Documents/dotfiles/emacs26.3/dot-emacs.d/complete_configuration.org"))
+ '(org-download-screenshot-method "xclip -selection clipboard -t image/png -o > %s")
+ '(org-file-apps
+   '((auto-mode . emacs)
+     ("\\.mm\\'" . default)
+     (".html" . "firefox %s")
+     (".pdf" . "okular %s")))
  '(package-selected-packages
-   (quote
-    (python-black yaml-mode jedi elpy eshell-prompt-extras math-preview ivy-pass pass ein lsp-ivy org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired swiper ivy org-bullets rainbow-delimiters which-key lsp-origami dired-icon lsp-treemacs lsp-ui magit lsp-mode flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex)))
- '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
- '(safe-local-variable-values (quote ((TeX-master . zeta_ophiuchi\.tex))))
+   '(eglot ripgrep snakemake-mode ein lsp-ui lsp-treemacs lsp-origami lsp-ivy eproject markdown-mode editorconfig ac-html deadgrep pdf-tools helm-org blacken org-alert elfeed python-black yaml-mode jedi elpy eshell-prompt-extras math-preview ivy-pass pass org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired swiper ivy org-bullets rainbow-delimiters which-key dired-icon magit flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex))
+ '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
+ '(safe-local-variable-values '((TeX-master . zeta_ophiuchi\.tex)))
+ '(send-mail-function 'mailclient-send-it)
  '(show-paren-mode t)
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#BC8383")
+   '((20 . "#BC8383")
      (40 . "#CC9393")
      (60 . "#DFAF8F")
      (80 . "#D0BF8F")
@@ -65,14 +67,14 @@
      (300 . "#7CB8BB")
      (320 . "#8CD0D3")
      (340 . "#94BFF3")
-     (360 . "#DC8CC3"))))
+     (360 . "#DC8CC3")))
  '(vc-annotate-very-old-color "#DC8CC3"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cursor ((t (:background "gray72"))))
+ '(cursor ((t (:background "gold" :box (:line-width 3 :color "red" :style released-button)))))
  '(eshell-prompt ((t (:foreground "chartreuse" :weight bold))))
  '(font-latex-sectioning-0-face ((t (:inherit font-latex-sectioning-1-face :foreground "orange" :height 1.1))))
  '(font-latex-sectioning-1-face ((t (:inherit font-latex-sectioning-2-face :foreground "orange" :height 1.1))))

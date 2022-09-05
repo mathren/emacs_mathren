@@ -63,7 +63,10 @@
 		     swiper
 		     use-package
 		     which-key
-		     yaml-mode         ))
+		     yaml-mode
+		     elfeed
+		     eglot
+		     ))
 
 ; install the missing packages
 (dolist (package package-list)

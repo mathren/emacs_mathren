@@ -33,7 +33,7 @@ setup to have a smooth workflow.
 * Initialize packages
 
 Define a list of packages I use, and install them if they are not
-already. For clarity, this leaves in a separate =install_packages.el=
+already. For clarity, this leaves in a separate [[file:install_packages.el][install_packages.el]]
 that I load.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
@@ -48,9 +48,11 @@ lines below instead (note that the block below is not tangled to
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("org"   . "https://orgmode.org/elpa/")
+			   ;; ("org"   . "https://orgmode.org/elpa/")
 			   ("elpa"  . "https://elpa.gnu.org/packages/")
-			   ("melpa-stable" . "https://stable.melpa.org/packages/")))
+			   ("melpa-stable" . "https://stable.melpa.org/packages/"))
+	                   ("org-contrib" . "https://elpa.nongnu.org/nongnu/"))
+
   (package-initialize)
 #+END_SRC
 
@@ -64,15 +66,12 @@ lines below instead (note that the block below is not tangled to
 
 * Packages I use
 
-** TODO configure langtool
-  https://github.com/mhayashi1120/Emacs-langtool
-
-** TODO Avoid creating tons of hidden files
+** Avoid creating tons of hidden files
 
    [[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
-   however, this conflicts with emacs ein, deactivated for now
+
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-;; (use-package no-littering)
+(use-package no-littering)
 #+END_SRC
 
 
@@ -92,16 +91,16 @@ time you use it.
 
    Show icons in the dired file manager with [[https://github.com/jtbm37/all-the-icons-dired][all-the-icons-dired]].
    Reuse the same buffer for dired, instead of opening one per folder
-   (not working right now).
+   (not working right now). Also, set it up so it updates when files
+   change in a directory
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
   (use-package dired
     :ensure nil
     :commands (dired dired-jump)
     :bind (("C-x C-j" . dired-jump))
-    :custom ((dired-listing-switches "-agho --group-directories-first"))
-    )
-
+    :custom ((dired-listing-switches "-agho --group-directories-first")))
+  (setq global-auto-revert-non-file-buffers t)
   (use-package dired-single)
 
   (use-package all-the-icons-dired
@@ -146,25 +145,27 @@ time you use it.
 #+END_SRC
 
 
-** Language server protocol
+** TODO Language server protocol (LSP)
+
+Try =eglot= instead.
 
 I mostly use this for Fortran 90 coding. Note that you need to install
 the lsp server separately.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (lsp-enable-which-key-integration t))
+  ;; (use-package lsp-mode
+  ;;   :commands (lsp lsp-deferred)
+  ;;   :init
+  ;;   (setq lsp-keymap-prefix "C-c l")
+  ;;   :config
+  ;;   (lsp-enable-which-key-integration t))
 
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
+  ;; (use-package lsp-ui
+  ;;   :hook (lsp-mode . lsp-ui-mode)
+  ;;   :custom
+  ;;   (lsp-ui-doc-position 'bottom))
 
-(use-package lsp-ivy)
+  ;; (use-package lsp-ivy)
 #+END_SRC
 
 
@@ -194,7 +195,8 @@ Fist use reftex
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTex-mode-hook 'flyspell-mode)
 (setq reftex-plug-into-AUCTeX t)
-(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
 ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 #+END_SRC
 
@@ -221,41 +223,42 @@ buffers (see =minimal.el=). I also want org-mode to start with inline
 images. And I configure three different kind of notes for =org-capture=.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package org
-  :config
-  (define-key org-mode-map (kbd "<S-left>") nil)
-  (define-key org-mode-map (kbd "<S-right>") nil)
-  (define-key org-mode-map (kbd "<S-down>") nil)
-  (define-key org-mode-map (kbd "<S-up>") nil)
-  (setq org-ellipsis " ▾ ")
-  (setq org-startup-with-inline-images t)
-  (setq org-pretty-entities t)
-  (setq org-pretty-entities-include-sub-superscripts t)
-  (setq org-use-sub-superscripts "{}")
-  (setq org-image-actual-width 400)
-  (setq org-hide-emphasis-markers t)
-  (setq org-startup-folded t)
-  (setq org-capture-templates
-	'(("n" "Research note" entry
-	   (file+headline "~/Documents/Research/Todos.org" "Research notes")
-	   "* %?\n %T")
-	  ("p" "Personal note" entry
-	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
-	   "* %?\n %T")
-	  ("i" "Future project idea" entry
-	   (file "~/Documents/Research/Projects/ideas.org")
-	   "* %?\n %T")
-	  ("j" "Job applications idea" entry
-	   (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
-	   "* %?\n %T")
-	  ("f" "FLASH and PPISN" entry
-	   (file+headline "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "FLASH and PPISN notes")
-	   "* %?\n %T")
-	  ("r" "Random throwaway" entry
-	   (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
-	   "* %?\n %T")
-	  ))
-    )
+  (use-package org
+    :pin elpa
+    :config
+    (define-key org-mode-map (kbd "<S-left>") nil)
+    (define-key org-mode-map (kbd "<S-right>") nil)
+    (define-key org-mode-map (kbd "<S-down>") nil)
+    (define-key org-mode-map (kbd "<S-up>") nil)
+    (setq org-ellipsis " ▾ ")
+    (setq org-startup-with-inline-images t)
+    (setq org-pretty-entities t)
+    (setq org-pretty-entities-include-sub-superscripts t)
+    (setq org-use-sub-superscripts "{}")
+    (setq org-image-actual-width 400)
+    (setq org-hide-emphasis-markers t)
+    (setq org-startup-folded t)
+    (setq org-capture-templates
+	  '(("n" "Research note" entry
+	     (file+headline "~/Documents/Research/Todos.org" "Research notes")
+	     "* %?\n %T")
+	    ("p" "Personal note" entry
+	     (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
+	     "* %?\n %T")
+	    ("i" "Future project idea" entry
+	     (file+headline "~/Documents/Research/Projects/ideas.org" "Future projects ideas")
+	     "* %?\n %T")
+	    ("j" "Job applications idea" entry
+	     (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
+	     "* %?\n %T")
+	    ("f" "FLASH and PPISN" entry
+	     (file+headline "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "FLASH and PPISN notes")
+	     "* %?\n %T")
+	    ("r" "Random throwaway" entry
+	     (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
+	     "* %?\n %T")
+	    ))
+      )
 #+END_SRC
 
 Unbind Shift+arrows from org-agenda too.
@@ -291,15 +294,31 @@ Unbind Shift+arrows from org-agenda too.
 
 *** Pasting images in the org files with org-download
 
-This allows to paste screenshots in emacs org mode. Pasting from the
-clipboard requires to install =wl-paste= which is usually available in
-your OS package manager (e.g., apt). To paste a screenshot from the
-clipboard use =M-x org-download-clipboard=.
+    This allows to paste screenshots in emacs org mode. Pasting from the
+    clipboard requires to install =wl-paste= which is usually available in
+    your OS package manager (e.g., apt). To paste a screenshot from the
+    clipboard use =M-x org-download-clipboard=. This will open your OS
+    screenshot utility, you can then take the screenshot -- but what you
+    want to capture has to be visible on your screen when you type that command.
 
-I configure this so that the image file is saved in a hidden folder
-=.org_notes_figures= in the same location of the org file the image is
-being pasted in. When moving/sharing the org file, remember to move or
-share that hidden folder content too.
+    I configure this so that the image file is saved in a hidden folder
+    =.org_notes_figures= in the same location of the org file the image is
+    being pasted in. When moving/sharing the org file, remember to move or
+    share that hidden folder content too.
+
+    I also use =M-x customize-group org-download= to change the value of
+    =org-download-screenshot-method=. By default this is set to
+    =gnome-screenshot= and it opens the screenshot tool from within
+    emacs, this means you need to already have on screen what you want
+    to screenshot, go in emacs and type =M-x org-download-screenshot=
+    and then back to what you actually want to capture, which might
+    have disappeared behind some other window or pane.
+
+    Instead, I use =M-x customize-group= to set
+    =org-download-screenshot-method= to =xclip -selection clipboard -t
+    image/png -o > %s"= With this I can take a screenshot from outside
+    of emacs and then use =M-x org-download-screenshot= to paste it.
+    This adds a line in the =~/.emacs= file.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
 (use-package org-download
@@ -308,200 +327,80 @@ share that hidden folder content too.
   )
 #+END_SRC
 
+*** org-roam
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+  ;; (use-package org-roam
+  ;;     :config
+  ;;     (org-roam-db-autosync-mode)
+  ;; )
+#+END_SRC
+
 
 ** Python
 
 *** elpy
 
-    To avoid the error:
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ (use-package elpy
+   :ensure t
+   :init
+   (elpy-enable))
+   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+ #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-   Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
-   error in process sentinel: elpy-rpc--default-error-callback: peculiar error: "exited abnormally with code 1"
-   error in process sentinel: peculiar error: "exited abnormally with code 1"
-   Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
-#+END_SRC
+ To avoid the following error:
 
-Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
-customize-variable elpy-rpc-python-command= and set it to =current=.
+ #+BEGIN_SRC emacs-lisp
+    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
+    error in process sentinel: elpy-rpc--default-error-callback: peculiar error: "exited abnormally with code 1"
+    error in process sentinel: peculiar error: "exited abnormally with code 1"
+    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
+ #+END_SRC
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
-#+END_SRC
+ Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
+ customize-variable elpy-rpc-python-command= and set it to =current=.
+
 
 *** Formatting
 
-Use [[https://pypi.org/project/black/][black]] to format code
+ Use [[https://pypi.org/project/black/][black]] to format code
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-;; Install:
-;; pip install black
-;; pip install black-macchiato
-(use-package python-black
-  :demand t
-  :after python
-  :custom
-  (python-black-extra-args '("--line-length=120" "--skip-string-normalization"))
-  :bind
-  (:map python-mode-map
-    ("C-c C-l" . python-black-partial-dwim)))
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ ;; Install:
+ ;; pip install black
+ ;; pip install black-macchiato
+ (use-package python-black
+   :demand t
+   :after python
+   :custom
+   (python-black-extra-args '("--line-length=120" "--skip-string-normalization"))
+   :bind
+   (:map python-mode-map
+     ("C-c C-l" . python-black-partial-dwim)))
+ #+END_SRC
+
 
 *** Flycheck completion
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-#+END_SRC
+
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ (when (require 'flycheck nil t)
+   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+   (add-hook 'elpy-mode-hook 'flycheck-mode))
+ #+END_SRC
+
 
 *** Emacs ein
 
-[[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
-works for remote notebooks too.
+ [[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
+ works for remote notebooks too.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-; ein
-(setq ein:worksheet-enable-undo t)
-(setq ein:output-area-inlined-images t)
-#+END_SRC
-
-
-** YAML mode
-
-*** Yaml mode
-
-
-** Git version control with magit
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package magit
-  :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-#+END_SRC
-
-
-** Improve search with ivy
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
-#+END_SRC
-
-This below allows ivy to order auto-completion based on most common usage.
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package ivy-prescient
-  :after counsel
-  :custom
-  (ivy-prescient-enable-filtering nil)
-  :config
-  ;; remember sorting across sessions
-  (prescient-persist-mode 1)
-  (ivy-prescient-mode 1))
-#+END_SRC
-
-
-** Counsel
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package counsel
-  :bind (("C-M-j" . 'counsel-switch-buffer)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history))
-  :custom
-  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
-  :config
-  (counsel-mode 1))
-#+END_SRC
-
-
-** Company
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-#+END_SRC
-
-
-** Tramp
-
-Tramp allows to connect to a remote server and open remote files
-locally. It will read your =~/.ssh/config= appropriately.
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package tramp
-  :config
-  (setq tramp-default-method "ssh"))
-#+END_SRC
-
-
-** Terminal
-
-I use [[https://github.com/manateelazycat/aweshell][aweshell]] as a terminal emulator and shell in emacs. I bind =M-s-t=
-to open/close a small buffer for this terminal.
-
-The prompt is using [[https://github.com/zwild/eshell-prompt-extras][eshell-prompt-extras]] available on MELPA.
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(add-to-list 'load-path "~/.emacs.d/emacs_tools/aweshell/")
-
-(require 'aweshell)
-(global-set-key (kbd "M-s-t") 'aweshell-dedicated-toggle)
-(with-eval-after-load "esh-opt"
-  ;; (autoload 'epe-theme-lambda "eshell-prompt-extras")
-  (autoload 'epe-theme-multiline-with-status "eshell-prompt-extras")
-  (setq eshell-highlight-prompt nil
-        eshell-prompt-function 'epe-theme-lambda))
-
-#+END_SRC
-
-
-** Helpful to improve documentation
-
-This improves the documentation accessed with =M-x describe-key=, =M-x
-describe-function= and similar.
-
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ ; ein
+ (setq ein:worksheet-enable-undo t)
+ (setq ein:output-area-inlined-images t)
+ #+END_SRC
 
 
 * Spell checking with multiple languages
@@ -544,13 +443,56 @@ For now I manually make sure the file exists.
 #+END_SRC
 
 
+* Single space for end-of-sentence
+
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+(setq sentence-end-double-space nil)
+#+END_SRC
+
+
 * Configure recent files handling
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-(recentf-mode 1)
-(setq recentf-max-menu-items 40)
-(setq recentf-max-saved-items 40)
-(global-set-key (kbd "M-]") 'recentf-open-files)
+  ;; (use-package recentf
+  ;;   ;; Loads after 1 second of idle time.
+  ;;   :defer 1
+  ;;   :custom
+  ;;   (setq recentf-max-menu-items 40)
+  ;;   (setq recentf-max-saved-items 40)
+  ;; )
+  (setq recentf-max-menu-items 40)
+  (setq recentf-max-saved-items 40)
+  (global-set-key (kbd "M-]") 'recentf-open-files)
+  (recentf-mode 1)			;
+  ; (global-set-key (kbd "M-]") 'recentf-open-files)
+#+END_SRC
+
+Run search function as soon as requesting the list of recent files
+with this hook:
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+; (add-hook 'recentf-mode-hook 'swiper)
+#+END_SRC
+
+
+* De-duplicate lines in buffer
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+   (defun uniquify-all-lines-region (start end)
+     "Find duplicate lines in region START to END keeping first occurrence."
+     (interactive "*r")
+     (save-excursion
+       (let ((end (copy-marker end)))
+         (while
+             (progn
+               (goto-char start)
+               (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+           (replace-match "\\1\n\\2")))))
+
+   (defun uniquify-all-lines-buffer ()
+     "Delete duplicate lines in buffer and keep first occurrence."
+     (interactive "*")
+     (uniquify-all-lines-region (point-min) (point-max)))
 #+END_SRC
 
 
@@ -606,6 +548,7 @@ Using the macro query above, I defined a way to jump.
 
 (global-set-key (kbd "C-c C-l") 'last-line-which-col)
 #+END_SRC
+
 
 
 * Outstanding minor issues

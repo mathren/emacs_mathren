@@ -44,6 +44,7 @@ default Emacs.
 (load-theme 'wombat t)
 (set-default 'truncate-lines t)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
+(set-default 'size-indication-mode t)
 #+END_SRC
 
 * Remove trailing white spaces when saving
@@ -64,7 +65,7 @@ the GUI with org mode usually).
 
 Use =C-pgUp/Pgdown= to cycle buffers.
 
-Finally, to kill the current buffer I use =M-super-k"".
+Finally, to kill the current buffer I use =M-super-k=.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
 (when (fboundp 'windmove-default-keybindings)
@@ -113,7 +114,6 @@ configuration between here and there.
 (add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
-
 
 * Some custom keybindings
 
@@ -174,7 +174,6 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
 #+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
 (global-auto-revert-mode t)
 #+END_SRC
-
 
 * Winner mode
 
