@@ -1,8 +1,34 @@
-#+Title: Emacs configuration
+#+Title: How I manage this Emacs configuration
 
  *Disclaimer* I am not a lisp programmer and this is a collection
  of dirty hacks mostly inspired by stuff found online. *Do not take this
  as an example of how things should be done*.
+
+** File management
+
+ I manage my configuration with [[https://www.gnu.org/software/stow/][gnu stow]], which means I have a folder
+ =dotfiles/emacs= which contains my =.emacs.d=. I symlink this folder to
+ =$HOME/.emacs.d= with =stow --dotfiles -t $HOME emacs=).
+
+ My emacs config consists of two nested files:
+
+  1) =minimal.el= which is for quick lookup of things
+  2) =init.el= which is more comprehensive and loads =minimal.el= and adds a
+     lot of things.
+
+ I actually manage both as org files, so that I can comment and
+ annotate what I am doing, and then use =org-babel= to tangle the org
+ files to the config files =*.el=. Specifically:
+
+  - [[file:minimal_configuration.org][minimal_configuration.org]] is tangled to =minimal.el= and
+  - [[file:complete_configuration.org][complete_configuration.org]] is tangles to =init.el.=
+
+  So to update my configuration I first edit the relevant org file, then
+  invoke =M-x org-babel-tangle= to create the non-literate elisp =*.el=
+  files, and finally I stow it (i.e., symlink to =~/.emacs.d= with =stow
+  --dotfiles -t $HOME emacs= )
+
+** Opening emacs from command line and GUI
 
  My setup aims at achieving the following:
 
@@ -78,27 +104,3 @@ function emacs_launcher
  StartupWMClass=Emacs
  Keywords=Text;Editor;
  #+end_src
-
-** How I manage my configuration
-
- I manage my configuration with [[https://www.gnu.org/software/stow/][gnu stow]], which means I have a folder
- =dotfiles/emacs= which contains my =.emacs.d=. I symlink this folder to
- =$HOME/.emacs.d= with =stow --dotfiles -t $HOME emacs=).
-
- My emacs config consists of two nested files:
-
-  1) =minimal.el= which is for quick lookup of things
-  2) =init.el= which is more comprehensive and loads =minimal.el= and adds a
-     lot of things.
-
- I actually manage both as org files, so that I can comment and
- annotate what I am doing, and then use =org-babel= to tangle the org
- files to the config files =*.el=. Specifically:
-
-  - [[file:minimal_configuration.org][minimal_configuration.org]] is tangled to =minimal.el= and
-  - [[file:complete_configuration.org][complete_configuration.org]] is tangles to =init.el.=
-
-  So to update my configuration I first edit the relevant org file, then
-  invoke =M-x org-babel-tangle= to create the non-literate elisp =*.el=
-  files, and finally I stow it (i.e., symlink to =~/.emacs.d= with =stow
-  --dotfiles -t $HOME emacs= )
