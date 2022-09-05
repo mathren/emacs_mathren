@@ -1,14 +1,6 @@
 * Emacs configuration
 
-Tested and working with
-
-#+BEGIN_SRC bash
- emacs --version
-emacs 26.3
-
- uname -a
-Linux t490s 5.11.0-37-generic #41~20.04.2-Ubuntu SMP Fri Sep 24 09:06:38 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
-#+END_SRC
+Tested and working with emacs =26.3= and now testing on =28.1.=
 
 I manage my emacs configuration with GNU stow [[file:dot-emacs.d/README.org::*How%20I%20manage%20my%20configuration][here]].  See =README.org=
 inside =dot-emacs.d/= for the description of the configuration itself,
@@ -25,7 +17,6 @@ created by changing some emacs faces.
 
 
 ** Installing emacs 28.1 on Ubuntu 20.04
-  <2022-09-05 Mon 14:10>
 
   Loosely following [[https://practical.li/blog/posts/build-emacs-28-on-ubuntu/][this guide]].
 
