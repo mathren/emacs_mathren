@@ -4,6 +4,3 @@
 [submodule "dot-emacs.d/emacs_tools/mesa-major-mode"]
 	path = dot-emacs.d/emacs_tools/mesa-major-mode
 	url = git@github.com:jschwab/mesa-major-mode.git
-[submodule "dot-emacs.d/emacs_tools/blacken"]
-	path = dot-emacs.d/emacs_tools/blacken
-	url = git@github.com:pythonic-emacs/blacken.git
