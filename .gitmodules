@@ -1,3 +1,6 @@
 [submodule "dot-emacs.d/emacs_tools/aweshell"]
 	path = dot-emacs.d/emacs_tools/aweshell
 	url = git@github.com:manateelazycat/aweshell.git
+[submodule "dot-emacs.d/emacs_tools/mesa-major-mode"]
+	path = dot-emacs.d/emacs_tools/mesa-major-mode
+	url = git@github.com:jschwab/mesa-major-mode.git
