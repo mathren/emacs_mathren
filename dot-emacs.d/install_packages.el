@@ -66,6 +66,9 @@
 		     yaml-mode
 		     elfeed
 		     eglot
+		     company-fuzzy
+		     company-auctex
+		     company-bibtex
 		     ))
 
 ; install the missing packages

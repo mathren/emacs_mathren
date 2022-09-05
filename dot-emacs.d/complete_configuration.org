@@ -83,8 +83,20 @@ lines below instead (note that the block below is not tangled to
   python-lsp-server=)
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  ;; eglot
   (add-hook 'f90-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
+#+END_SRC
+
+** autocompletion with company
+
+  I use [[https://company-mode.github.io/][company]] for autocompletion
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+    (setq company-minimum-prefix-length 1) ;; start at first characted
+    (setq company-idle-delay 0)            ;; no time delay
+    (setq company-selection-wrap-around t) ;; wrap around suggestion list
+    (company-tng-configure-default)        ;; tab cycles through suggestions
 #+END_SRC
 
 ** Icons for dired and doom-modeline

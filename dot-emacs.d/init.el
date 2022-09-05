@@ -8,8 +8,14 @@
 
 (use-package no-littering)
 
+;; eglot
 (add-hook 'f90-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
+
+(setq company-minimum-prefix-length 1) ;; start at first characted
+(setq company-idle-delay 0)            ;; no time delay
+(setq company-selection-wrap-around t) ;; wrap around suggestion list
+(company-tng-configure-default)        ;; tab cycles through suggestions
 
 (use-package all-the-icons)
 
