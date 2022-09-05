@@ -8,8 +8,8 @@
 
 (use-package no-littering)
 
-(add-hook 'f90-mode-hook 'ensure-eglot)
-(add-hook 'python-mode-hook 'ensure-eglot)
+(add-hook 'f90-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
 
 (use-package all-the-icons)
 
