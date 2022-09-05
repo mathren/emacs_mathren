@@ -6,7 +6,10 @@
 
 (require 'use-package)
 
-;; (use-package no-littering)
+(use-package no-littering)
+
+(add-hook 'f90-mode-hook 'ensure-eglot)
+(add-hook 'python-mode-hook 'ensure-eglot)
 
 (use-package all-the-icons)
 
@@ -14,9 +17,8 @@
   :ensure nil
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
-  )
-
+  :custom ((dired-listing-switches "-agho --group-directories-first")))
+(setq global-auto-revert-non-file-buffers t)
 (use-package dired-single)
 
 (use-package all-the-icons-dired
@@ -40,20 +42,6 @@
   :config
   (setq which-key-idle-delay 1))
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (lsp-enable-which-key-integration t))
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
-
-(use-package lsp-ivy)
-
 (dolist (hook '(text-mode-hook LaTeX-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 (setq flyspell-sort-corrections nil)
@@ -66,7 +54,8 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTex-mode-hook 'flyspell-mode)
 (setq reftex-plug-into-AUCTeX t)
-(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
 ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 
 (add-hook 'LaTeX-mode-hook
@@ -77,6 +66,7 @@
 (load "~/.emacs.d/emacs_tools/okular-search.el")
 
 (use-package org
+  :pin elpa
   :config
   (define-key org-mode-map (kbd "<S-left>") nil)
   (define-key org-mode-map (kbd "<S-right>") nil)
@@ -98,7 +88,7 @@
 	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
 	   "* %?\n %T")
 	  ("i" "Future project idea" entry
-	   (file "~/Documents/Research/Projects/ideas.org")
+	   (file+headline "~/Documents/Research/Projects/ideas.org" "Future projects ideas")
 	   "* %?\n %T")
 	  ("j" "Job applications idea" entry
 	   (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
@@ -140,10 +130,16 @@
   (setq-default org-download-image-dir ".org_notes_figures/")
   )
 
+;; (use-package org-roam
+;;     :config
+;;     (org-roam-db-autosync-mode)
+;; )
+
 (use-package elpy
   :ensure t
   :init
   (elpy-enable))
+  (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 
 ;; Install:
 ;; pip install black
@@ -165,84 +161,6 @@
 (setq ein:worksheet-enable-undo t)
 (setq ein:output-area-inlined-images t)
 
-(use-package magit
-  :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
-
-(use-package ivy-prescient
-  :after counsel
-  :custom
-  (ivy-prescient-enable-filtering nil)
-  :config
-  ;; remember sorting across sessions
-  (prescient-persist-mode 1)
-  (ivy-prescient-mode 1))
-
-(use-package counsel
-  :bind (("C-M-j" . 'counsel-switch-buffer)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history))
-  :custom
-  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
-  :config
-  (counsel-mode 1))
-
-(use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
-(use-package tramp
-  :config
-  (setq tramp-default-method "ssh"))
-
-(add-to-list 'load-path "~/.emacs.d/emacs_tools/aweshell/")
-
-(require 'aweshell)
-(global-set-key (kbd "M-s-t") 'aweshell-dedicated-toggle)
-(with-eval-after-load "esh-opt"
-  ;; (autoload 'epe-theme-lambda "eshell-prompt-extras")
-  (autoload 'epe-theme-multiline-with-status "eshell-prompt-extras")
-  (setq eshell-highlight-prompt nil
-        eshell-prompt-function 'epe-theme-lambda))
-
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
   ;; dictionary' even though multiple dictionaries will be configured
@@ -262,10 +180,38 @@
 ;; (unless (file-exists-p ispell-personal-dictionary)
 ;; (write-region " " nil ispell-personal-dictionary nil 0))
 
-(recentf-mode 1)
+(setq sentence-end-double-space nil)
+
+;; (use-package recentf
+;;   ;; Loads after 1 second of idle time.
+;;   :defer 1
+;;   :custom
+;;   (setq recentf-max-menu-items 40)
+;;   (setq recentf-max-saved-items 40)
+;; )
 (setq recentf-max-menu-items 40)
 (setq recentf-max-saved-items 40)
 (global-set-key (kbd "M-]") 'recentf-open-files)
+(recentf-mode 1)			;
+; (global-set-key (kbd "M-]") 'recentf-open-files)
+
+; (add-hook 'recentf-mode-hook 'swiper)
+
+(defun uniquify-all-lines-region (start end)
+  "Find duplicate lines in region START to END keeping first occurrence."
+  (interactive "*r")
+  (save-excursion
+    (let ((end (copy-marker end)))
+      (while
+          (progn
+            (goto-char start)
+            (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+        (replace-match "\\1\n\\2")))))
+
+(defun uniquify-all-lines-buffer ()
+  "Delete duplicate lines in buffer and keep first occurrence."
+  (interactive "*")
+  (uniquify-all-lines-region (point-min) (point-max)))
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
