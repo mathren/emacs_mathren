@@ -78,8 +78,8 @@ lines below instead (note that the block below is not tangled to
 
 ** Language server protocol
 
-  I am using [][eglot] for language server protocol needs, mostly in
-  Fortran 90 and python (the latter requires to =pip install
+  I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in
+  Fortran 90 and python (the latter requires [[https://pypi.org/project/python-language-server/][python language server]] -  =pip install
   python-lsp-server=)
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
