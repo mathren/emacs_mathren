@@ -4,7 +4,7 @@ This is the minimal Emacs configuration that I use (typically with
 =-nw=) for quickly looking up things in the terminal.
 
 When ready, tangle this file with
-=~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el= using (=C-c C-v t=
+=~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el= using (=C-c C-v t=
 which is bound to =org-babel-tangle=). This file is then managed using
 [[https://www.gnu.org/software/stow/][gnu stow]] and hyperlinked to =~/.emacs.d/minimal.el.=
 
@@ -15,7 +15,7 @@ which is bound to =org-babel-tangle=). This file is then managed using
 
 These are self-explanatory: hide startup message.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message t)
 (setq initial-scratch-message nil)
@@ -32,7 +32,7 @@ I always want line and column numbers.
 And I am currently using the =wombat= theme, which is part of the
 default Emacs.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (setq frame-title-format '("Emacs %@ %*" (:eval (if (buffer-name)(abbreviate-file-name (buffer-name)) "%b %*"))))
 (setq ring-bell-function 'ignore)
 (tool-bar-mode -1)
@@ -51,7 +51,7 @@ default Emacs.
 
 Except for markdown.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (add-hook 'before-save-hook '(lambda()
                               (when (not (or (derived-mode-p 'markdown-mode)))
                                 (delete-trailing-whitespace))))
@@ -67,7 +67,7 @@ Use =C-pgUp/Pgdown= to cycle buffers.
 
 Finally, to kill the current buffer I use =M-super-k=.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (when (fboundp 'windmove-default-keybindings)
    (windmove-default-keybindings))
 
@@ -83,7 +83,7 @@ configuration. Since it requires packages and I want this config to be
 usable with a brand new install I split the parenthesis handling
 configuration between here and there.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
 #+END_SRC
@@ -92,7 +92,7 @@ configuration between here and there.
 
   =dot-*= files in =shell-script-mode=
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (add-to-list 'auto-mode-alist '("/\.bash[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/dot-bash[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/\.zsh[^/]*$" . shell-script-mode))
@@ -101,7 +101,7 @@ configuration between here and there.
 
    configuration files in =conf-mode=
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/rc[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/\.par[^/]*$" . conf-mode))
@@ -109,7 +109,7 @@ configuration between here and there.
 
    yaml files in =yaml-mode=
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -122,7 +122,7 @@ configuration between here and there.
  these are available?). Per buffer zoom in/out can be achieved with the
  defaults =C-x C-+= and =C-x C--=.
 
- #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+ #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
  (defun zoom-in ()
    (interactive)
    (let ((x (+ (face-attribute 'default :height)
@@ -140,13 +140,13 @@ configuration between here and there.
 
 ** =Esc= quits prompts
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+END_SRC
 
 ** Indent on new line
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
  (define-key global-map (kbd "RET") 'newline-and-indent)
 #+END_SRC
 
@@ -155,7 +155,7 @@ configuration between here and there.
 Allow up to 25Mb of garbage before collecting, and put temporary files
 where they belong, i.e. =/tmp=, wich I mount on my RAM.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (setq gc-cons-threshold 25000000)
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -165,13 +165,13 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
 
 * Follow symlinks
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (setq vc-follow-symlinks t)
 #+END_SRC
 
 * Auto-revert files on change
 
-#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (global-auto-revert-mode t)
 #+END_SRC
 
@@ -179,7 +179,7 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
 
 Use =C-c right= and =C-c left= to cycle between window setups
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 #+END_SRC
@@ -190,7 +190,7 @@ I often handle [[http://mesa.sourceforge.net/][MESA]] related files on remote ma
 so I have muscle memory for that. These settings would fit better in
 the complete configuration, but I want them here because of this.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)

@@ -3,7 +3,7 @@
 #+STARTUP: overview
 
 When ready, tangle this file with
-=~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el= using (=C-c C-v t=
+=~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el= using (=C-c C-v t=
 which is bound to =org-babel-tangle=). This file is then managed using
 [[https://www.gnu.org/software/stow/][gnu stow]] and hyperlinked to [[~/.emacs.d/init.el][~/.emacs.d/init.el]].
 
@@ -13,7 +13,7 @@ For quick lookup of things (typically using =emacs -nw=) I only load a
 minimal configuration. This is defined in [[~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal_configuration.org][minimal_configuration.org]]
 which is tangled to [[~/.emacs.d/minimal.el][minimal.el]].
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (load "~/.emacs.d/minimal.el")
 #+END_SRC
 
@@ -25,7 +25,7 @@ sec on my machine), I run emacs in daemon mode: start a server in the
 background and keep on re-using it. See also [[file:README.org][here]] for my command line
 setup to have a smooth workflow.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (server-start)
 #+END_SRC
 
@@ -36,7 +36,7 @@ Define a list of packages I use, and install them if they are not
 already. For clarity, this leaves in a separate [[file:install_packages.el][install_packages.el]]
 that I load.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (load "~/.emacs.d/install_packages.el")
 #+END_SRC
 
@@ -59,7 +59,7 @@ lines below instead (note that the block below is not tangled to
 
 [[https://github.com/jwiegley/use-package][use-package]] is used to have a clean configuration for individual packages.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (require 'use-package)
 #+END_SRC
 
@@ -69,11 +69,23 @@ lines below instead (note that the block below is not tangled to
 ** Avoid creating tons of hidden files
 
    [[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
+   May conflict with saving remote jupyter notebooks with =ein=, see
+   below.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package no-littering)
 #+END_SRC
 
+** Language server protocol
+
+  I am using [][eglot] for language server protocol needs, mostly in
+  Fortran 90 and python (the latter requires to =pip install
+  python-lsp-server=)
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (add-hook 'f90-mode-hook 'ensure-eglot)
+  (add-hook 'python-mode-hook 'ensure-eglot)
+#+END_SRC
 
 ** Icons for dired and doom-modeline
 
@@ -82,7 +94,7 @@ lines below instead (note that the block below is not tangled to
 This might require running =M-x all-the-icons-install-fonts= the first
 time you use it.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package all-the-icons)
 #+END_SRC
 
@@ -94,7 +106,7 @@ time you use it.
    (not working right now). Also, set it up so it updates when files
    change in a directory
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package dired
     :ensure nil
     :commands (dired dired-jump)
@@ -114,7 +126,7 @@ time you use it.
  default, so if using daemon mode (=daemonp= is true) add a hook to set
  =doom-modeline-icon t=.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package doom-modeline
   :ensure t
   :custom ((doom-modeline-height 10))
@@ -125,7 +137,7 @@ time you use it.
 
 ** Parenthesis handling
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 ;; these are configured in minimal.el
 ;; (electric-pair-mode 1)
 ;; (setq electric-pair-preserve-balance nil)
@@ -136,7 +148,7 @@ time you use it.
 
 ** Suggestions for key bindings
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
@@ -145,35 +157,11 @@ time you use it.
 #+END_SRC
 
 
-** TODO Language server protocol (LSP)
-
-Try =eglot= instead.
-
-I mostly use this for Fortran 90 coding. Note that you need to install
-the lsp server separately.
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
-  ;; (use-package lsp-mode
-  ;;   :commands (lsp lsp-deferred)
-  ;;   :init
-  ;;   (setq lsp-keymap-prefix "C-c l")
-  ;;   :config
-  ;;   (lsp-enable-which-key-integration t))
-
-  ;; (use-package lsp-ui
-  ;;   :hook (lsp-mode . lsp-ui-mode)
-  ;;   :custom
-  ;;   (lsp-ui-doc-position 'bottom))
-
-  ;; (use-package lsp-ivy)
-#+END_SRC
-
-
 ** LaTeX related stuff
 
 *** Spell checking
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (dolist (hook '(text-mode-hook LaTeX-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 (setq flyspell-sort-corrections nil)
@@ -184,14 +172,14 @@ the lsp server separately.
 
 Fist use reftex
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package reftex
   :ensure auctex
   :after latex)
 #+END_SRC
 
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (add-hook 'LaTex-mode-hook 'flyspell-mode)
 (setq reftex-plug-into-AUCTeX t)
@@ -202,7 +190,7 @@ Fist use reftex
 
 *** No line breaks in math mode
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (add-hook 'LaTeX-mode-hook
           (lambda ()
             (add-to-list 'fill-nobreak-predicate 'texmathp)))
@@ -210,7 +198,7 @@ Fist use reftex
 
 *** Okular forward/reverse search
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (load "~/.emacs.d/emacs_tools/okular-latex.el")
   (load "~/.emacs.d/emacs_tools/okular-search.el")
 #+END_SRC
@@ -222,7 +210,7 @@ I unbind Shift+arrows from org mode, as I use these for navigating
 buffers (see =minimal.el=). I also want org-mode to start with inline
 images. And I configure three different kind of notes for =org-capture=.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package org
     :pin elpa
     :config
@@ -263,7 +251,7 @@ images. And I configure three different kind of notes for =org-capture=.
 
 Unbind Shift+arrows from org-agenda too.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package org-agenda
    :config
    (define-key org-agenda-mode-map (kbd "<S-left>") nil)
@@ -275,7 +263,7 @@ Unbind Shift+arrows from org-agenda too.
 
 *** Nicer bullets and other eye-candy
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
@@ -320,7 +308,7 @@ Unbind Shift+arrows from org-agenda too.
     of emacs and then use =M-x org-download-screenshot= to paste it.
     This adds a line in the =~/.emacs= file.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package org-download
   :config
   (setq-default org-download-image-dir ".org_notes_figures/")
@@ -329,7 +317,7 @@ Unbind Shift+arrows from org-agenda too.
 
 *** org-roam
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; (use-package org-roam
   ;;     :config
   ;;     (org-roam-db-autosync-mode)
@@ -341,7 +329,7 @@ Unbind Shift+arrows from org-agenda too.
 
 *** elpy
 
- #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
  (use-package elpy
    :ensure t
    :init
@@ -366,7 +354,7 @@ Unbind Shift+arrows from org-agenda too.
 
  Use [[https://pypi.org/project/black/][black]] to format code
 
- #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
  ;; Install:
  ;; pip install black
  ;; pip install black-macchiato
@@ -384,7 +372,7 @@ Unbind Shift+arrows from org-agenda too.
 *** Flycheck completion
 
 
- #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
  (when (require 'flycheck nil t)
    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
    (add-hook 'elpy-mode-hook 'flycheck-mode))
@@ -396,7 +384,7 @@ Unbind Shift+arrows from org-agenda too.
  [[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
  works for remote notebooks too.
 
- #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
  ; ein
  (setq ein:worksheet-enable-undo t)
  (setq ein:output-area-inlined-images t)
@@ -415,7 +403,7 @@ apt install hunspell hunspell-it hunspell-fr hunspell-en-us hunspell-en-gb
 
   Then configure =ispell= to use this
 
-#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (with-eval-after-load "ispell"
     ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
     ;; dictionary' even though multiple dictionaries will be configured
@@ -437,7 +425,7 @@ The personal dictionary file has to exist, otherwise hunspell will
 silently not use it. However, the lines below make =--daemon= crash.
 For now I manually make sure the file exists.
 
-#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; (unless (file-exists-p ispell-personal-dictionary)
   ;; (write-region " " nil ispell-personal-dictionary nil 0))
 #+END_SRC
@@ -445,14 +433,14 @@ For now I manually make sure the file exists.
 
 * Single space for end-of-sentence
 
-#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (setq sentence-end-double-space nil)
 #+END_SRC
 
 
 * Configure recent files handling
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; (use-package recentf
   ;;   ;; Loads after 1 second of idle time.
   ;;   :defer 1
@@ -470,14 +458,14 @@ For now I manually make sure the file exists.
 Run search function as soon as requesting the list of recent files
 with this hook:
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 ; (add-hook 'recentf-mode-hook 'swiper)
 #+END_SRC
 
 
 * De-duplicate lines in buffer
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
    (defun uniquify-all-lines-region (start end)
      "Find duplicate lines in region START to END keeping first occurrence."
      (interactive "*r")
@@ -500,7 +488,7 @@ with this hook:
 
 ** org-mode related
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cr" 'org-capture)
@@ -535,7 +523,7 @@ see http://www.emacswiki.org/emacs/KeyboardMacros#toc4 to have an idea of how I 
 
 Using the macro query above, I defined a way to jump.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs26.3/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (defun go-to-column (column)
   (interactive "nColumn: ")
   (move-to-column column t))
