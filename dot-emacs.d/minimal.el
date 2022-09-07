@@ -70,9 +70,6 @@
 
 (global-auto-revert-mode t)
 
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
-
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)

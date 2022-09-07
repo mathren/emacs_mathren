@@ -17,6 +17,10 @@
 (setq company-selection-wrap-around t) ;; wrap around suggestion list
 (company-tng-configure-default)        ;; tab cycles through suggestions
 
+;; (add-to-list 'tramp-connection-properties
+;;              (list (regexp-quote "fi_w") "perl5"
+;; 		   "/usr/lib64/perl"))
+
 (use-package all-the-icons)
 
 (use-package dired

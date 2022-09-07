@@ -175,15 +175,6 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
 (global-auto-revert-mode t)
 #+END_SRC
 
-* Winner mode
-
-Use =C-c right= and =C-c left= to cycle between window setups
-
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
-#+END_SRC
-
 * MESA related stuff
 
 I often handle [[http://mesa.sourceforge.net/][MESA]] related files on remote machines in =-nw= mode, and

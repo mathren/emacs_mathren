@@ -76,6 +76,7 @@ lines below instead (note that the block below is not tangled to
 (use-package no-littering)
 #+END_SRC
 
+
 ** Language server protocol
 
   I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in
@@ -88,6 +89,7 @@ lines below instead (note that the block below is not tangled to
   (add-hook 'python-mode-hook 'eglot-ensure)
 #+END_SRC
 
+
 ** autocompletion with company
 
   I use [[https://company-mode.github.io/][company]] for autocompletion
@@ -98,6 +100,18 @@ lines below instead (note that the block below is not tangled to
     (setq company-selection-wrap-around t) ;; wrap around suggestion list
     (company-tng-configure-default)        ;; tab cycles through suggestions
 #+END_SRC
+
+
+** Tramp for remote connections
+
+  Fix location of perl on one specific server
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  ;; (add-to-list 'tramp-connection-properties
+  ;;              (list (regexp-quote "fi_w") "perl5"
+  ;; 		   "/usr/lib64/perl"))
+#+END_SRC
+
 
 ** Icons for dired and doom-modeline
 
