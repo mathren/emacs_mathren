@@ -44,6 +44,7 @@
 		     eshell-prompt-extras
 		     helpful
 		     ivy
+		     ivy-rich
 		     ivy-prescient
 		     jedi
 		     jedi-core
@@ -66,6 +67,7 @@
 		     yaml-mode
 		     elfeed
 		     eglot
+		     company-prescient
 		     company-fuzzy
 		     company-auctex
 		     company-bibtex
