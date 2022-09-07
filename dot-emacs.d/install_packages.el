@@ -48,11 +48,6 @@
 		     ivy-prescient
 		     jedi
 		     jedi-core
-		     lsp-ivy
-		     lsp-mode
-		     lsp-origami
-		     lsp-treemacs
-		     lsp-ui
 		     magit
 		     major-mode-icons
 		     math-preview
