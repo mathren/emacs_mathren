@@ -217,6 +217,9 @@
 (setq ein:worksheet-enable-undo t)
 (setq ein:output-area-inlined-images t)
 
+; to see latex in ein markdown cells
+(use-package math-preview)
+
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
   ;; dictionary' even though multiple dictionaries will be configured
