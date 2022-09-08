@@ -13,7 +13,7 @@ created by changing some emacs faces.
    server showing inline plot with matplotlib, [[https://www.emacswiki.org/emacs/TrampMode][TRAMP]] remote folder,
    org notes file, and [[https://github.com/manateelazycat/aweshell][aweshell]] pop-up terminal in the bottom.
 
-   [[file:photo_2021-10-16_18-28-35.jpg]]
+   [[file:screenshot.jpg]]
 
 
 ** Installing emacs 28.1 on Ubuntu 20.04
