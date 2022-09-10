@@ -459,13 +459,13 @@ Unbind Shift+arrows from org-agenda too.
 
 *** Jupyter notebooks with ein
 
- [[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
- works for remote notebooks too.
+  [[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
+  works for remote notebooks too.
 
  #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
- ; ein
- (setq ein:worksheet-enable-undo t)
- (setq ein:output-area-inlined-images t)
+   ; ein
+   (setq ein:worksheet-enable-undo t)
+   (setq ein:output-area-inlined-images t)
  #+END_SRC
 
 **** Latex in markdown ein cells
@@ -488,6 +488,38 @@ Unbind Shift+arrows from org-agenda too.
        ; to see latex in ein markdown cells
        (use-package math-preview)
      #+END_SRC
+
+     The function below will execute notebook cells, or, if they are a =markdown=
+     cell, it will try rendering the =tex= expression at point:
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+   (defun mr/ein:worksheet-execute-cell (ws cell &optional batch)
+     "Execute code type CELL."
+     (interactive `(,(ein:worksheet--get-ws-or-error)
+		    ,(ein:worksheet-get-current-cell)
+		    ,(when current-prefix-arg
+		       (prog1 (read-char-choice "[RET]all [a]bove [b]elow: " (list ?\r ?a ?b))
+			 (message "")))))
+     (cond ((ein:codecell-p cell)
+	    (ein:kernel-when-ready
+	     (slot-value ws 'kernel)
+	     (apply-partially
+	      (lambda (ws* cell* batch* _kernel)
+		(cl-case batch*
+		  (?\r (ein:worksheet-execute-all-cells ws*))
+		  (?a (ein:worksheet-execute-all-cells ws* :above cell*))
+		  (?b (ein:worksheet-execute-all-cells ws* :below cell*))
+		  (t (ein:cell-execute cell*)
+		     (setf (oref ws* :dirty) t)
+		     (ein:worksheet--unshift-undo-list cell*))))
+	      ws cell batch)))
+	   ((ein:markdowncell-p cell) (progn (math-preview-at-point) (message "trying math-preview-at-point")))
+	   (t (message "ein:worksheet-execute-cell: not a code cell"))))
+#+END_SRC
+
+    I bind it to =C-c C-c= to supersede =ein:worksheet-execute-cell=.
+
+
 
 
 * Spell checking with multiple languages
