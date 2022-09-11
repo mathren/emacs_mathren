@@ -473,13 +473,13 @@ Unbind Shift+arrows from org-agenda too.
      To render latex text in markdown cells, install =nodejs= and =npm=
 
      #+BEGIN_SRC bash
-       sudo apt install nodejs npm
+       $ sudo apt install nodejs npm
      #+END_SRC
 
      Then install [[https://gitlab.com/matsievskiysv/math-preview][math-preview]] and make sure it is in the =PATH=:
 
      #+BEGIN_SRC bash
-       sudo npm install -g git+https://gitlab.com/matsievskiysv/math-preview
+       $ sudo npm install -g git+https://gitlab.com/matsievskiysv/math-preview
      #+END_SRC
 
      Finally, use math-preview
@@ -489,37 +489,8 @@ Unbind Shift+arrows from org-agenda too.
        (use-package math-preview)
      #+END_SRC
 
-     The function below will execute notebook cells, or, if they are a =markdown=
-     cell, it will try rendering the =tex= expression at point:
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-   (defun mr/ein:worksheet-execute-cell (ws cell &optional batch)
-     "Execute code type CELL."
-     (interactive `(,(ein:worksheet--get-ws-or-error)
-		    ,(ein:worksheet-get-current-cell)
-		    ,(when current-prefix-arg
-		       (prog1 (read-char-choice "[RET]all [a]bove [b]elow: " (list ?\r ?a ?b))
-			 (message "")))))
-     (cond ((ein:codecell-p cell)
-	    (ein:kernel-when-ready
-	     (slot-value ws 'kernel)
-	     (apply-partially
-	      (lambda (ws* cell* batch* _kernel)
-		(cl-case batch*
-		  (?\r (ein:worksheet-execute-all-cells ws*))
-		  (?a (ein:worksheet-execute-all-cells ws* :above cell*))
-		  (?b (ein:worksheet-execute-all-cells ws* :below cell*))
-		  (t (ein:cell-execute cell*)
-		     (setf (oref ws* :dirty) t)
-		     (ein:worksheet--unshift-undo-list cell*))))
-	      ws cell batch)))
-	   ((ein:markdowncell-p cell) (progn (math-preview-at-point) (message "trying math-preview-at-point")))
-	   (t (message "ein:worksheet-execute-cell: not a code cell"))))
-#+END_SRC
-
-    I bind it to =C-c C-c= to supersede =ein:worksheet-execute-cell=.
-
-
+     Running =C-c C-c= (bound to =ein:worksheet-execute-cell=) on a
+     =markdown= cell will now try to render latex at the cursor position.
 
 
 * Spell checking with multiple languages
