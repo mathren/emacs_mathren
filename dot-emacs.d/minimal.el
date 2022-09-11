@@ -34,13 +34,8 @@
 (add-to-list 'auto-mode-alist '("/\.zsh[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/dot-zsh[^/]*$" . shell-script-mode))
 
-(add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/rc[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/\.par[^/]*$" . conf-mode))
-
-(add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (defun zoom-in ()
   (interactive)

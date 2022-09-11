@@ -33,6 +33,7 @@
 		     all-the-icons-ibuffer
 		     all-the-icons-ivy
 		     all-the-icons-ivy-rich
+		     snakemake-mode
 		     auctex
 		     company-box
 		     counsel

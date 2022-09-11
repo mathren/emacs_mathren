@@ -103,7 +103,7 @@ lines below instead (note that the block below is not tangled to
 #+END_SRC
 
 
-** Ivy
+** Autocompletion of minibuffer: Ivy
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package ivy
@@ -149,17 +149,6 @@ lines below instead (note that the block below is not tangled to
     ;; 			   (with-current-buffer buffer
     ;; 			     (not (derived-mode-p 'exwm-mode))))))))
     )
-#+END_SRC
-
-
-** Tramp for remote connections
-
-  Fix location of perl on one specific server
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; (add-to-list 'tramp-connection-properties
-  ;;              (list (regexp-quote "fi_w") "perl5"
-  ;; 		   "/usr/lib64/perl"))
 #+END_SRC
 
 
@@ -393,11 +382,23 @@ Unbind Shift+arrows from org-agenda too.
 
 *** org-roam
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; (use-package org-roam
-  ;;     :config
-  ;;     (org-roam-db-autosync-mode)
-  ;; )
+#+BEGIN_SRC emacs-lisp
+   ;; (use-package org-roam
+   ;;     :config
+   ;;     (org-roam-db-autosync-mode)
+   ;; )
+#+END_SRC
+
+** =yaml-mode= and =snakemake-mode=
+
+   yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
+   these mostly with [[https://github.com/showyourwork/showyourwork][showyourwork]].
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+    (add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
+    (add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
+    (add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . snakemake-mode))
+    (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
 
@@ -424,7 +425,6 @@ Unbind Shift+arrows from org-agenda too.
 
  Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
  customize-variable elpy-rpc-python-command= and set it to =current=.
-
 
 *** Formatting
 

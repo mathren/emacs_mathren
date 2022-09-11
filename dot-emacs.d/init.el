@@ -61,10 +61,6 @@
   ;; 			     (not (derived-mode-p 'exwm-mode))))))))
   )
 
-;; (add-to-list 'tramp-connection-properties
-;;              (list (regexp-quote "fi_w") "perl5"
-;; 		   "/usr/lib64/perl"))
-
 (use-package all-the-icons)
 
 (use-package dired
@@ -183,11 +179,6 @@
   :config
   (setq-default org-download-image-dir ".org_notes_figures/")
   )
-
-;; (use-package org-roam
-;;     :config
-;;     (org-roam-db-autosync-mode)
-;; )
 
 (use-package elpy
   :ensure t

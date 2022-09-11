@@ -102,17 +102,8 @@ configuration between here and there.
    configuration files in =conf-mode=
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/rc[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/\.par[^/]*$" . conf-mode))
-#+END_SRC
-
-   yaml files in =yaml-mode=
-
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
 * Some custom keybindings
