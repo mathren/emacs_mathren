@@ -62,6 +62,7 @@
 		     which-key
 		     yaml-mode
 		     elfeed
+		     elfeed-org
 		     eglot
 		     company-prescient
 		     company-fuzzy
