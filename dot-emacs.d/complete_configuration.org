@@ -394,7 +394,7 @@ Unbind Shift+arrows from org-agenda too.
    yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
    these mostly with [[https://github.com/showyourwork/showyourwork][showyourwork]].
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
     (add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
     (add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
     (add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . snakemake-mode))
