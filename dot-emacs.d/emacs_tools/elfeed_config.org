@@ -1,2 +1,2 @@
 * Arxiv                                                              :elfeed:
-** [[http://export.arxiv.org/api/query?search_query=cat:astro-ph][astroph]]
+** [[https://export.arxiv.org/rss/astro-ph/new][arxiv-rss]]
