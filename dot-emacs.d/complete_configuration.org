@@ -389,6 +389,7 @@ Unbind Shift+arrows from org-agenda too.
    ;; )
 #+END_SRC
 
+
 ** =yaml-mode= and =snakemake-mode=
 
    yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
@@ -492,6 +493,15 @@ Unbind Shift+arrows from org-agenda too.
      Running =C-c C-c= (bound to =ein:worksheet-execute-cell=) on a
      =markdown= cell will now try to render latex at the cursor position.
 
+
+** editor config
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+#+END_SRC
 
 * Spell checking with multiple languages
 
