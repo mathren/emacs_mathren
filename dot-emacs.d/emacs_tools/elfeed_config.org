@@ -1,2 +1,0 @@
-* Arxiv                                                              :elfeed:
-** [[https://export.arxiv.org/rss/astro-ph/new][arxiv-rss]]

@@ -68,6 +68,7 @@
 		     company-fuzzy
 		     company-auctex
 		     company-bibtex
+		     editorconfig
 		     ))
 
 ; install the missing packages
