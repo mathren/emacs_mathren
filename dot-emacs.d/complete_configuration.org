@@ -705,6 +705,7 @@ Based on elfeed, inspired by [[https://cundy.me/post/elfeed/][this blog post]]. 
 #+BEGIN_SRC emacs-lisp
   (setq elfeed-feeds
 	'("https://export.arxiv.org/rss/astro-ph/new"))
+	;; '("http://export.arxiv.org/api/query?search_query=cat:astro-ph&start=0&max_results=300&sortBy=submittedDate&sortOrder=descending"))
 
   (defun mr/elfeed-mark-all-as-read ()
     "mark all as read before updating database work-around to see only news"
@@ -737,20 +738,24 @@ Based on elfeed, inspired by [[https://cundy.me/post/elfeed/][this blog post]]. 
 
       (insert (propertize title-column
 			  'face title-faces 'kbd-help title) " ")
-      ;; (insert (propertize authors-column
-      ;; 			'kbd-help entry-authors) " ")
+      (insert (propertize authors-column
+			  'kbd-help entry-authors) " ")
       ;; (insert entry-score " ")
       ))
 
-    (use-package elfeed
+  (use-package elfeed
     :config
     (add-hook 'elfeed-search-mode-hook 'elfeed-update)
     (defun mr/concatenate-authors (authors-list)
-    "Given AUTHORS-LIST, list of plists; return string of all authors concatenated."
-    (if (> (length authors-list) 3)
-	(format "%s et al." (plist-get (nth 0 authors-list) :name))
-      (plist-get (nth 0 authors-list) :name))
-    )
+      "Given AUTHORS-LIST, list of plists; return string of all authors concatenated."
+      (if (> (length authors-list) 2)
+	  (format "%s et al." (plist-get (nth 0 authors-list) :name))
+	;; (plist-get (nth 0 authors-list) :name)
+	(mapconcat
+	 (lambda (author) (plist-get author :name))
+	 authors-list ", ")
+	)
+      )
     (setq elfeed-search-print-entry-function #'mr/search-print-fn)
 #+END_SRC
 
@@ -759,3 +764,5 @@ Based on elfeed, inspired by [[https://cundy.me/post/elfeed/][this blog post]]. 
 *** TODO sort by category
 
      may require elfeed-org.
+
+*** TODO split buffer horizontally preferentially

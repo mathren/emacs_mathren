@@ -78,7 +78,7 @@
  ;; If there is more than one, they won't work right.
  '(cursor ((t (:background "gold" :box (:line-width 3 :color "red" :style released-button)))))
  '(elfeed-search-date-face ((t (:foreground "cyan"))))
- '(elfeed-search-unread-title-face ((t (:foreground "gold" :weight bold))))
+ '(elfeed-search-unread-title-face ((t (:foreground "gold" :weight normal))))
  '(eshell-prompt ((t (:foreground "chartreuse" :weight bold))))
  '(font-latex-sectioning-0-face ((t (:inherit font-latex-sectioning-1-face :foreground "orange" :height 1.1))))
  '(font-latex-sectioning-1-face ((t (:inherit font-latex-sectioning-2-face :foreground "orange" :height 1.1))))
