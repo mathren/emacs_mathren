@@ -110,7 +110,7 @@ lines below instead (note that the block below is not tangled to
     :init
     (ivy-mode 1)
     :config
-    ((setq ivy-use-virtual-buffers t)
+    (; (setq ivy-use-virtual-buffers t)
      (setq enable-recursive-minibuffers t)
      (global-set-key (kbd "C-s") 'swiper-isearch)
      (global-set-key (kbd "M-x") 'counsel-M-x)
@@ -759,10 +759,26 @@ Based on elfeed, inspired by [[https://cundy.me/post/elfeed/][this blog post]]. 
     (setq elfeed-search-print-entry-function #'mr/search-print-fn)
 #+END_SRC
 
+I also redefine the function =elfeed-show-entry= to enforce horizontal
+splitting of the window when looking at an elfeed entry (i.e., an
+abstract on arXiv)
+
+#+BEGIN_SRC emacs-lisp
+(defun elfeed-show-entry (entry)
+  "Display ENTRY in the current buffer."
+  (let ((title (elfeed-entry-title entry)))
+    (split-window-below) ;; <-
+    (switch-to-buffer (get-buffer-create (format "*elfeed %s*" title)))
+    (unless (eq major-mode 'elfeed-show-mode)
+      (elfeed-show-mode))
+    (setq elfeed-show-entry entry)
+    (elfeed-show-refresh)))
+#+END_SRC
+
 *** TODO fix author list
 
 *** TODO sort by category
 
      may require elfeed-org.
 
-*** TODO split buffer horizontally preferentially
+*** TODO render latex properly in elfeed entries

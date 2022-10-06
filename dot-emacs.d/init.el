@@ -21,7 +21,7 @@
   :init
   (ivy-mode 1)
   :config
-  ((setq ivy-use-virtual-buffers t)
+  (; (setq ivy-use-virtual-buffers t)
    (setq enable-recursive-minibuffers t)
    (global-set-key (kbd "C-s") 'swiper-isearch)
    (global-set-key (kbd "M-x") 'counsel-M-x)
