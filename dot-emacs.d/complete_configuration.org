@@ -78,7 +78,7 @@ lines below instead (note that the block below is not tangled to
 #+END_SRC
 
 
-** Language server protocol
+** Language server protocol and =eglot=
 
   I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in
   Fortran 90 and python (the latter requires [[https://pypi.org/project/python-language-server/][python language server]] -  =pip install
@@ -86,8 +86,13 @@ lines below instead (note that the block below is not tangled to
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; eglot
+  (use-package eglot :ensure t)
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
   (add-hook 'f90-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+
 #+END_SRC
 
 
