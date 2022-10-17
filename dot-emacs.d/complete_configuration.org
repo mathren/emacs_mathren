@@ -355,7 +355,7 @@ Unbind Shift+arrows from org-agenda too.
     This allows to paste screenshots in emacs org mode. Pasting from the
     clipboard requires to install =wl-paste= which is usually available in
     your OS package manager (e.g., apt). To paste a screenshot from the
-    clipboard use =M-x org-download-clipboard=. This will open your OS
+    clipboard use =M-x org-download-screenshot=. This will open your OS
     screenshot utility, you can then take the screenshot -- but what you
     want to capture has to be visible on your screen when you type that command.
 
@@ -379,10 +379,12 @@ Unbind Shift+arrows from org-agenda too.
     This adds a line in the =~/.emacs= file.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package org-download
-  :config
-  (setq-default org-download-image-dir ".org_notes_figures/")
-  )
+  (use-package org-download
+    :config
+    (setq-default org-download-image-dir ".org_notes_figures/")
+    (fmakunbound 'org-download-clipboard)
+    )
+
 #+END_SRC
 
 *** org-roam

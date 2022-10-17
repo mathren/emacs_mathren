@@ -73,7 +73,7 @@ Finally, to kill the current buffer I use =M-super-k=.
 
 (global-set-key (kbd "C-<prior>") 'previous-buffer)
 (global-set-key (kbd "C-<next>") 'next-buffer)
-(global-set-key (kbd "M-s-k") 'kill-this-buffer)
+(global-set-key (kbd "M-s-k") 'kill-buffer)
  #+END_SRC
 
 * Basic parenthesis handling

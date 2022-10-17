@@ -24,7 +24,7 @@
 
 (global-set-key (kbd "C-<prior>") 'previous-buffer)
 (global-set-key (kbd "C-<next>") 'next-buffer)
-(global-set-key (kbd "M-s-k") 'kill-this-buffer)
+(global-set-key (kbd "M-s-k") 'kill-buffer)
 
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)

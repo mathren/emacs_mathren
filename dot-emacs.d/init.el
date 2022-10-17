@@ -9,8 +9,12 @@
 (use-package no-littering)
 
 ;; eglot
+(use-package eglot :ensure t)
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
 (add-hook 'f90-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
@@ -178,6 +182,7 @@
 (use-package org-download
   :config
   (setq-default org-download-image-dir ".org_notes_figures/")
+  (fmakunbound 'org-download-clipboard)
   )
 
 (add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
