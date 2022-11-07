@@ -10,11 +10,12 @@
 
 ;; eglot
 (use-package eglot :ensure t)
-(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
-(add-hook 'f90-mode-hook 'eglot-ensure)
-(add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
+;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
+;; (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+;; (add-hook 'f90-mode-hook 'eglot-ensure)
+;; (add-hook 'python-mode-hook 'eglot-ensure)
+;; (add-hook 'c-mode-hook 'eglot-ensure)
+;; (add-hook 'c++-mode-hook 'eglot-ensure)
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
@@ -247,20 +248,21 @@
 
 (setq sentence-end-double-space nil)
 
-;; (use-package recentf
-;;   ;; Loads after 1 second of idle time.
-;;   :defer 1
-;;   :custom
-;;   (setq recentf-max-menu-items 40)
-;;   (setq recentf-max-saved-items 40)
-;; )
-(setq recentf-max-menu-items 40)
-(setq recentf-max-saved-items 40)
-(global-set-key (kbd "M-]") 'recentf-open-files)
-(recentf-mode 1)			;
-; (global-set-key (kbd "M-]") 'recentf-open-files)
+;;  (defun mr/recentf-open-files-and-search (&optional )
+  ;;    ;; open recent files buffer and start a search prompt
+  ;;    (recentf-open-file)
+  ;;    (isearch-forward (arg))
+  ;;    )
+  ;; (global-set-key (kbd "M-]") 'mr/recentf-open-files-and-search)
 
-; (add-hook 'recentf-mode-hook 'swiper)
+(use-package recentf
+      :bind ("M-[" . recentf-open-files)
+      :config
+      (setq recentf-max-menu-items 40
+	    recentf-max-saved-items 40
+       )
+      :hook (after-init . recentf-mode)
+	    (recentf-mode . (call-interactively isearch-forward)))
 
 (defun uniquify-all-lines-region (start end)
   "Find duplicate lines in region START to END keeping first occurrence."

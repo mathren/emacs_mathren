@@ -10,7 +10,7 @@ which is bound to =org-babel-tangle=). This file is then managed using
 * Minimal configuration
 
 For quick lookup of things (typically using =emacs -nw=) I only load a
-minimal configuration. This is defined in [[~/Documents/dotfiles/emacs26.3/dot-emacs.d/minimal_configuration.org][minimal_configuration.org]]
+minimal configuration. This is defined in [[./minimal_configuration.org][minimal_configuration.org]]
 which is tangled to [[~/.emacs.d/minimal.el][minimal.el]].
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -81,18 +81,18 @@ lines below instead (note that the block below is not tangled to
 ** Language server protocol and =eglot=
 
   I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in
-  Fortran 90 and python (the latter requires [[https://pypi.org/project/python-language-server/][python language server]] -  =pip install
+  Fortran 90 (using [][fortls]) and python (using [[https://pypi.org/project/python-language-server/][python language server]] -  =pip install
   python-lsp-server=)
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; eglot
   (use-package eglot :ensure t)
-  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
-  (add-hook 'f90-mode-hook 'eglot-ensure)
-  (add-hook 'python-mode-hook 'eglot-ensure)
-  (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure)
-
+  ;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
+  ;; (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+  ;; (add-hook 'f90-mode-hook 'eglot-ensure)
+  ;; (add-hook 'python-mode-hook 'eglot-ensure)
+  ;; (add-hook 'c-mode-hook 'eglot-ensure)
+  ;; (add-hook 'c++-mode-hook 'eglot-ensure)
 #+END_SRC
 
 
@@ -561,26 +561,23 @@ For now I manually make sure the file exists.
 * Configure recent files handling
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; (use-package recentf
-  ;;   ;; Loads after 1 second of idle time.
-  ;;   :defer 1
-  ;;   :custom
-  ;;   (setq recentf-max-menu-items 40)
-  ;;   (setq recentf-max-saved-items 40)
-  ;; )
-  (setq recentf-max-menu-items 40)
-  (setq recentf-max-saved-items 40)
-  (global-set-key (kbd "M-]") 'recentf-open-files)
-  (recentf-mode 1)			;
-  ; (global-set-key (kbd "M-]") 'recentf-open-files)
+      ;;  (defun mr/recentf-open-files-and-search (&optional )
+      ;;    ;; open recent files buffer and start a search prompt
+      ;;    (recentf-open-file)
+      ;;    (isearch-forward (arg))
+      ;;    )
+      ;; (global-set-key (kbd "M-]") 'mr/recentf-open-files-and-search)
+
+    (use-package recentf
+	  :bind ("M-[" . recentf-open-files)
+	  :config
+	  (setq recentf-max-menu-items 40
+		recentf-max-saved-items 40
+	   )
+	  :hook (after-init . recentf-mode)
+	        (recentf-mode . (call-interactively isearch-forward)))
 #+END_SRC
 
-Run search function as soon as requesting the list of recent files
-with this hook:
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-; (add-hook 'recentf-mode-hook 'swiper)
-#+END_SRC
 
 
 * De-duplicate lines in buffer
@@ -621,31 +618,31 @@ with this hook:
 This is useful sometimes when looking up large data files.
 The way I obtained this is a bit convoluted.
 
-#+BEGIN_SRC :tangle no
-to define macro with user interaction
-(defun my-macro-query (arg)
-  "Prompt for input using minibuffer during kbd macro execution.
- With prefix argument, allows you to select what prompt string to use.
- If the input is non-empty, it is inserted at point."
-  (interactive "P")
-  (let* ((query (lambda () (kbd-macro-query t)))
-         (prompt (if arg (read-from-minibuffer "PROMPT: ") "Input: "))
-         (input (unwind-protect
-                    (progn
-                      (add-hook 'minibuffer-setup-hook query)
-                      (read-from-minibuffer prompt))
-                  (remove-hook 'minibuffer-setup-hook query))))
-    (unless (string= "" input) (insert input))))
+#+BEGIN_SRC  emacs-lisp :tangle no
+  ;; to define macro with user interaction
+  (defun my-macro-query (arg)
+    "Prompt for input using minibuffer during kbd macro execution.
+   With prefix argument, allows you to select what prompt string to use.
+   If the input is non-empty, it is inserted at point."
+    (interactive "P")
+    (let* ((query (lambda () (kbd-macro-query t)))
+	   (prompt (if arg (read-from-minibuffer "PROMPT: ") "Input: "))
+	   (input (unwind-protect
+		      (progn
+			(add-hook 'minibuffer-setup-hook query)
+			(read-from-minibuffer prompt))
+		    (remove-hook 'minibuffer-setup-hook query))))
+      (unless (string= "" input) (insert input))))
 
-(global-set-key "\C-xQ" 'my-macro-query)
-see http://www.emacswiki.org/emacs/KeyboardMacros#toc4 to have an idea of how I came up with this solution
+  (global-set-key "\C-xQ" 'my-macro-query)
+  ;; see http://www.emacswiki.org/emacs/KeyboardMacros#toc4 to have an idea of how I came up with this solution
 #+END_SRC
 
 Using the macro query above, I defined a way to jump.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (defun go-to-column (column)
-  (interactive "nColumn: ")
+  (interactive "Column number: ")
   (move-to-column column t))
 (global-set-key (kbd "M-g TAB") 'go-to-column)
 
@@ -709,23 +706,31 @@ Follow emacs-from-scratch's [[https://github.com/daviwil/emacs-from-scratch/blob
 
 Based on elfeed, inspired by [[https://cundy.me/post/elfeed/][this blog post]]. See also [[https://emacsconf.org/2021/talks/research/][this]].
 
-#+BEGIN_SRC emacs-lisp
-  (setq elfeed-feeds
-	'("https://export.arxiv.org/rss/astro-ph/new"))
-	;; '("http://export.arxiv.org/api/query?search_query=cat:astro-ph&start=0&max_results=300&sortBy=submittedDate&sortOrder=descending"))
+Define sources:
 
+#+BEGIN_SRC emacs-lisp
+    (setq elfeed-feeds
+	  '("https://export.arxiv.org/rss/astro-ph/new"))
+	  ;; '("http://export.arxiv.org/api/query?search_query=cat:astro-ph&start=0&max_results=300&sortBy=submittedDate&sortOrder=descending"))
+#+END_SRC
+
+Define some helpful functions:
+
+#+BEGIN_SRC emacs-lisp
   (defun mr/elfeed-mark-all-as-read ()
-    "mark all as read before updating database work-around to see only news"
-					  ; (add-hook 'elfeed-db-update-hook #'mr/elfeed-mark-all-as-read)
+    "mark all as read before updating database work-around to see only new entries"
     (interactive)
     (elfeed-untag elfeed-search-entries 'unread)
     (elfeed-search-update :force)  ; redraw
     )
+
   (defun mr/elfeed-mark-all-as-unread ()
     (interactive)
     (elfeed-untag elfeed-search-entries 'read)
     (elfeed-search-update :force)  ; redraw
     )
+
+
   (defun mr/search-print-fn (entry)
     "Print ENTRY to the buffer."
     (let* ((date (elfeed-search-format-date (elfeed-entry-date entry)))
@@ -750,37 +755,40 @@ Based on elfeed, inspired by [[https://cundy.me/post/elfeed/][this blog post]]. 
       ;; (insert entry-score " ")
       ))
 
-  (use-package elfeed
-    :config
-    (add-hook 'elfeed-search-mode-hook 'elfeed-update)
-    (defun mr/concatenate-authors (authors-list)
-      "Given AUTHORS-LIST, list of plists; return string of all authors concatenated."
-      (if (> (length authors-list) 2)
-	  (format "%s et al." (plist-get (nth 0 authors-list) :name))
-	;; (plist-get (nth 0 authors-list) :name)
-	(mapconcat
-	 (lambda (author) (plist-get author :name))
-	 authors-list ", ")
-	)
-      )
-    (setq elfeed-search-print-entry-function #'mr/search-print-fn)
+  ;; redefine to split vertically
+  (defun mr/elfeed-show-entry (entry)
+    "Display ENTRY in the current buffer."
+    (let ((title (elfeed-entry-title entry)))
+      (split-window-below) ;; enforce vertical split
+      (switch-to-buffer (get-buffer-create (format "*elfeed %s*" title)))
+      (unless (eq major-mode 'elfeed-show-mode)
+	(elfeed-show-mode))
+      (setq elfeed-show-entry entry)
+      (elfeed-show-refresh)))
 #+END_SRC
-
-I also redefine the function =elfeed-show-entry= to enforce horizontal
-splitting of the window when looking at an elfeed entry (i.e., an
-abstract on arXiv)
 
 #+BEGIN_SRC emacs-lisp
-(defun elfeed-show-entry (entry)
-  "Display ENTRY in the current buffer."
-  (let ((title (elfeed-entry-title entry)))
-    (split-window-below) ;; <-
-    (switch-to-buffer (get-buffer-create (format "*elfeed %s*" title)))
-    (unless (eq major-mode 'elfeed-show-mode)
-      (elfeed-show-mode))
-    (setq elfeed-show-entry entry)
-    (elfeed-show-refresh)))
+    (use-package elfeed-goodies
+      :hook
+      (elfeed-goodies/setup))
+
+      (use-package elfeed
+	:config
+	(add-hook 'elfeed-search-mode-hook 'elfeed-update)
+	(setq elfeed-search-print-entry-function #'mr/search-print-fn)
+	(setq elfeed-show-entry-switch 'pop-to-buffer)
+	(defun mr/concatenate-authors (authors-list)
+	  "Given AUTHORS-LIST, list of plists; return string of all authors concatenated."
+	  (if (> (length authors-list) 2)
+	      (format "%s et al." (plist-get (nth 0 authors-list) :name))
+	    ;; (plist-get (nth 0 authors-list) :name)
+	    (mapconcat
+	     (lambda (author) (plist-get author :name))
+	     authors-list ", ")
+	    )
+	  )
 #+END_SRC
+
 
 *** TODO fix author list
 

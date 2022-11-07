@@ -24,7 +24,7 @@
 
 (global-set-key (kbd "C-<prior>") 'previous-buffer)
 (global-set-key (kbd "C-<next>") 'next-buffer)
-(global-set-key (kbd "M-s-k") 'kill-buffer)
+(global-set-key (kbd "M-s-k") 'kill-current-buffer)
 
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
@@ -40,20 +40,28 @@
 (defun zoom-in ()
   (interactive)
   (let ((x (+ (face-attribute 'default :height)
-              10)))
+	      10)))
     (set-face-attribute 'default nil :height x)))
 
 (defun zoom-out ()
   (interactive)
   (let ((x (- (face-attribute 'default :height)
-              10)))
+	      10)))
     (set-face-attribute 'default nil :height x)))
+
+(defun zoom-set-default ()
+  (interactive)
+  (set-face-attribute 'default nil :height 110))
+
 (define-key global-map (kbd "C-+") 'zoom-in)
 (define-key global-map (kbd "C--") 'zoom-out)
+(define-key global-map (kbd "C-0") 'zoom-set-default)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (define-key global-map (kbd "RET") 'newline-and-indent)
+
+(define-key global-map (kbd "M-s-c") 'replace-string)
 
 (setq gc-cons-threshold 25000000)
 (setq backup-directory-alist
@@ -68,8 +76,8 @@
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)
-(setq mesa-default-version "15140")
-(setq mesa-version-mesa-dir "~/Documents/Research/codes/mesa/mesa_15140/mesa15140/")
+(setq mesa-default-version "r22.11.1")
+(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa-r22.11.1-rc1")
 (setq mesa-mode-enforce-formatting-default t)
 
 (add-to-list 'auto-mode-alist '("/inlist[^/]*$" . mesa-mode))

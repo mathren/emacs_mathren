@@ -26,6 +26,9 @@
  '(custom-safe-themes
    '("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd" default))
  '(ein:output-area-inlined-images t t)
+ '(elfeed-goodies/entry-pane-position 'bottom)
+ '(elfeed-goodies/entry-pane-size 0.4)
+ '(elfeed-goodies/powerline-default-separator 'slant)
  '(elfeed-search-date-format '("%d.%m.%y" 10 :left))
  '(elfeed-search-remain-on-entry t)
  '(elfeed-show-entry-switch 'pop-to-buffer)
@@ -45,7 +48,7 @@
      (".html" . "firefox %s")
      (".pdf" . "okular %s")))
  '(package-selected-packages
-   '(elfeed-org mu4e lsp-ui lsp-treemacs lsp-origami lsp-ivy ivy-fuz company-prescient company-auctex company-bibtex company-fuzzy eglot ripgrep snakemake-mode ein eproject markdown-mode editorconfig ac-html deadgrep pdf-tools helm-org blacken org-alert elfeed python-black yaml-mode jedi elpy eshell-prompt-extras math-preview ivy-pass pass org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired swiper ivy org-bullets rainbow-delimiters which-key dired-icon magit flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex))
+   '(elfeed-goodies elfeed-org mu4e lsp-ui lsp-treemacs lsp-origami lsp-ivy ivy-fuz company-prescient company-auctex company-bibtex company-fuzzy eglot ripgrep snakemake-mode ein eproject markdown-mode editorconfig ac-html deadgrep pdf-tools helm-org blacken org-alert elfeed python-black yaml-mode jedi elpy eshell-prompt-extras math-preview ivy-pass pass org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired swiper ivy org-bullets rainbow-delimiters which-key dired-icon magit flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . zeta_ophiuchi\.tex)))
  '(send-mail-function 'mailclient-send-it)
@@ -70,7 +73,9 @@
      (320 . "#8CD0D3")
      (340 . "#94BFF3")
      (360 . "#DC8CC3")))
- '(vc-annotate-very-old-color "#DC8CC3"))
+ '(vc-annotate-very-old-color "#DC8CC3")
+ '(warning-suppress-log-types '((comp)))
+ '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
