@@ -561,21 +561,14 @@ For now I manually make sure the file exists.
 * Configure recent files handling
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-      ;;  (defun mr/recentf-open-files-and-search (&optional )
-      ;;    ;; open recent files buffer and start a search prompt
-      ;;    (recentf-open-file)
-      ;;    (isearch-forward (arg))
-      ;;    )
-      ;; (global-set-key (kbd "M-]") 'mr/recentf-open-files-and-search)
-
-    (use-package recentf
-	  :bind ("M-[" . recentf-open-files)
-	  :config
-	  (setq recentf-max-menu-items 40
-		recentf-max-saved-items 40
-	   )
-	  :hook (after-init . recentf-mode)
-	        (recentf-mode . (call-interactively isearch-forward)))
+  ;; Recent buffers in a new Emacs session
+  (use-package recentf
+    :config
+    (setq recentf-auto-cleanup 'never
+	  recentf-max-menu-items 50
+	  recentf-max-saved-items 1000
+    :bind ("M-[" . recentf-open-files)
+    :diminish nil)
 #+END_SRC
 
 
