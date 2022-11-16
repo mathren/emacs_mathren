@@ -561,14 +561,15 @@ For now I manually make sure the file exists.
 * Configure recent files handling
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; Recent buffers in a new Emacs session
-  (use-package recentf
-    :config
-    (setq recentf-auto-cleanup 'never
-	  recentf-max-menu-items 50
-	  recentf-max-saved-items 1000
-    :bind ("M-[" . recentf-open-files)
-    :diminish nil)
+      ;; Recent buffers in a new Emacs session
+      (use-package recentf
+	:config
+	(setq recentf-auto-cleanup 'never
+	      recentf-max-menu-items 50
+	      recentf-max-saved-items 1000
+	      recentf-mode t)
+	:bind ("M-[" . recentf-open-files)
+	:diminish nil)
 #+END_SRC
 
 
@@ -701,7 +702,7 @@ Based on elfeed, inspired by [[https://cundy.me/post/elfeed/][this blog post]]. 
 
 Define sources:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
     (setq elfeed-feeds
 	  '("https://export.arxiv.org/rss/astro-ph/new"))
 	  ;; '("http://export.arxiv.org/api/query?search_query=cat:astro-ph&start=0&max_results=300&sortBy=submittedDate&sortOrder=descending"))
@@ -709,7 +710,7 @@ Define sources:
 
 Define some helpful functions:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (defun mr/elfeed-mark-all-as-read ()
     "mark all as read before updating database work-around to see only new entries"
     (interactive)

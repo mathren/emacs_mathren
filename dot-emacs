@@ -12,12 +12,12 @@
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
  '(TeX-view-predicate-list '((nil nil)))
- '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)))
+ '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)) t)
  '(TeX-view-program-selection
    '((output-pdf "Okular")
      (output-pdf "dvips and gv")
      (output-dvi "Evince")
-     (output-html "xdg-open")))
+     (output-html "xdg-open")) t)
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
  '(auth-source-save-behavior nil)
@@ -82,6 +82,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cursor ((t (:background "gold" :box (:line-width 3 :color "red" :style released-button)))))
+ '(doom-modeline-info ((t (:inherit (success bold) :foreground "RoyalBlue"))))
+ '(doom-modeline-project-dir ((t (:foreground "dark violet"))))
  '(elfeed-search-date-face ((t (:foreground "cyan"))))
  '(elfeed-search-unread-title-face ((t (:foreground "gold" :weight normal))))
  '(eshell-prompt ((t (:foreground "chartreuse" :weight bold))))

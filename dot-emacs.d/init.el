@@ -248,21 +248,15 @@
 
 (setq sentence-end-double-space nil)
 
-;;  (defun mr/recentf-open-files-and-search (&optional )
-  ;;    ;; open recent files buffer and start a search prompt
-  ;;    (recentf-open-file)
-  ;;    (isearch-forward (arg))
-  ;;    )
-  ;; (global-set-key (kbd "M-]") 'mr/recentf-open-files-and-search)
-
+;; Recent buffers in a new Emacs session
 (use-package recentf
-      :bind ("M-[" . recentf-open-files)
-      :config
-      (setq recentf-max-menu-items 40
-	    recentf-max-saved-items 40
-       )
-      :hook (after-init . recentf-mode)
-	    (recentf-mode . (call-interactively isearch-forward)))
+  :config
+  (setq recentf-auto-cleanup 'never
+	recentf-max-menu-items 50
+	recentf-max-saved-items 1000
+	recentf-mode t)
+  :bind ("M-[" . recentf-open-files)
+  :diminish nil)
 
 (defun uniquify-all-lines-region (start end)
   "Find duplicate lines in region START to END keeping first occurrence."
@@ -286,7 +280,7 @@
 (define-key global-map "\C-ctl" 'org-todo-list)
 
 (defun go-to-column (column)
-  (interactive "nColumn: ")
+  (interactive "Column number: ")
   (move-to-column column t))
 (global-set-key (kbd "M-g TAB") 'go-to-column)
 
@@ -296,3 +290,56 @@
 (put 'last-line-which-col 'kmacro t)
 
 (global-set-key (kbd "C-c C-l") 'last-line-which-col)
+
+(setq elfeed-feeds
+      '("https://export.arxiv.org/rss/astro-ph/new"))
+      ;; '("http://export.arxiv.org/api/query?search_query=cat:astro-ph&start=0&max_results=300&sortBy=submittedDate&sortOrder=descending"))
+
+(defun mr/elfeed-mark-all-as-read ()
+  "mark all as read before updating database work-around to see only new entries"
+  (interactive)
+  (elfeed-untag elfeed-search-entries 'unread)
+  (elfeed-search-update :force)  ; redraw
+  )
+
+(defun mr/elfeed-mark-all-as-unread ()
+  (interactive)
+  (elfeed-untag elfeed-search-entries 'read)
+  (elfeed-search-update :force)  ; redraw
+  )
+
+
+(defun mr/search-print-fn (entry)
+  "Print ENTRY to the buffer."
+  (let* ((date (elfeed-search-format-date (elfeed-entry-date entry)))
+	 (title (or (elfeed-meta entry :title)
+		    (elfeed-entry-title entry) ""))
+	 (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
+	 (entry-authors (mr/concatenate-authors
+			 (elfeed-meta entry :authors)))
+	 (elfeed-search-title-max-width 120)
+	 (title-width elfeed-search-title-max-width)
+	 (title-column (elfeed-format-column
+			title title-width
+			:left))
+	 ;; (entry-score (elfeed-format-column (number-to-string (elfeed-score-scoring-get-score-from-entry entry)) 10 :left))
+	 (authors-column (elfeed-format-column entry-authors 40 :left)))
+    (insert (propertize date 'face 'elfeed-search-date-face) " ")
+
+    (insert (propertize title-column
+			'face title-faces 'kbd-help title) " ")
+    (insert (propertize authors-column
+			'kbd-help entry-authors) " ")
+    ;; (insert entry-score " ")
+    ))
+
+;; redefine to split vertically
+(defun mr/elfeed-show-entry (entry)
+  "Display ENTRY in the current buffer."
+  (let ((title (elfeed-entry-title entry)))
+    (split-window-below) ;; enforce vertical split
+    (switch-to-buffer (get-buffer-create (format "*elfeed %s*" title)))
+    (unless (eq major-mode 'elfeed-show-mode)
+      (elfeed-show-mode))
+    (setq elfeed-show-entry entry)
+    (elfeed-show-refresh)))
