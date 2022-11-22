@@ -61,14 +61,13 @@
 		     use-package
 		     which-key
 		     yaml-mode
-		     elfeed
-		     elfeed-org
 		     eglot
 		     company-prescient
 		     company-fuzzy
 		     company-auctex
 		     company-bibtex
 		     editorconfig
+		     arxiv-mode
 		     ))
 
 ; install the missing packages
