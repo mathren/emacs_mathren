@@ -510,6 +510,7 @@ Unbind Shift+arrows from org-agenda too.
   (setq arxiv-default-category "astro-ph"))
  #+END_SRC emacs-lisp
 
+
 ** editor config
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -665,41 +666,32 @@ When ready tangle to =:tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/ini
 
 ** emails in emacs with =mu4e=
 
-Install =mu= from [[https://github.com/djcb/mu/tree/release/1.8][git]].
-
-#+BEGIN_SRC bash
-  git clone git://github.com/djcb/mu.git
-  cd mu
-  autoreconf -i && ./configure && make
-  sudo make install
-#+END_SRC
-
 Follow emacs-from-scratch's [[https://github.com/daviwil/emacs-from-scratch/blob/master/show-notes/Emacs-Mail-01.org][notes]] or videos to setup =mu= and =mbsync/isync=.
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package mu4e
-  ;;     :ensure nil
-  ;;     :load-path "/home/math/Documents/Emacs/mu/mu4e"
-  ;;     ;; :defer 20 ; Wait until 20 seconds after startup
-  ;;     :config
+  (use-package mu4e
+  :ensure nil
+  :load-path "/usr/share/emacs/site-lisp/mu4e/"
+  :defer 20 ; Wait until 20 seconds after startup
+  :config
 
-  ;;     ;; This is set to 't' to avoid mail syncing issues when using mbsync
-  ;;     (setq mu4e-change-filenames-when-moving t)
+  ;; This is set to 't' to avoid mail syncing issues when using mbsync
+  (setq mu4e-change-filenames-when-moving t)
 
-  ;;     ;; Refresh mail using isync every 10 minutes
-  ;;     (setq mu4e-update-interval (* 10 60))
-  ;;     (setq mu4e-get-mail-command "mbsync -a")
-  ;;     (setq mu4e-maildir "~/Mail")
+  ;; Refresh mail using isync every 10 minutes
+  (setq mu4e-update-interval (* 10 60))
+  (setq mu4e-get-mail-command "mbsync -a")
+  (setq mu4e-maildir "~/Mail")
 
-  ;;     (setq mu4e-drafts-folder "/[Gmail]/Drafts")
-  ;;     (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
-  ;;     (setq mu4e-refile-folder "/[Gmail]/All Mail")
-  ;;     (setq mu4e-trash-folder  "/[Gmail]/Trash")
+  (setq mu4e-drafts-folder "/[Gmail]/Drafts")
+  (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
+  (setq mu4e-refile-folder "/[Gmail]/All Mail")
+  (setq mu4e-trash-folder  "/[Gmail]/Trash")
 
-  ;;     (setq mu4e-maildir-shortcuts
-  ;;         '(("/Inbox"             . ?i)
-  ;;           ("/[Gmail]/Sent Mail" . ?s)
-  ;;           ("/[Gmail]/Trash"     . ?t)
-  ;;           ("/[Gmail]/Drafts"    . ?d)
-  ;;           ("/[Gmail]/All Mail"  . ?a))))
+  (setq mu4e-maildir-shortcuts
+      '(("/mathren90_Inbox"   . ?i)
+	("/[Gmail]/Sent Mail" . ?s)
+	("/[Gmail]/Trash"     . ?t)
+	("/[Gmail]/Drafts"    . ?d)
+	("/[Gmail]/All Mail"  . ?a))))
 #+END_SRC
