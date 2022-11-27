@@ -20,6 +20,7 @@
      (output-html "xdg-open")))
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+ '(arxiv-author-list-maximum 5)
  '(auth-source-save-behavior nil)
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
@@ -81,6 +82,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(arxiv-abstract-author-face ((t (:foreground "dark gray"))))
+ '(arxiv-abstract-title-face ((t (:inherit font-lock-keyword-face :foreground "gold" :underline t :weight bold :height 1.5))))
+ '(arxiv-author-face ((t (:foreground "dark gray"))))
+ '(arxiv-date-face ((t (:foreground "cyan"))))
+ '(arxiv-title-face ((t (:foreground "gold" :weight bold :height 1.2))))
  '(cursor ((t (:background "gold" :box (:line-width 3 :color "red" :style released-button)))))
  '(doom-modeline-info ((t (:inherit (success bold) :foreground "RoyalBlue"))))
  '(doom-modeline-project-dir ((t (:foreground "dark violet"))))
