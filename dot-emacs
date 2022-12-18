@@ -21,12 +21,17 @@
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
  '(arxiv-author-list-maximum 5)
+ '(arxiv-default-bibliography
+   "/home/math/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+ '(arxiv-default-category "astro-ph")
+ '(arxiv-default-download-folder "tmp/")
+ '(arxiv-entries-per-fetch 120)
  '(auth-source-save-behavior nil)
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
    '("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd" default))
- '(ein:output-area-inlined-images t)
+ '(ein:output-area-inlined-images t t)
  '(elfeed-goodies/entry-pane-position 'bottom)
  '(elfeed-goodies/entry-pane-size 0.4)
  '(elfeed-goodies/powerline-default-separator 'slant)

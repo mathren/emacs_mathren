@@ -52,7 +52,7 @@ default Emacs.
 Except for markdown.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(add-hook 'before-save-hook '(lambda()
+(add-hook 'before-save-hook (lambda()
                               (when (not (or (derived-mode-p 'markdown-mode)))
                                 (delete-trailing-whitespace))))
 #+END_SRC

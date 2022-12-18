@@ -23,48 +23,46 @@
 (company-tng-configure-default)        ;; tab cycles through suggestions
 
 (use-package ivy
-  :init
-  (ivy-mode 1)
-  :config
-  (; (setq ivy-use-virtual-buffers t)
-   (setq enable-recursive-minibuffers t)
-   (global-set-key (kbd "C-s") 'swiper-isearch)
-   (global-set-key (kbd "M-x") 'counsel-M-x)
-   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-   (global-set-key (kbd "M-y") 'counsel-yank-pop)
-   ;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-   ;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-   ;; (global-set-key (kbd "<f1> l") 'counsel-find-library)
-   ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-   ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-   ;; (global-set-key (kbd "<f2> j") 'counsel-set-variable)
-   (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-   ;; (global-set-key (kbd "C-c v") 'ivy-push-view)
-   ;; (global-set-key (kbd "C-c V") 'ivy-pop-view)
+ :diminish
+ :bind (("C-s" . swiper)
+	;; :map ivy-minibuffer-map
+	;; ("TAB" . ivy-alt-done)
+	;; ("C-l" . ivy-alt-done)
+	;; ("C-j" . ivy-next-line)
+	;; ("C-k" . ivy-previous-line)
+	;; :map ivy-switch-buffer-map
+	;; ("C-k" . ivy-previous-line)
+	;; ("C-l" . ivy-done)
+	;; ("C-d" . ivy-switch-buffer-kill)
+	;; :map ivy-reverse-i-search-map
+	;; ("C-k" . ivy-previous-line)
+	;; ("C-d" . ivy-reverse-i-search-kill)
+	)
+ :config
+ (ivy-mode 1))
+
+ (use-package ivy-rich
+   :init
+   (ivy-rich-mode 1)
+   ;; :config
+   ;; (setq ivy-format-function #'ivy-format-function-line)
+   ;; (setq ivy-rich--display-transformers-list
+   ;; 	(plist-put ivy-rich--display-transformers-list
+   ;; 		   'ivy-switch-buffer
+   ;; 		   '(:columns
+   ;; 		     ((ivy-rich-candidate (:width 40))
+   ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
+   ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
+   ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
+   ;; 		      ; return file path relative to project root or `default-directory' if project is nil
+   ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+   ;; 		     :predicate
+   ;; 		     (lambda (cand)
+   ;; 		       (if-let ((buffer (get-buffer cand)))
+   ;; 			   ;; Don't mess with EXWM buffers
+   ;; 			   (with-current-buffer buffer
+   ;; 			     (not (derived-mode-p 'exwm-mode))))))))
    )
-  )
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1)
-  ;; :config
-  ;; (setq ivy-format-function #'ivy-format-function-line)
-  ;; (setq ivy-rich--display-transformers-list
-  ;; 	(plist-put ivy-rich--display-transformers-list
-  ;; 		   'ivy-switch-buffer
-  ;; 		   '(:columns
-  ;; 		     ((ivy-rich-candidate (:width 40))
-  ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
-  ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
-  ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
-  ;; 		      ; return file path relative to project root or `default-directory' if project is nil
-  ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-  ;; 		     :predicate
-  ;; 		     (lambda (cand)
-  ;; 		       (if-let ((buffer (get-buffer cand)))
-  ;; 			   ;; Don't mess with EXWM buffers
-  ;; 			   (with-current-buffer buffer
-  ;; 			     (not (derived-mode-p 'exwm-mode))))))))
-  )
 
 (use-package all-the-icons)
 
@@ -248,16 +246,6 @@
 
 (setq sentence-end-double-space nil)
 
-;; Recent buffers in a new Emacs session
-(use-package recentf
-  :config
-  (setq recentf-auto-cleanup 'never
-	recentf-max-menu-items 50
-	recentf-max-saved-items 1000
-	recentf-mode t)
-  :bind ("M-[" . recentf-open-files)
-  :diminish nil)
-
 (defun uniquify-all-lines-region (start end)
   "Find duplicate lines in region START to END keeping first occurrence."
   (interactive "*r")
@@ -273,6 +261,16 @@
   "Delete duplicate lines in buffer and keep first occurrence."
   (interactive "*")
   (uniquify-all-lines-region (point-min) (point-max)))
+
+;; Recent buffers in a new Emacs session
+(use-package recentf
+  :config
+  (setq recentf-auto-cleanup 'never)
+  (setq recentf-max-menu-items 50)
+  (setq recentf-max-saved-items 250)
+  (recentf-mode t)
+  (global-set-key "\M-[" 'recentf-open-files)
+  :diminish nil)
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)

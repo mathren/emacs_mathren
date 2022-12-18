@@ -15,7 +15,7 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (set-default 'size-indication-mode t)
 
-(add-hook 'before-save-hook '(lambda()
+(add-hook 'before-save-hook (lambda()
                               (when (not (or (derived-mode-p 'markdown-mode)))
                                 (delete-trailing-whitespace))))
 
