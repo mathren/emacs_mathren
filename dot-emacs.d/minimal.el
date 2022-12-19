@@ -77,7 +77,7 @@
 (require 'mesa-mode)
 (require 'run-star-extras)
 (setq mesa-default-version "r22.11.1")
-(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa-r22.11.1-rc1")
+(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa-r22.11.1")
 (setq mesa-mode-enforce-formatting-default t)
 
 (add-to-list 'auto-mode-alist '("/inlist[^/]*$" . mesa-mode))
