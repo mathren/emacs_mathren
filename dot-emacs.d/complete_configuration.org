@@ -394,7 +394,6 @@ Unbind Shift+arrows from org-agenda too.
    ;; )
 #+END_SRC
 
-
 ** =yaml-mode= and =snakemake-mode=
 
    yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
@@ -506,8 +505,21 @@ Unbind Shift+arrows from org-agenda too.
   :ensure t
   :config
   (setq arxiv-default-category "astro-ph")
-  (setq visual-line-mode t)
   )
+
+  ;; redefine arxiv-show-abstract to turn on visual-line-mode
+(defun arxiv-show-abstract ()
+  "Show the abstract window and display appropriate information."
+  (unless (buffer-live-p arxiv-abstract-buffer)
+    (setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
+  (with-current-buffer arxiv-abstract-buffer
+    (arxiv-abstract-mode)
+    (visual-line-mode) ;; added
+    (setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
+    (prettify-symbols-mode 1)
+    (arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
+  (unless (window-live-p arxiv-abstract-window)
+    (setq arxiv-abstract-window (display-buffer "*arXiv-abstract*" t))))
  #+END_SRC emacs-lisp
 
 
