@@ -87,12 +87,12 @@ lines below instead (note that the block below is not tangled to
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; eglot
   (use-package eglot :ensure t)
-  ;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
-  ;; (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
-  ;; (add-hook 'f90-mode-hook 'eglot-ensure)
-  ;; (add-hook 'python-mode-hook 'eglot-ensure)
-  ;; (add-hook 'c-mode-hook 'eglot-ensure)
-  ;; (add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+  (add-hook 'f90-mode-hook 'eglot-ensure)
+  (add-hook 'python-mode-hook 'eglot-ensure)
 #+END_SRC
 
 
@@ -419,17 +419,17 @@ Unbind Shift+arrows from org-agenda too.
    (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
  #+END_SRC
 
- To avoid the following error:
+ # To avoid the following error:
 
- #+BEGIN_SRC emacs-lisp
-    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
-    error in process sentinel: elpy-rpc--default-error-callback: peculiar error: "exited abnormally with code 1"
-    error in process sentinel: peculiar error: "exited abnormally with code 1"
-    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
- #+END_SRC
+ # #+BEGIN_SRC emacs-lisp
+ #    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
+ #    error in process sentinel: elpy-rpc--default-error-callback: peculiar error: "exited abnormally with code 1"
+ #    error in process sentinel: peculiar error: "exited abnormally with code 1"
+ #    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
+ # #+END_SRC
 
- Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
- customize-variable elpy-rpc-python-command= and set it to =current=.
+ # Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
+ # customize-variable elpy-rpc-python-command= and set it to =current=.
 
 *** Formatting
 

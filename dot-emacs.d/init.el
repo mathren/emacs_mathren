@@ -10,12 +10,12 @@
 
 ;; eglot
 (use-package eglot :ensure t)
-;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd-10"))
-;; (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
-;; (add-hook 'f90-mode-hook 'eglot-ensure)
-;; (add-hook 'python-mode-hook 'eglot-ensure)
-;; (add-hook 'c-mode-hook 'eglot-ensure)
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+(add-hook 'f90-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
