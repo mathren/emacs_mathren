@@ -500,27 +500,51 @@ Unbind Shift+arrows from org-agenda too.
 
 ** =arXiv-mode=
 
- #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package arxiv-mode
-  :ensure t
-  :config
-  (setq arxiv-default-category "astro-ph")
-  )
+    :ensure t
+    :config
+    (setq arxiv-default-category "astro-ph")
 
-  ;; redefine arxiv-show-abstract to turn on visual-line-mode
-(defun arxiv-show-abstract ()
-  "Show the abstract window and display appropriate information."
-  (unless (buffer-live-p arxiv-abstract-buffer)
-    (setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
-  (with-current-buffer arxiv-abstract-buffer
-    (arxiv-abstract-mode)
-    (visual-line-mode) ;; added
-    (setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
-    (prettify-symbols-mode 1)
-    (arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
-  (unless (window-live-p arxiv-abstract-window)
-    (setq arxiv-abstract-window (display-buffer "*arXiv-abstract*" t))))
- #+END_SRC emacs-lisp
+    (defun mr/arxiv-show-abstract ()
+        "Show the abstract window and display appropriate information."
+	(unless (buffer-live-p arxiv-abstract-buffer)
+	(setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
+	(with-current-buffer arxiv-abstract-buffer (arxiv-abstract-mode)
+	(visual-line-mode) ;; added
+	(setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
+	(prettify-symbols-mode 1)
+	(arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
+	(unless (window-live-p arxiv-abstract-window)
+	(setq arxiv-abstract-window (display-buffer "*arXiv-abstract*"t))))
+	(advice-add 'arxiv-show-abstract :override #'mr/arxiv-show-abstract)
+        (defun mr/arxiv-next-entry (&optional arg)
+  "Move to the next arXiv entry.
+With ARG, move to the next nth entry."
+  (interactive "P")
+  (setq arxiv-current-entry (+ arxiv-current-entry (prefix-numeric-value arg)))
+  (let ((len (- (safe-length arxiv-entry-list) 1)))
+    (when (>= arxiv-current-entry len)
+      (if (eq arxiv-query-results-max arxiv-query-total-results)
+	  (when (> arxiv-current-entry len)
+	    (setq arxiv-current-entry (- (safe-length arxiv-entry-list) 1))
+	    (message "end of search results"))
+	(arxiv-show-next-page))))
+  (goto-char (point-min))
+  (forward-line (* 4 arxiv-current-entry))
+  (move-overlay arxiv-highlight-overlay
+		(point) (progn (beginning-of-line 5) (point)))
+  (forward-line (- 4))
+  (when arxiv-abstract-window
+    (let ((split-height-threshold nil)
+	  (split-width-threshold 0))
+      (split-window-below)
+      (other-window 1)
+      (arxiv-show-abstract))))
+	(advice-add 'arxiv-next-entry :override	#'mr/arxiv-next-entry))
+;; redefine arxiv-show-abstract to turn on visual-line-mode
+
+#+END_SRC emacs-lisp
 
 
 ** editor config
