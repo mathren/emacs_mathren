@@ -12,12 +12,12 @@
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
  '(TeX-view-predicate-list '((nil nil)))
- '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)))
+ '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)) t)
  '(TeX-view-program-selection
    '((output-pdf "Okular")
      (output-pdf "dvips and gv")
      (output-dvi "Evince")
-     (output-html "xdg-open")))
+     (output-html "xdg-open")) t)
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
  '(arxiv-author-list-maximum 5)
@@ -38,7 +38,7 @@
  '(elfeed-search-date-format '("%d.%m.%y" 10 :left))
  '(elfeed-search-remain-on-entry t)
  '(elfeed-show-entry-switch 'pop-to-buffer)
- '(elpy-rpc-python-command "/usr/bin/python3")
+ '(elpy-rpc-python-command "current")
  '(elpy-rpc-virtualenv-path 'current)
  '(fci-rule-color "#383838")
  '(global-display-line-numbers-mode t)
@@ -88,9 +88,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(arxiv-abstract-author-face ((t (:foreground "dark gray"))))
+ '(arxiv-abstract-face ((t (:foreground "white"))))
  '(arxiv-abstract-title-face ((t (:inherit font-lock-keyword-face :foreground "gold" :underline t :weight bold :height 1.5))))
  '(arxiv-author-face ((t (:foreground "dark gray"))))
  '(arxiv-date-face ((t (:foreground "cyan"))))
+ '(arxiv-subfield-face ((t (:foreground "salmon"))))
  '(arxiv-title-face ((t (:foreground "gold" :weight bold :height 1.2))))
  '(cursor ((t (:background "gold" :box (:line-width 3 :color "red" :style released-button)))))
  '(doom-modeline-info ((t (:inherit (success bold) :foreground "RoyalBlue"))))
