@@ -68,6 +68,7 @@
 		     company-bibtex
 		     editorconfig
 		     arxiv-mode
+		     multiple-cursors
 		     ))
 
 ; install the missing packages

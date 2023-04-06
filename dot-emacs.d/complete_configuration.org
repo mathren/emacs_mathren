@@ -566,6 +566,32 @@ Unbind Shift+arrows from org-agenda too.
   (editorconfig-mode 1))
 #+END_SRC
 
+** multiple cursors
+
+ Trying [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]. I want to drop a cursor at point with =<f1>=
+ (after activating =multiple-cursors-mode= with =M-s-return=)
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package multiple-cursors
+    :ensure t
+    :config
+    (defun mc/toggle-cursor-at-point ()
+	"Add or remove a cursor at point."
+	(interactive)
+	(if multiple-cursors-mode
+	    (message "Cannot toggle cursor at point while `multiple-cursors-mode' is active.")
+	  (let ((existing (mc/fake-cursor-at-point)))
+	    (if existing
+		(mc/remove-fake-cursor existing)
+	      (mc/create-fake-cursor-at-point)))))
+
+      (add-to-list 'mc/cmds-to-run-once 'mc/toggle-cursor-at-point)
+      (add-to-list 'mc/cmds-to-run-once 'multiple-cursors-mode)
+    (define-key mc/keymap (kbd "<return>") nil)
+	  (global-set-key (kbd "<f1>") 'mc/toggle-cursor-at-point)
+      (global-set-key (kbd "<M-s-return>") 'multiple-cursors-mode)
+      (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
+#+END_SRC
 
 * Spell checking with multiple languages
 
@@ -745,3 +771,7 @@ from ubuntu repositories is old and yields an error.
   ;;       ("/[Gmail]/All Mail"  . ?a)))
   )
 #+END_SRC
+
+** multiple-cursors
+
+  Fix function to drop cursors
