@@ -553,8 +553,7 @@ Unbind Shift+arrows from org-agenda too.
 
 	; (advice-add 'arxiv-next-entry :override #'mr/arxiv-next-entry)
 )
-
-#+END_SRC emacs-lisp
+#+END_SRC
 
 
 ** editor config

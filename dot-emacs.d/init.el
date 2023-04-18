@@ -220,10 +220,82 @@
 ; to see latex in ein markdown cells
 (use-package math-preview)
 
+(use-package arxiv-mode
+    :ensure t
+    :config
+    (setq arxiv-default-category "astro-ph")
+
+    (defun mr/arxiv-show-abstract ()
+        "Show the abstract window and display appropriate information."
+	(unless (buffer-live-p arxiv-abstract-buffer)
+	(setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
+	(with-current-buffer arxiv-abstract-buffer (arxiv-abstract-mode)
+	(visual-line-mode) ;; added
+	(setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
+	(prettify-symbols-mode 1)
+	(arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
+	(unless (window-live-p arxiv-abstract-window)
+	(setq arxiv-abstract-window (display-buffer
+        "*arXiv-abstract*"t))))
+
+    (advice-add 'arxiv-show-abstract :override #'mr/arxiv-show-abstract)
+
+;     (defun mr/arxiv-next-entry (&optional arg)
+;   "Move to the next arXiv entry.
+; With ARG, move to the next nth entry."
+;   (interactive "P")
+;   (setq arxiv-current-entry (+ arxiv-current-entry (prefix-numeric-value arg)))
+;   (let ((len (- (safe-length arxiv-entry-list) 1)))
+;     (when (>= arxiv-current-entry len)
+;       (if (eq arxiv-query-results-max arxiv-query-total-results)
+; 	  (when (> arxiv-current-entry len)
+; 	    (setq arxiv-current-entry (- (safe-length arxiv-entry-list) 1))
+; 	    (message "end of search results"))
+; 	(arxiv-show-next-page))
+;   (goto-char (point-min))
+;   (forward-line (* 4 arxiv-current-entry))
+;   (move-overlay arxiv-highlight-overlay
+; 		(point) (progn (beginning-of-line 5) (point)))
+;   (forward-line (- 4))
+;   (let ((abstract-buffer (get-buffer "*arXiv-abstract*")))
+;     (if abstract-buffer
+; 	(switch-to-buffer abstract-buffer)
+;       (let ((split-height-threshold nil)
+; 	    (split-width-threshold 0)
+; 	    (new-buffer (generate-new-buffer "*arXiv-abstract*")))
+; 	(split-window-below)
+; 	(other-window 1)
+; 	(switch-to-buffer new-buffer)
+; 	(arxiv-mode)
+; 	(arxiv-show-abstract)))))
+
+	; (advice-add 'arxiv-next-entry :override #'mr/arxiv-next-entry)
+)
+
 (use-package editorconfig
   :ensure t
   :config
   (editorconfig-mode 1))
+
+(use-package multiple-cursors
+  :ensure t
+  :config
+  (defun mc/toggle-cursor-at-point ()
+      "Add or remove a cursor at point."
+      (interactive)
+      (if multiple-cursors-mode
+	  (message "Cannot toggle cursor at point while `multiple-cursors-mode' is active.")
+	(let ((existing (mc/fake-cursor-at-point)))
+	  (if existing
+	      (mc/remove-fake-cursor existing)
+	    (mc/create-fake-cursor-at-point)))))
+
+    (add-to-list 'mc/cmds-to-run-once 'mc/toggle-cursor-at-point)
+    (add-to-list 'mc/cmds-to-run-once 'multiple-cursors-mode)
+  (define-key mc/keymap (kbd "<return>") nil)
+	(global-set-key (kbd "<f1>") 'mc/toggle-cursor-at-point)
+    (global-set-key (kbd "<M-s-return>") 'multiple-cursors-mode)
+    (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
