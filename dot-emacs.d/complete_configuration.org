@@ -248,12 +248,12 @@ Fist use reftex
 
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(add-hook 'LaTex-mode-hook 'flyspell-mode)
-(setq reftex-plug-into-AUCTeX t)
-;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
-(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
-;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTex-mode-hook 'flyspell-mode)
+  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+  ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
+  ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 #+END_SRC
 
 *** No line breaks in math mode
@@ -591,6 +591,7 @@ Unbind Shift+arrows from org-agenda too.
       (global-set-key (kbd "<M-s-return>") 'multiple-cursors-mode)
       (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
 #+END_SRC
+
 
 * Spell checking with multiple languages
 
