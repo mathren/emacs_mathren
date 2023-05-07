@@ -141,7 +141,7 @@
 	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
 	   "* %?\n %T")
 	  ("i" "Future project idea" entry
-	   (file+headline "~/Documents/Research/Projects/ideas.org" "Future projects ideas")
+	   (file "~/Documents/Research/Projects/ideas.org")
 	   "* %?\n %T")
 	  ("j" "Job applications idea" entry
 	   (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
