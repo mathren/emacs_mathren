@@ -69,6 +69,7 @@
 		     editorconfig
 		     arxiv-mode
 		     multiple-cursors
+		     magit-lfs
 		     ))
 
 ; install the missing packages

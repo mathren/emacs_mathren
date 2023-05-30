@@ -387,11 +387,20 @@ Unbind Shift+arrows from org-agenda too.
 
 *** org-roam
 
+(Not used)
 #+BEGIN_SRC emacs-lisp
    ;; (use-package org-roam
    ;;     :config
    ;;     (org-roam-db-autosync-mode)
    ;; )
+#+END_SRC
+
+*** hugo for static website generation
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package ox-hugo
+  :ensure t   ;Auto-install the package from Melpa
+  :pin melpa  ;`package-archives' should already have ("melpa" . "https://melpa.org/packages/")
+  :after ox)
 #+END_SRC
 
 
@@ -565,6 +574,7 @@ Unbind Shift+arrows from org-agenda too.
   (editorconfig-mode 1))
 #+END_SRC
 
+
 ** multiple cursors
 
  Trying [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]. I want to drop a cursor at point with =<f1>=
@@ -590,6 +600,15 @@ Unbind Shift+arrows from org-agenda too.
 	  (global-set-key (kbd "<f1>") 'mc/toggle-cursor-at-point)
       (global-set-key (kbd "<M-s-return>") 'multiple-cursors-mode)
       (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
+#+END_SRC
+
+
+** magit LFs
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package magit-lfs
+     :ensure t
+     :pin melpa)
 #+END_SRC
 
 
