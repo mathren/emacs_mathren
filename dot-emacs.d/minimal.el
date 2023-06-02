@@ -25,7 +25,6 @@
 (global-set-key (kbd "C-<prior>") 'previous-buffer)
 (global-set-key (kbd "C-<next>") 'next-buffer)
 (global-set-key (kbd "M-s-k") 'kill-current-buffer)
-(global-set-key (kbd "<f5>") 'revert-buffer)
 
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
@@ -77,8 +76,8 @@
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)
-(setq mesa-default-version "r22.11.1")
-(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa-r22.11.1")
+(setq mesa-default-version "15140")
+(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa_15140/mesa15140")
 (setq mesa-mode-enforce-formatting-default t)
 
 (add-to-list 'auto-mode-alist '("/inlist[^/]*$" . mesa-mode))

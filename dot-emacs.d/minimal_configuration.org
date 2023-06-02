@@ -188,8 +188,8 @@ the complete configuration, but I want them here because of this.
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)
-(setq mesa-default-version "r22.11.1")
-(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa-r22.11.1/mesa-r22.11.1")
+(setq mesa-default-version "15140")
+(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa_15140/mesa15140")
 (setq mesa-mode-enforce-formatting-default t)
 
 (add-to-list 'auto-mode-alist '("/inlist[^/]*$" . mesa-mode))
