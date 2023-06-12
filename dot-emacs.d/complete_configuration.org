@@ -294,6 +294,7 @@ images. And I configure three different kind of notes for =org-capture=.
     (setq org-image-actual-width 400)
     (setq org-hide-emphasis-markers t)
     (setq org-startup-folded t)
+    ;; capture templates
     (setq org-capture-templates
 	  '(("n" "Research note" entry
 	     (file+headline "~/Documents/Research/Todos.org" "Research notes")
@@ -314,7 +315,26 @@ images. And I configure three different kind of notes for =org-capture=.
 	     (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
 	     "* %?\n %T")
 	    ))
-      )
+    ;; help with publishing html
+    (setq org-publish-project-alist
+	  '(("org-notes"
+	     :base-directory "~/Documents/Website/org/"
+	     :base-extension "org"
+	     :publishing-directory "/tmp/public_html/"
+	     :recursive t
+	     :publishing-function org-html-publish-to-html
+	     :headline-levels 4
+	     :auto-preamble t)
+	    ("org-static"
+	     :base-directory "~/Documents/Website/org/"
+	     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	     :publishing-directory "/tmp/public_html/"
+	     :recursive t
+	     :publishing-function org-publish-attachment)
+	    ("org-publish" :components ("org-notes" "org-static"))
+	    )
+	  )
+    )
 #+END_SRC
 
 Unbind Shift+arrows from org-agenda too.
@@ -395,15 +415,12 @@ Unbind Shift+arrows from org-agenda too.
    ;; )
 #+END_SRC
 
-*** hugo for static website generation
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package ox-hugo
-  :ensure t   ;Auto-install the package from Melpa
-  :pin melpa  ;`package-archives' should already have ("melpa" . "https://melpa.org/packages/")
-  :after ox)
-#+END_SRC
+*** Website management
 
-
+#+begin_src emacs-lisp   :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package ox-publish
+    :ensure t)
+#+end_src
 ** =yaml-mode= and =snakemake-mode=
 
    yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use

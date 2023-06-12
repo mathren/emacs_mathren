@@ -133,6 +133,7 @@
   (setq org-image-actual-width 400)
   (setq org-hide-emphasis-markers t)
   (setq org-startup-folded t)
+  ;; capture templates
   (setq org-capture-templates
 	'(("n" "Research note" entry
 	   (file+headline "~/Documents/Research/Todos.org" "Research notes")
@@ -153,7 +154,26 @@
 	   (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
 	   "* %?\n %T")
 	  ))
-    )
+  ;; help with publishing html
+  (setq org-publish-project-alist
+	'(("org-notes"
+	   :base-directory "~/Documents/Website/org/"
+	   :base-extension "org"
+	   :publishing-directory "/tmp/public_html/"
+	   :recursive t
+	   :publishing-function org-html-publish-to-html
+	   :headline-levels 4
+	   :auto-preamble t)
+	  ("org-static"
+	   :base-directory "~/Documents/Website/org/"
+	   :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	   :publishing-directory "/tmp/public_html/"
+	   :recursive t
+	   :publishing-function org-publish-attachment)
+	  ("org-publish" :components ("org-notes" "org-static"))
+	  )
+	)
+  )
 
 (use-package org-agenda
    :config
@@ -183,6 +203,9 @@
   (setq-default org-download-image-dir ".org_notes_figures/")
   (fmakunbound 'org-download-clipboard)
   )
+
+(use-package ox-publish
+  :ensure t)
 
 (add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
@@ -296,6 +319,10 @@
 	(global-set-key (kbd "<f1>") 'mc/toggle-cursor-at-point)
     (global-set-key (kbd "<M-s-return>") 'multiple-cursors-mode)
     (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
+
+(use-package magit-lfs
+     :ensure t
+     :pin melpa)
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
