@@ -72,6 +72,14 @@
 (setq vc-follow-symlinks t)
 
 (global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+
+(use-package super-save
+  :defer 1
+  :diminish super-save-mode
+  :config
+  (super-save-mode +1)
+  (setq super-save-auto-save-when-idle t))
 
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)

@@ -70,6 +70,7 @@
 		     arxiv-mode
 		     multiple-cursors
 		     magit-lfs
+		     super-save
 		     ))
 
 ; install the missing packages
