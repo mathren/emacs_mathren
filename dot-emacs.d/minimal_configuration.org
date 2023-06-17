@@ -76,6 +76,15 @@ Finally, to kill the current buffer I use =M-super-k=.
 (global-set-key (kbd "M-s-k") 'kill-current-buffer)
  #+END_SRC
 
+ Prefer to reuse existing windows, especially those showing a buffer
+ of the same mode
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(setq display-buffer-base-action
+  '((display-buffer-reuse-window
+     display-buffer-reuse-mode-window
+     display-buffer-same-window
+     display-buffer-in-previous-window)))
+ #+END_SRC
 * Basic parenthesis handling
 
 Colorizing of parenthesis is loaded in the complete
