@@ -276,7 +276,7 @@ Fist use reftex
 
 I unbind Shift+arrows from org mode, as I use these for navigating
 buffers (see =minimal.el=). I also want org-mode to start with inline
-images. And I configure three different kind of notes for =org-capture=.
+images. And I configure several different kind of notes for =org-capture=.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package org
@@ -315,25 +315,6 @@ images. And I configure three different kind of notes for =org-capture=.
 	     (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
 	     "* %?\n %T")
 	    ))
-    ;; help with publishing html
-    (setq org-publish-project-alist
-	  '(("org-notes"
-	     :base-directory "~/Documents/Website/org/"
-	     :base-extension "org"
-	     :publishing-directory "/tmp/public_html/"
-	     :recursive t
-	     :publishing-function org-html-publish-to-html
-	     :headline-levels 4
-	     :auto-preamble t)
-	    ("org-static"
-	     :base-directory "~/Documents/Website/org/"
-	     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-	     :publishing-directory "/tmp/public_html/"
-	     :recursive t
-	     :publishing-function org-publish-attachment)
-	    ("org-publish" :components ("org-notes" "org-static"))
-	    )
-	  )
     )
 #+END_SRC
 
@@ -421,6 +402,7 @@ Unbind Shift+arrows from org-agenda too.
   (use-package ox-publish
     :ensure t)
 #+end_src
+
 ** =yaml-mode= and =snakemake-mode=
 
    yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
@@ -620,7 +602,7 @@ Unbind Shift+arrows from org-agenda too.
 #+END_SRC
 
 
-** magit LFs
+** magit LFS
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package magit-lfs
