@@ -116,7 +116,6 @@ configuration between here and there.
 #+END_SRC
 
 * Some custom keybindings
-
 ** Zoom in/out
  Zoom-in and out all the buffers with =C-+= and =C--= (why the extra =x= in the defaults when
  these are available?). Per buffer zoom in/out can be achieved with the
@@ -162,6 +161,15 @@ configuration between here and there.
  (define-key global-map (kbd "M-s-c") 'replace-string)
 #+END_SRC
 
+** Revert buffer
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+  (global-set-key (kbd "<f5>")
+                (lambda ()
+                  (interactive)
+                  (revert-buffer :ignore-auto)))
+#+END_SRC
+
 * Garbage collection and hidden files in =/tmp=
 
 Allow up to 25Mb of garbage before collecting, and put temporary files
@@ -199,7 +207,6 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t))
 #+END_SRC
-
 
 * MESA related stuff
 

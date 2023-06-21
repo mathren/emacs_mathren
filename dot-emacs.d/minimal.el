@@ -69,6 +69,11 @@
 
 (define-key global-map (kbd "M-s-c") 'replace-string)
 
+(global-set-key (kbd "<f5>")
+              (lambda ()
+                (interactive)
+                (revert-buffer :ignore-auto)))
+
 (setq gc-cons-threshold 25000000)
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
