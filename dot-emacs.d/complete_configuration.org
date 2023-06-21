@@ -403,6 +403,7 @@ Unbind Shift+arrows from org-agenda too.
     :ensure t)
 #+end_src
 
+
 ** =yaml-mode= and =snakemake-mode=
 
    yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
@@ -608,6 +609,19 @@ Unbind Shift+arrows from org-agenda too.
 (use-package magit-lfs
      :ensure t
      :pin melpa)
+#+END_SRC
+
+
+** Autosave
+
+
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(use-package super-save
+  :defer 1
+  :diminish super-save-mode
+  :config
+  (super-save-mode +1)
+  (setq super-save-auto-save-when-idle t))
 #+END_SRC
 
 
