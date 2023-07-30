@@ -305,6 +305,8 @@
      :ensure t
      :pin melpa)
 
+(set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
+
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
   ;; dictionary' even though multiple dictionaries will be configured

@@ -612,16 +612,14 @@ Unbind Shift+arrows from org-agenda too.
 #+END_SRC
 
 
-** Autosave
 
+** Fontawesome
 
-#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(use-package super-save
-  :defer 1
-  :diminish super-save-mode
-  :config
-  (super-save-mode +1)
-  (setq super-save-auto-save-when-idle t))
+ [[https://github.com/emacsorphanage/fontawesome][This]] package allows to use the fontawesome icons. Requires this fix
+ on my machine for fontawesome 5.
+
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
 #+END_SRC
 
 

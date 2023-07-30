@@ -71,6 +71,7 @@
 		     multiple-cursors
 		     magit-lfs
 		     super-save
+		     fontawesome
 		     ))
 
 ; install the missing packages
