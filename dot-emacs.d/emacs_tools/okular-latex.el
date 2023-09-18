@@ -11,6 +11,7 @@
 ;; emacsclient -a emacs --no-wait +%l %f
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
 ;; only start server for okular comms when in latex mode
 (add-hook 'LaTeX-mode-hook 'server-start)
 (setq TeX-PDF-mode t) ;; use pdflatex instead of latex

@@ -116,7 +116,7 @@
             (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
 (load "~/.emacs.d/emacs_tools/okular-latex.el")
-(load "~/.emacs.d/emacs_tools/okular-search.el")
+(require 'okular-search)
 
 (use-package org
   :pin elpa
@@ -196,8 +196,9 @@
 (use-package elpy
   :ensure t
   :init
-  (elpy-enable))
-  (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+  (elpy-enable)
+  (setq elpy-rpc-python-command "python"))
+(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 
 ;; Install:
 ;; pip install black
@@ -306,6 +307,13 @@
      :pin melpa)
 
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
+
+(use-package super-save
+  :defer 1
+  :diminish super-save-mode
+  :config
+  (super-save-mode +1)
+  (setq super-save-auto-save-when-idle t))
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
