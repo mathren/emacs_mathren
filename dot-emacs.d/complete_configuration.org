@@ -268,7 +268,7 @@ Fist use reftex
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (load "~/.emacs.d/emacs_tools/okular-latex.el")
-  (require 'okular-search)
+  (require 'okular-search "~/.emacs.d/emacs_tools/okular-search.el")
 #+END_SRC
 
 

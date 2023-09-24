@@ -87,8 +87,7 @@ Partly copied from tex.el's TeX-master-file and TeX-add-local-master."
 		    (beginning-of-line 1))
 		  (insert prefix "TeX-master: " (prin1-to-string master-file) "\n"))
 	      (insert "\n%%% Local Variables: "
-;;; mode is of little use without AucTeX ...
-;;;		      "\n%%% mode: " (substring (symbol-name major-mode) 0 -5)
+		      "\n%%% mode: " (substring (symbol-name major-mode) 0 -5)
 		      "\n%%% TeX-master: " (prin1-to-string master-file)
 		      "\n%%% End: \n"))
 	    (save-buffer)

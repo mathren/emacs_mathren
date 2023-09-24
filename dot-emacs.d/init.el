@@ -116,7 +116,7 @@
             (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
 (load "~/.emacs.d/emacs_tools/okular-latex.el")
-(require 'okular-search)
+(require 'okular-search "~/.emacs.d/emacs_tools/okular-search.el")
 
 (use-package org
   :pin elpa
