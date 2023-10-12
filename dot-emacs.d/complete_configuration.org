@@ -396,12 +396,6 @@ Unbind Shift+arrows from org-agenda too.
    ;; )
 #+END_SRC
 
-*** Website management
-
-#+begin_src emacs-lisp   :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package ox-publish
-    :ensure t)
-#+end_src
 
 
 ** =yaml-mode= and =snakemake-mode=
