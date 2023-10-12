@@ -77,6 +77,9 @@
                 (interactive)
                 (revert-buffer :ignore-auto)))
 
+(global-set-key (kbd "<f5>")
+		(ibuffer))
+
 (setq gc-cons-threshold 25000000)
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))

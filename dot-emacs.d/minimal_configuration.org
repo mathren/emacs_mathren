@@ -46,6 +46,8 @@ default Emacs.
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (set-default 'size-indication-mode t)
 #+END_SRC
+
+
 * Append folder when two buffers have the same name
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (require 'uniquify)
@@ -173,6 +175,12 @@ configuration between here and there.
                 (lambda ()
                   (interactive)
                   (revert-buffer :ignore-auto)))
+#+END_SRC
+
+** Use =ibuffer= instead of =list-buffers=
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+  (global-set-key (kbd "<f5>")
+		  (ibuffer))
 #+END_SRC
 
 * Garbage collection and hidden files in =/tmp=
