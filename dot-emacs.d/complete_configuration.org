@@ -50,8 +50,8 @@ lines below instead (note that the block below is not tangled to
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ;; ("org"   . "https://orgmode.org/elpa/")
 			   ("elpa"  . "https://elpa.gnu.org/packages/")
-			   ("melpa-stable" . "https://stable.melpa.org/packages/"))
-	                   ("org-contrib" . "https://elpa.nongnu.org/nongnu/"))
+			   ("melpa-stable" . "https://stable.melpa.org/packages/")
+	                   ("org-contrib" . "https://elpa.nongnu.org/nongnu/")))
 
   (package-initialize)
 #+END_SRC
