@@ -353,7 +353,7 @@ Unbind Shift+arrows from org-agenda too.
 
     This allows to paste screenshots in emacs org mode. Pasting from the
     clipboard requires to install =wl-paste= which is usually available in
-    your OS package manager (e.g., apt). To paste a screenshot from the
+    your OS package manager (e.g., =apt=). To paste a screenshot from the
     clipboard use =M-x org-download-screenshot=. This will open your OS
     screenshot utility, you can then take the screenshot -- but what you
     want to capture has to be visible on your screen when you type that command.

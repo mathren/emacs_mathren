@@ -72,6 +72,7 @@
 		     magit-lfs
 		     super-save
 		     fontawesome
+		     all-the-icons-nerd-fonts
 		     ))
 
 ; install the missing packages
