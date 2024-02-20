@@ -227,6 +227,19 @@ time you use it.
 
 ** LaTeX related stuff
 
+*** Check on compilation progress
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (add-to-list 'load-path "~/.emacs.d/emacs_tools/procress/")
+  (use-package procress
+    ;; :straight (:host github :repo "haji-ali/procress")
+    :commands procress-auctex-mode
+    :init
+    (add-hook 'LaTeX-mode-hook #'procress-auctex-mode)
+    :config
+    (procress-load-default-svg-images))
+#+END_SRC
+
 *** Spell checking
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el

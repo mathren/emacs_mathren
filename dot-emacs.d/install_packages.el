@@ -1,12 +1,10 @@
-;; author: Mathieu Renzo
-
-;; Author: Mathieu Renzo <mathren90@gmail.com>
+;; Author: Mathieu Renzo
 ;; Keywords: files
-
-;; Comment: install some packages. Should be manually loaded in emacs at
-;; first runtime
-;; Copyright (C) 2019-2022 Mathieu Renzo
-
+;;
+;; Comment: install some packages. Should be manually run first time
+;;
+;; Copyright (C) 2019-2024 Mathieu Renzo
+;;
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or (at
