@@ -95,6 +95,15 @@
   :config
   (setq which-key-idle-delay 1))
 
+(add-to-list 'load-path "~/.emacs.d/emacs_tools/procress/")
+(use-package procress
+  ;; :straight (:host github :repo "haji-ali/procress")
+  :commands procress-auctex-mode
+  :init
+  (add-hook 'LaTeX-mode-hook #'procress-auctex-mode)
+  :config
+  (procress-load-default-svg-images))
+
 (dolist (hook '(text-mode-hook LaTeX-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 (setq flyspell-sort-corrections nil)
@@ -274,6 +283,9 @@
      :pin melpa)
 
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
+
+(use-package auth-source-pass
+    :config  (auth-source-pass-enable))
 
 (use-package super-save
   :defer 1

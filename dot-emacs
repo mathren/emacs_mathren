@@ -54,7 +54,7 @@
      (".html" . "firefox %s")
      (".pdf" . "okular %s")))
  '(package-selected-packages
-   '(all-the-icons-nerd-fonts fontawesome f super-save ox-publish magit-lfs multiple-cursors arxiv-mode elfeed-goodies elfeed-org mu4e ivy-fuz company-prescient company-auctex company-bibtex company-fuzzy eglot ripgrep ein eproject markdown-mode editorconfig ac-html deadgrep pdf-tools helm-org blacken org-alert elfeed python-black yaml-mode jedi elpy eshell-prompt-extras math-preview ivy-pass pass org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired ivy org-bullets rainbow-delimiters which-key dired-icon magit flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex))
+   '(all-the-icons-nerd-fonts fontawesome f ox-publish magit-lfs multiple-cursors arxiv-mode elfeed-goodies mu4e ivy-fuz company-auctex company-bibtex company-fuzzy eglot ripgrep ein eproject markdown-mode editorconfig ac-html deadgrep pdf-tools helm-org org-alert elfeed python-black jedi elpy ivy-pass pass org-download doom-themes diredful dired-single diredfl no-littering company-box counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired ivy org-bullets rainbow-delimiters which-key dired-icon magit flyspell-popup tramp treemacs-magit org jedi-core flycheck dashboard))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . zeta_ophiuchi\.tex)))
  '(send-mail-function 'mailclient-send-it)
