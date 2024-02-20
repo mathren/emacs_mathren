@@ -227,19 +227,6 @@ time you use it.
 
 ** LaTeX related stuff
 
-*** Check on compilation progress
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (add-to-list 'load-path "~/.emacs.d/emacs_tools/procress/")
-  (use-package procress
-    ;; :straight (:host github :repo "haji-ali/procress")
-    :commands procress-auctex-mode
-    :init
-    (add-hook 'LaTeX-mode-hook #'procress-auctex-mode)
-    :config
-    (procress-load-default-svg-images))
-#+END_SRC
-
 *** Spell checking
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -283,7 +270,6 @@ Fist use reftex
   (load "~/.emacs.d/emacs_tools/okular-latex.el")
   (require 'okular-search "~/.emacs.d/emacs_tools/okular-search.el")
 #+END_SRC
-
 
 ** Org mode related stuff
 
@@ -423,7 +409,6 @@ Unbind Shift+arrows from org-agenda too.
     (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
-
 ** Python
 
 *** elpy
@@ -451,6 +436,7 @@ Unbind Shift+arrows from org-agenda too.
 
  # Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
  # customize-variable elpy-rpc-python-command= and set it to =current=.
+
 
 *** Formatting
 
@@ -802,7 +788,3 @@ from ubuntu repositories is old and yields an error.
   ;;       ("/[Gmail]/All Mail"  . ?a)))
   )
 #+END_SRC
-
-** multiple-cursors
-
-  Fix function to drop cursors
