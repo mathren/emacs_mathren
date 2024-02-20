@@ -30,3 +30,33 @@ created by changing some emacs faces.
   make -j 3
   make install
 #+END_SRC
+
+** TODO (finish) Installing emacs 29.1 from repository
+
+ *Prerequisite*: install gcc-10, e.g. [[https://ahelpme.com/linux/ubuntu/install-and-make-gnu-gcc-10-default-in-ubuntu-20-04-focal/][this guide]]
+
+
+ 1. Clone from =https://git.savannah.gnu.org/git/emacs.git= the
+    =emacs-29.1= branch (commit =a9b28224af0f73d1fe0f422e9b318c5b91af889b=).
+ 2. Run =./autogen.sh=
+ 3. Configure with:
+    #+begin_src bash
+      ./configure --prefix=/tmp/emacs29.1/ \
+		  --with-native-compilation=aot --with-imagemagick --with-json \
+		  --with-tree-sitter --with-xft \
+		  --build x86_64-linux-gnu \
+		  --sharedstatedir=/var/lib --libexecdir=/usr/lib \
+		  --localstatedir=/var/lib --infodir=/usr/share/info \
+		  --mandir=/usr/share/man --with-pop=yes \
+		  --enable-locallisppath=/etc/emacs --with-sound=alsa \
+		  --without-gconf --with-mailutils \
+		  --build x86_64-linux-gnu \
+		  --sharedstatedir=/var/lib --libexecdir=/usr/lib \
+		  --localstatedir=/var/lib --infodir=/usr/share/info \
+		  --mandir=/usr/share/man --with-native-compilation \
+		  --with-pop=yes \
+		  --enable-locallisppath=/etc/emacs:/usr/local/share/emacs/site-lisp:/usr/share/emacs/site-lisp \
+		  --with-sound=alsa --without-gconf --with-mailutils --with-x=yes \
+		  --with-x-toolkit=gtk3 \
+		  --with-toolkit-scroll-bars 'CFLAGS=-g -O2 -fdebug-prefix-map=/build/emacs-mEZBk7/emacs-26.3+1=.fstack-protector-strong -Wformat -Werror=format-security -Wall' 'CPPFLAGS=-Wdate-time -D_FORTIFY_SOURCE=2''LDFLAGS=-Wl,-Bsymbolic-functions -Wl,-z,relro'
+    #+end_src

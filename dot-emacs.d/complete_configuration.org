@@ -587,17 +587,6 @@ Unbind Shift+arrows from org-agenda too.
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
 #+END_SRC
 
-
-** Integrate pass and emacs
-
- I use [[https://www.passwordstore.org/][pass]] to manage passwords. This is setup independently of emacs,
- but I may want to access my passwords from within emacs:
-
-#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package auth-source-pass
-    :config  (auth-source-pass-enable))
-#+END_SRC
-
 ** Autosave
 
 #+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el

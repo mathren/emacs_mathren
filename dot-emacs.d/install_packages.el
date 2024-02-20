@@ -57,9 +57,9 @@
 		     rainbow-delimiters
 		     swiper
 		     use-package
-		     which-key
-		     yaml-mode
-		     eglot
+		     ;; which-key
+		     ;; yaml-mode
+		     ;; eglot
 		     company-prescient
 		     company-fuzzy
 		     company-auctex
@@ -68,7 +68,7 @@
 		     arxiv-mode
 		     multiple-cursors
 		     magit-lfs
-		     super-save
+		     ;; super-save
 		     fontawesome
 		     all-the-icons-nerd-fonts
 		     ))

@@ -275,9 +275,6 @@
 
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
 
-(use-package auth-source-pass
-    :config  (auth-source-pass-enable))
-
 (use-package super-save
   :defer 1
   :diminish super-save-mode
