@@ -35,7 +35,6 @@
      display-buffer-same-window
      display-buffer-in-previous-window)))
 
-(show-paren-mode 1)
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
 
@@ -78,7 +77,8 @@
                 (interactive)
                 (revert-buffer :ignore-auto)))
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "<f5>")
+		(ibuffer))
 
 (setq gc-cons-threshold 25000000)
 (setq backup-directory-alist

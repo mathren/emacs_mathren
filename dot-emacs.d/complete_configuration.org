@@ -440,7 +440,7 @@ Unbind Shift+arrows from org-agenda too.
 
 *** Formatting
 
- Use [[https://pypi.org/project/black/][black]] to format code, requires =pip install black black-macchiato=.
+ Use [[https://pypi.org/project/black/][black]] to format code
 
  #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
    ;; Install:

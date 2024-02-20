@@ -100,9 +100,8 @@ usable with a brand new install I split the parenthesis handling
 configuration between here and there.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-  (show-paren-mode 1)
-  (electric-pair-mode 1)
-  (setq electric-pair-preserve-balance nil)
+(electric-pair-mode 1)
+(setq electric-pair-preserve-balance nil)
 #+END_SRC
 
 * Open certain files in given mode
@@ -180,7 +179,8 @@ configuration between here and there.
 
 ** Use =ibuffer= instead of =list-buffers=
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "<f5>")
+		  (ibuffer))
 #+END_SRC
 
 * Garbage collection and hidden files in =/tmp=
