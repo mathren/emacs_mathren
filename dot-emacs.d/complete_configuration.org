@@ -50,8 +50,8 @@ lines below instead (note that the block below is not tangled to
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ;; ("org"   . "https://orgmode.org/elpa/")
 			   ("elpa"  . "https://elpa.gnu.org/packages/")
-			   ("melpa-stable" . "https://stable.melpa.org/packages/"))
-	                   ("org-contrib" . "https://elpa.nongnu.org/nongnu/"))
+			   ("melpa-stable" . "https://stable.melpa.org/packages/")
+	                   ("org-contrib" . "https://elpa.nongnu.org/nongnu/")))
 
   (package-initialize)
 #+END_SRC
@@ -382,20 +382,7 @@ Unbind Shift+arrows from org-agenda too.
     (setq-default org-download-image-dir ".org_notes_figures/")
     (fmakunbound 'org-download-clipboard)
     )
-
 #+END_SRC
-
-*** org-roam
-
-(Not used)
-#+BEGIN_SRC emacs-lisp
-   ;; (use-package org-roam
-   ;;     :config
-   ;;     (org-roam-db-autosync-mode)
-   ;; )
-#+END_SRC
-
-
 
 ** =yaml-mode= and =snakemake-mode=
 
@@ -410,7 +397,6 @@ Unbind Shift+arrows from org-agenda too.
 #+END_SRC
 
 ** Python
-
 *** elpy
 
   See [[https://elpy.readthedocs.io/en/latest/introduction.html][documentation]] for dependencies
@@ -458,7 +444,6 @@ Unbind Shift+arrows from org-agenda too.
        ("C-c C-l" . python-black-partial-dwim)))
  #+END_SRC
 
-
 *** Flycheck completion
 
 
@@ -467,7 +452,6 @@ Unbind Shift+arrows from org-agenda too.
    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
    (add-hook 'elpy-mode-hook 'flycheck-mode))
  #+END_SRC
-
 
 *** Jupyter notebooks with ein
 
@@ -539,7 +523,6 @@ Unbind Shift+arrows from org-agenda too.
   (editorconfig-mode 1))
 #+END_SRC
 
-
 ** multiple cursors
 
  Trying [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]. I want to drop a cursor at point with =<f1>=
@@ -567,7 +550,6 @@ Unbind Shift+arrows from org-agenda too.
       (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
 #+END_SRC
 
-
 ** magit LFS
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -575,8 +557,6 @@ Unbind Shift+arrows from org-agenda too.
      :ensure t
      :pin melpa)
 #+END_SRC
-
-
 
 ** Fontawesome
 
@@ -597,7 +577,6 @@ Unbind Shift+arrows from org-agenda too.
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t))
 #+END_SRC
-
 
 * Spell checking with multiple languages
 
@@ -644,7 +623,6 @@ For now I manually make sure the file exists.
 #+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (setq sentence-end-double-space nil)
 #+END_SRC
-
 
 * De-duplicate lines in buffer
 
@@ -734,7 +712,6 @@ Using the macro query above, I defined a way to jump.
 
 (global-set-key (kbd "C-c C-l") 'last-line-which-col)
 #+END_SRC
-
 
 
 * Ongoing development
