@@ -6,6 +6,8 @@
 
 (require 'use-package)
 
+(use-package all-the-icons)
+
 (use-package no-littering)
 
 ;; eglot
@@ -64,8 +66,6 @@
    ;; 			     (not (derived-mode-p 'exwm-mode))))))))
    )
 
-(use-package all-the-icons)
-
 (use-package dired
   :ensure nil
   :commands (dired dired-jump)
@@ -94,29 +94,6 @@
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 1))
-
-(dolist (hook '(text-mode-hook LaTeX-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
-(setq flyspell-sort-corrections nil)
-(setq flyspell-issue-message-flag nil)
-
-(use-package reftex
-  :ensure auctex
-  :after latex)
-
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(add-hook 'LaTex-mode-hook 'flyspell-mode)
-(setq reftex-plug-into-AUCTeX t)
-(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
-;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
-;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
-
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (add-to-list 'fill-nobreak-predicate 'texmathp)))
-
-(load "~/.emacs.d/emacs_tools/okular-latex.el")
-(require 'okular-search "~/.emacs.d/emacs_tools/okular-search.el")
 
 (use-package org
   :pin elpa
@@ -273,6 +250,11 @@
      :ensure t
      :pin melpa)
 
+(use-package ws-butler
+       :ensure t
+       :pin melpa)
+(add-hook 'prog-mode-hook #'ws-butler-mode)
+
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
 
 (use-package super-save
@@ -281,6 +263,30 @@
   :config
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t))
+
+(dolist (hook '(text-mode-hook LaTeX-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+(setq flyspell-sort-corrections nil)
+(setq flyspell-issue-message-flag nil)
+
+(use-package reftex
+  :ensure auctex
+  :after latex)
+
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTex-mode-hook 'flyspell-mode)
+(setq reftex-plug-into-AUCTeX t)
+(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
+;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-to-list 'fill-nobreak-predicate 'texmathp)))
+
+(load "~/.emacs.d/emacs_tools/okular/okular-latex.el")
+(add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
+(require 'okular-search)
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default

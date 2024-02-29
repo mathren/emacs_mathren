@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs complete configuration
 #+PROPERTIES: header-args:emacs-lisp :mkdirp yes
 #+STARTUP: overview
@@ -51,7 +52,7 @@ lines below instead (note that the block below is not tangled to
 			   ;; ("org"   . "https://orgmode.org/elpa/")
 			   ("elpa"  . "https://elpa.gnu.org/packages/")
 			   ("melpa-stable" . "https://stable.melpa.org/packages/")
-	                   ("org-contrib" . "https://elpa.nongnu.org/nongnu/")))
+			   ("org-contrib" . "https://elpa.nongnu.org/nongnu/")))
 
   (package-initialize)
 #+END_SRC
@@ -68,6 +69,18 @@ lines below instead (note that the block below is not tangled to
 
  I use ivy as completion framework for the minibuffer, and company for
  pop up suggestions.
+
+** Icons for dired and doom-modeline
+
+[[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
+
+This might require running =M-x all-the-icons-install-fonts= the first
+time you use it.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package all-the-icons)
+#+END_SRC
+
 
 ** Avoid creating tons of hidden files
 
@@ -155,18 +168,6 @@ lines below instead (note that the block below is not tangled to
 #+END_SRC
 
 
-** Icons for dired and doom-modeline
-
-[[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
-
-This might require running =M-x all-the-icons-install-fonts= the first
-time you use it.
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package all-the-icons)
-#+END_SRC
-
-
 ** Dired file manager
 
    Show icons in the dired file manager with [[https://github.com/jtbm37/all-the-icons-dired][all-the-icons-dired]].
@@ -225,6 +226,7 @@ time you use it.
 #+END_SRC
 
 
+<<<<<<< HEAD
 ** LaTeX related stuff
 
 *** Spell checking
@@ -271,6 +273,9 @@ Fist use reftex
   (require 'okular-search "~/.emacs.d/emacs_tools/okular-search.el")
 #+END_SRC
 
+
+=======
+>>>>>>> fix
 ** Org mode related stuff
 
 I unbind Shift+arrows from org mode, as I use these for navigating
@@ -384,6 +389,7 @@ Unbind Shift+arrows from org-agenda too.
     )
 #+END_SRC
 
+
 ** =yaml-mode= and =snakemake-mode=
 
    yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
@@ -395,6 +401,7 @@ Unbind Shift+arrows from org-agenda too.
     (add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . snakemake-mode))
     (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
+
 
 ** Python
 *** elpy
@@ -514,6 +521,7 @@ Unbind Shift+arrows from org-agenda too.
 )
 #+END_SRC
 
+
 ** editor config
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -522,6 +530,7 @@ Unbind Shift+arrows from org-agenda too.
   :config
   (editorconfig-mode 1))
 #+END_SRC
+
 
 ** multiple cursors
 
@@ -550,12 +559,24 @@ Unbind Shift+arrows from org-agenda too.
       (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
 #+END_SRC
 
-** magit LFS
+
+** magit extras
+
+For large files
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package magit-lfs
      :ensure t
      :pin melpa)
+#+END_SRC
+
+Trim white spaces only on lines that have been edited
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package ws-butler
+       :ensure t
+       :pin melpa)
+(add-hook 'prog-mode-hook #'ws-butler-mode)
 #+END_SRC
 
 ** Fontawesome
@@ -567,6 +588,7 @@ Unbind Shift+arrows from org-agenda too.
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
 #+END_SRC
 
+
 ** Autosave
 
 #+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -577,6 +599,57 @@ Unbind Shift+arrows from org-agenda too.
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t))
 #+END_SRC
+
+
+** LaTeX related stuff
+
+*** Spell checking
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(dolist (hook '(text-mode-hook LaTeX-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+(setq flyspell-sort-corrections nil)
+(setq flyspell-issue-message-flag nil)
+#+END_SRC
+
+*** References handling
+
+Fist use reftex
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package reftex
+  :ensure auctex
+  :after latex)
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTex-mode-hook 'flyspell-mode)
+  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+  ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
+  ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+#+END_SRC
+
+*** No line breaks in math mode
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-to-list 'fill-nobreak-predicate 'texmathp)))
+#+END_SRC
+
+*** Okular forward/reverse search
+
+From [[https://inthearmchair.wordpress.com/2010/11/15/latex-forward-pdf-search-with-emacs/][this old online tutorial]].
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (load "~/.emacs.d/emacs_tools/okular/okular-latex.el")
+  (add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
+  (require 'okular-search)
+#+END_SRC
+
 
 * Spell checking with multiple languages
 
@@ -623,6 +696,7 @@ For now I manually make sure the file exists.
 #+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (setq sentence-end-double-space nil)
 #+END_SRC
+
 
 * De-duplicate lines in buffer
 

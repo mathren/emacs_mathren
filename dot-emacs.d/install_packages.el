@@ -27,7 +27,8 @@
 (package-initialize)
 
 ;; define list of my packages
-(setq package-list '(all-the-icons-dired
+(setq package-list '(all-the-icons
+		     all-the-icons-dired
 		     all-the-icons-ibuffer
 		     all-the-icons-ivy
 		     all-the-icons-ivy-rich
@@ -70,6 +71,8 @@
 		     magit-lfs
 		     ;; super-save
 		     fontawesome
+		     all-the-icons-nerd-fonts
+		     ws-butler
 		     ))
 
 ; install the missing packages
