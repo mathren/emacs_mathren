@@ -47,7 +47,6 @@ default Emacs.
 (set-default 'size-indication-mode t)
 #+END_SRC
 
-
 * Append folder when two buffers have the same name
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (require 'uniquify)

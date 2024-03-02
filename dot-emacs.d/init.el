@@ -268,8 +268,8 @@
 (require 'okular-search)
 (add-hook 'LaTeX-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
 (add-hook 'tex-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
-;; (load "~/.emacs.d/emacs_tools/okular/okular-latex.el")
 
+;; (load "~/.emacs.d/emacs_tools/okular/okular-latex.el") --------------------
 ;; ;; only start server for okular comms when in latex mode
 ;; (add-hook 'LaTeX-mode-hook 'server-start)
 (setq TeX-PDF-mode t) ;; use pdflatex instead of latex
@@ -292,6 +292,7 @@
 (setq TeX-source-correlate-start-server t)
 (setq TeX-view-program-selection  '((output-pdf "PDF Viewer")))
 (setq TeX-view-program-list '(("PDF Viewer" "okular --unique %o#src:%n%b")))
+;; end okular-latex.el -----------------------------------------------------
 
 (dolist (hook '(text-mode-hook LaTeX-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
