@@ -1,4 +1,3 @@
-
 #+TITLE: Emacs complete configuration
 #+PROPERTIES: header-args:emacs-lisp :mkdirp yes
 #+STARTUP: overview
@@ -226,56 +225,6 @@ time you use it.
 #+END_SRC
 
 
-<<<<<<< HEAD
-** LaTeX related stuff
-
-*** Spell checking
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(dolist (hook '(text-mode-hook LaTeX-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
-(setq flyspell-sort-corrections nil)
-(setq flyspell-issue-message-flag nil)
-#+END_SRC
-
-*** References handling
-
-Fist use reftex
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package reftex
-  :ensure auctex
-  :after latex)
-#+END_SRC
-
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (add-hook 'LaTex-mode-hook 'flyspell-mode)
-  (setq reftex-plug-into-AUCTeX t)
-  (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
-  ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
-  ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
-#+END_SRC
-
-*** No line breaks in math mode
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (add-to-list 'fill-nobreak-predicate 'texmathp)))
-#+END_SRC
-
-*** Okular forward/reverse search
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (load "~/.emacs.d/emacs_tools/okular-latex.el")
-  (require 'okular-search "~/.emacs.d/emacs_tools/okular-search.el")
-#+END_SRC
-
-
-=======
->>>>>>> fix
 ** Org mode related stuff
 
 I unbind Shift+arrows from org mode, as I use these for navigating
