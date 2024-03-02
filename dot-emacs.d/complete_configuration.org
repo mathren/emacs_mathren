@@ -552,6 +552,46 @@ Trim white spaces only on lines that have been edited
 
 ** LaTeX related stuff
 
+*** Okular forward/reverse search
+
+From [[https://inthearmchair.wordpress.com/2010/11/15/latex-forward-pdf-search-with-emacs/][this old online tutorial]].
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
+  (require 'okular-search)
+  (add-hook 'LaTeX-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
+  (add-hook 'tex-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
+  ;; (load "~/.emacs.d/emacs_tools/okular/okular-latex.el")
+#+END_SRC
+
+Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], lightly edited:
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+;; ;; only start server for okular comms when in latex mode
+;; (add-hook 'LaTeX-mode-hook 'server-start)
+(setq TeX-PDF-mode t) ;; use pdflatex instead of latex
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+;; (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+
+;; ;; Enable synctex correlation
+;(setq TeX-source-correlate-method 'synctex)
+;; Enable synctex generation. Even though the command show as "latex" pdflatex is actually called
+(custom-set-variables '(LaTeX-command "latex -synctex=1"))
+
+;; (setq TeX-source-correlate-mode t)
+(setq TeX-source-correlate-start-server t)
+(setq TeX-view-program-selection  '((output-pdf "PDF Viewer")))
+(setq TeX-view-program-list '(("PDF Viewer" "okular --unique %o#src:%n%b")))
+#+END_SRC
+
+
 *** Spell checking
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -559,26 +599,6 @@ Trim white spaces only on lines that have been edited
   (add-hook hook (lambda () (flyspell-mode 1))))
 (setq flyspell-sort-corrections nil)
 (setq flyspell-issue-message-flag nil)
-#+END_SRC
-
-*** References handling
-
-Fist use reftex
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package reftex
-  :ensure auctex
-  :after latex)
-#+END_SRC
-
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (add-hook 'LaTex-mode-hook 'flyspell-mode)
-  (setq reftex-plug-into-AUCTeX t)
-  (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
-  ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
-  ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 #+END_SRC
 
 *** No line breaks in math mode
@@ -589,16 +609,22 @@ Fist use reftex
             (add-to-list 'fill-nobreak-predicate 'texmathp)))
 #+END_SRC
 
-*** Okular forward/reverse search
-
-From [[https://inthearmchair.wordpress.com/2010/11/15/latex-forward-pdf-search-with-emacs/][this old online tutorial]].
+*** References handling
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (load "~/.emacs.d/emacs_tools/okular/okular-latex.el")
-  (add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
-  (require 'okular-search)
+(use-package reftex
+  :ensure auctex
+  :after latex)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTex-mode-hook 'flyspell-mode)
+  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+  ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
+  ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+#+END_SRC
 
 * Spell checking with multiple languages
 

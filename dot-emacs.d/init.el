@@ -264,10 +264,43 @@
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t))
 
+(add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
+(require 'okular-search)
+(add-hook 'LaTeX-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
+(add-hook 'tex-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
+;; (load "~/.emacs.d/emacs_tools/okular/okular-latex.el")
+
+;; ;; only start server for okular comms when in latex mode
+;; (add-hook 'LaTeX-mode-hook 'server-start)
+(setq TeX-PDF-mode t) ;; use pdflatex instead of latex
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+;; (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+
+;; ;; Enable synctex correlation
+;(setq TeX-source-correlate-method 'synctex)
+;; Enable synctex generation. Even though the command show as "latex" pdflatex is actually called
+(custom-set-variables '(LaTeX-command "latex -synctex=1"))
+
+;; (setq TeX-source-correlate-mode t)
+(setq TeX-source-correlate-start-server t)
+(setq TeX-view-program-selection  '((output-pdf "PDF Viewer")))
+(setq TeX-view-program-list '(("PDF Viewer" "okular --unique %o#src:%n%b")))
+
 (dolist (hook '(text-mode-hook LaTeX-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 (setq flyspell-sort-corrections nil)
 (setq flyspell-issue-message-flag nil)
+
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
 (use-package reftex
   :ensure auctex
@@ -279,14 +312,6 @@
 (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
 ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
 ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
-
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (add-to-list 'fill-nobreak-predicate 'texmathp)))
-
-(load "~/.emacs.d/emacs_tools/okular/okular-latex.el")
-(add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
-(require 'okular-search)
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default

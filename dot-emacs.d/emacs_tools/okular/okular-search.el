@@ -1,3 +1,30 @@
+;;; (X)Emacs frontend to forward search with kdvi. See the section on
+;;; FORWARD SEARCH in the kdvi manual for more information on forward
+;;; search, and for an explanation how to use this script. This script
+;;; is a modified version of the script "xdvi-search.el" by Stefan
+;;; Ulrich, version 2000/03/13. The
+;;; modifications were performed by Stefan Kebekus
+;;; . Tested with Emacs 20.7.1 and Xemacs 21.4.
+;;;
+;;; This program is free software; you can redistribute it and/or
+;;; modify it under the terms of the GNU General Public License as
+;;; published by the Free Software Foundation; either version 2 of the
+;;; License, or (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+;;; General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program; if not, write to the Free Software
+;;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+;;; 02110-1301, USA.
+;;;
+;;; Please report bugs or improvements, etc. via the "Report bug"-Menu
+;;; of okular.
+;;;
+
 (defvar okular-script "okular"
   "*Name of start script for okular.")
 
@@ -29,7 +56,6 @@ is used (which see)."
 		       "--unique" (concat "file:" pdf-file "#src:" current-line filename)
 		       )))))
 
-
 (defun okular-get-masterfile (file)
   "Small helper function for AucTeX compatibility.
 Converts the special value t that TeX-master might be set to
@@ -37,8 +63,6 @@ into a real file name."
   (if (eq file t)
       (buffer-file-name)
     file))
-
-
 
 (defun okular-master-file-name ()
   "Emulate AucTeX's TeX-master-file function.
@@ -63,13 +87,13 @@ Partly copied from tex.el's TeX-master-file and TeX-add-local-master."
 		    (beginning-of-line 1))
 		  (insert prefix "TeX-master: " (prin1-to-string master-file) "\n"))
 	      (insert "\n%%% Local Variables: "
-		      "\n%%% mode: " (substring (symbol-name major-mode) 0 -5)
+;;; mode is of little use without AucTeX ...
+;;;		      "\n%%% mode: " (substring (symbol-name major-mode) 0 -5)
 		      "\n%%% TeX-master: " (prin1-to-string master-file)
 		      "\n%%% End: \n"))
 	    (save-buffer)
 	    (message "(local variables written.)"))
 	(message "(nothing written.)"))
       (set (make-local-variable 'TeX-master) master-file))))
-
 
 (provide 'okular-search)
