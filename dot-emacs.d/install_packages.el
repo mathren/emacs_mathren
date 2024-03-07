@@ -73,6 +73,7 @@
 		     fontawesome
 		     all-the-icons-nerd-fonts
 		     ws-butler
+		     htmlize
 		     ))
 
 ; install the missing packages
