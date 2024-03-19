@@ -94,8 +94,8 @@
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)
-(setq mesa-default-version "r23.05.1")
-(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa_23.05.01/mesa-r23.05.1/")
+(setq mesa-default-version "r24.03.1")
+(setq mesa-version-mesa-dir "/home/math/Documents/Research/codes/mesa/mesa-r24.03.1/")
 (setq mesa-mode-enforce-formatting-default t)
 
 
@@ -104,6 +104,7 @@
 (add-to-list 'auto-mode-alist '("/inlist[^/]*$" . mesa-mode))
 (add-to-list 'auto-mode-alist '("\\.defaults$" . (lambda () (mesa-mode) (f90-mode) (view-mode))))
 (add-to-list 'auto-mode-alist '("\\.inc$" . (lambda () (f90-mode) (view-mode))))
+(add-to-list 'auto-mode-alist '("\\.list$" . (lambda () (f90-mode) (view-mode))))
 
 ;; ;; hide show mode configuration
 (add-hook 'f90-mode-hook
