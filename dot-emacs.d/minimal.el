@@ -77,8 +77,7 @@
                 (interactive)
                 (revert-buffer :ignore-auto)))
 
-(global-set-key (kbd "<f5>")
-		(ibuffer))
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (setq gc-cons-threshold 25000000)
 (setq backup-directory-alist
