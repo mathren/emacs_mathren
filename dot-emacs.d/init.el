@@ -131,6 +131,7 @@
 	   (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
 	   "* %?\n %T")
 	  ))
+  (setq org-latex-with-hyperref nil)
   )
 
 (use-package org-agenda
@@ -140,6 +141,51 @@
    (define-key org-agenda-mode-map (kbd "<S-down>") nil)
    (define-key org-agenda-mode-map (kbd "<S-up>") nil)
 )
+
+(defun reorder-org-headlines-dates ()
+  "Extract dates from Org mode headlines, sort them chronologically
+  from oldest to newest, and replace them in the headlines."
+  (interactive)
+  (when (derived-mode-p 'org-mode)
+    (let* ((date-regexp "<\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\) \\([A-Za-z]\\{3\\}\\)>")
+           (headlines '())
+           (dates '())
+           (point-min (point-min))
+           (point-max (point-max)))
+
+      ;; Extract dates and their positions
+      (save-excursion
+        (goto-char point-min)
+        (while (re-search-forward (concat "^\\*+ " date-regexp) point-max t)
+          (let* ((date (match-string 1))
+                 (day-of-week (match-string 2))
+                 (start (line-beginning-position))
+                 (end (save-excursion (end-of-line) (point))))
+            (push (list start end date day-of-week) headlines)
+            (push date dates)))) ; Store dates as strings
+
+      ;; Sort dates in ascending order
+      (setq dates (sort dates 'string<))
+
+      ;; Debugging: Print sorted dates
+      ;; (message "Sorted dates: %s" dates)
+
+      ;; Replace old dates with sorted dates
+      (save-excursion
+        (let ((date-list (reverse dates))) ; Reverse the list to apply oldest date first
+          (dolist (headline headlines)
+            (let* ((start (car headline))
+                   (end (cadr headline))
+                   (old-date (nth 2 headline))
+                   (day-of-week (nth 3 headline))
+                   (new-date (pop date-list))) ; Pop from reversed list
+              (goto-char start)
+              (re-search-forward date-regexp end t)
+              (replace-match (concat "<" new-date " " day-of-week ">")))))))))
+
+(setq org-latex-packages-alist '(("left=25mm, right=25mm, top=25mm, bottom=25mm" "geometry" nil)))
+(customize-set-value 'org-latex-hyperref-template
+		     "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true,\n citecolor=blue,\n linkcolor=blue,\n urlcolor=blue\n}\n")
 
 (use-package org-bullets
   :after org
