@@ -341,6 +341,19 @@ Define headers for latex export
   (setq org-export-headline-levels 4)
 #+END_SRC
 
+Define function for changing timestamps in export:
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(defun mr/filter-timestamp (trans back _comm)
+  "Remove <> around time-stamps."
+  (pcase back
+    (`html
+     (replace-regexp-in-string "&[lg]t;" "" trans))
+    (`latex
+     (replace-regexp-in-string "[<>]" "" trans))))
+#+END_SRC
+
+
 *** Nicer bullets and other eye-candy
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el

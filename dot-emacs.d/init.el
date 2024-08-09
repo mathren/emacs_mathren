@@ -190,6 +190,14 @@
 (setq org-export-with-section-numbers nil)
 (setq org-export-headline-levels 4)
 
+(defun mr/filter-timestamp (trans back _comm)
+  "Remove <> around time-stamps."
+  (pcase back
+    (`html
+     (replace-regexp-in-string "&[lg]t;" "" trans))
+    (`latex
+     (replace-regexp-in-string "[<>]" "" trans))))
+
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
