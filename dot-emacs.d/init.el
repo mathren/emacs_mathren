@@ -198,6 +198,17 @@
     (`latex
      (replace-regexp-in-string "[<>]" "" trans))))
 
+(defun mr/export-odot-html (backend)
+  "Custom filter to replace LaTeX \odot with HTML sun symbol `&#9737;`."
+  (when (org-export-derived-backend-p backend 'html)
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward "\\\\odot" nil t)
+        (replace-match "☉" nil t)))))
+
+
+(add-hook 'org-export-before-processing-hook 'mr/export-odot-html)
+
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)

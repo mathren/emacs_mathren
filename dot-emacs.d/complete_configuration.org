@@ -353,6 +353,21 @@ Define function for changing timestamps in export:
      (replace-regexp-in-string "[<>]" "" trans))))
 #+END_SRC
 
+Fix exporting of Sun symbol:
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(defun mr/export-odot-html (backend)
+  "Custom filter to replace LaTeX \odot with HTML sun symbol `&#9737;`."
+  (when (org-export-derived-backend-p backend 'html)
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward "\\\\odot" nil t)
+        (replace-match "☉" nil t)))))
+
+
+(add-hook 'org-export-before-processing-hook 'mr/export-odot-html)
+#+END_SRC
+
 
 *** Nicer bullets and other eye-candy
 

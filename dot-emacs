@@ -26,7 +26,7 @@
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
    '("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd" default))
- '(ein:output-area-inlined-images t t)
+ '(ein:output-area-inlined-images t)
  '(elfeed-goodies/entry-pane-position 'bottom)
  '(elfeed-goodies/entry-pane-size 0.4)
  '(elfeed-goodies/powerline-default-separator 'slant)
@@ -43,6 +43,16 @@
  '(org-agenda-files
    '("/home/math/Documents/Research/Todos.org" "/home/math/Documents/Teaching/AstrocomNY/XRB_GW_connection/Nachi_summer2021.org" "/home/math/Documents/Research/Projects/weak_G_stars/private_notes.org" "/home/math/Documents/Research/Projects/weak_G_stars/README.org" "/home/math/Documents/Mathieu/personale/US_bureaucracy/housing_docs/Housing_search.org" "/home/math/Documents/Research/Projects/PP/FLASH/FLASH_notes.org"))
  '(org-download-screenshot-method "xclip -selection clipboard -t image/png -o > %s")
+ '(org-emphasis-alist
+   '(("*" bold)
+     ("/" italic)
+     ("_" underline)
+     ("=" org-verbatim verbatim)
+     ("~" org-code verbatim)
+     ("+"
+      (:strike-through t))
+     ("!"
+      (:overline t))))
  '(org-file-apps
    '((auto-mode . emacs)
      ("\\.mm\\'" . default)
