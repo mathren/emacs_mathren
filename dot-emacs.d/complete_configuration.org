@@ -73,13 +73,59 @@ lines below instead (note that the block below is not tangled to
 
 [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 
-This might require running =M-x all-the-icons-install-fonts= the first
+Requires running =M-x all-the-icons-install-fonts= the first
 time you use it.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (use-package all-the-icons)
 #+END_SRC
 
+*** Script to install nerd fonts
+
+#+BEGIN_SRC sh
+#!/bin/bash
+
+declare -a fonts=(
+    BitstreamVeraSansMono
+    CodeNewRoman
+    DroidSansMono
+    FiraCode
+    FiraMono
+    Go-Mono
+    Hack
+    Hermit
+    JetBrainsMono
+    Meslo
+    Noto
+    Overpass
+    ProggyClean
+    RobotoMono
+    SourceCodePro
+    SpaceMono
+    Ubuntu
+    UbuntuMono
+)
+
+version='2.1.0'
+fonts_dir="${HOME}/.local/share/fonts"
+
+if [[ ! -d "$fonts_dir" ]]; then
+    mkdir -p "$fonts_dir"
+fi
+
+for font in "${fonts[@]}"; do
+    zip_file="${font}.zip"
+    download_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/${zip_file}"
+    echo "Downloading $download_url"
+    wget "$download_url"
+    unzip "$zip_file" -d "$fonts_dir"
+    rm "$zip_file"
+done
+
+find "$fonts_dir" -name '*Windows Compatible*' -delete
+
+fc-cache -fv
+#+END_SRC
 
 ** Avoid creating tons of hidden files
 
@@ -614,6 +660,7 @@ Trim white spaces only on lines that have been edited
   (add-hook 'prog-mode-hook #'ws-butler-mode)
 #+END_SRC
 
+
 ** Fontawesome
 
  [[https://github.com/emacsorphanage/fontawesome][This]] package allows to use the fontawesome icons. Requires this fix
@@ -633,6 +680,14 @@ Trim white spaces only on lines that have been edited
   :config
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t))
+#+END_SRC
+
+
+** HTTP server
+
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package simple-httpd
+  :ensure t)
 #+END_SRC
 
 

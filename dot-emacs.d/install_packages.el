@@ -74,6 +74,7 @@
 		     all-the-icons-nerd-fonts
 		     ws-butler
 		     htmlize
+		     simple-httpd
 		     ))
 
 ; install the missing packages

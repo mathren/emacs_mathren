@@ -332,6 +332,9 @@
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t))
 
+(use-package simple-httpd
+  :ensure t)
+
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
 (require 'okular-search)
 (add-hook 'LaTeX-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
