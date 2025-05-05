@@ -37,7 +37,6 @@
 		     company-box
 		     counsel
 		     dired-icon
-		     dired-single
 		     doom-modeline
 		     ein
 		     elpy
@@ -60,7 +59,6 @@
 		     use-package
 		     ;; which-key
 		     ;; yaml-mode
-		     ;; eglot
 		     company-prescient
 		     company-fuzzy
 		     company-auctex
@@ -75,6 +73,7 @@
 		     ws-butler
 		     htmlize
 		     simple-httpd
+		     sudo-edit
 		     ))
 
 ; install the missing packages
