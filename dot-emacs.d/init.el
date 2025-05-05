@@ -72,7 +72,6 @@
   :bind (("C-x C-j" . dired-jump))
   :custom ((dired-listing-switches "-agho --group-directories-first")))
 (setq global-auto-revert-non-file-buffers t)
-(use-package dired-single)
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
