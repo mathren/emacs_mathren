@@ -228,8 +228,8 @@ fc-cache -fv
     :custom ((dired-listing-switches "-agho --group-directories-first")))
   (setq global-auto-revert-non-file-buffers t)
 
-  (use-package all-the-icons-dired
-    :hook (dired-mode . all-the-icons-dired-mode))
+  (use-package nerd-icons-dired
+    :hook (dired-mode . nerd-icons-dired-mode))
 #+END_SRC
 
 
