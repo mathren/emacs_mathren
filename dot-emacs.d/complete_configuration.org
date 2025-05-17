@@ -29,7 +29,6 @@ setup to have a smooth workflow.
 (server-start)
 #+END_SRC
 
-
 * Initialize packages
 
 Define a list of packages I use, and install them if they are not
