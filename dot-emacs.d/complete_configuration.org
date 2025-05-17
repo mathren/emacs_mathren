@@ -164,8 +164,8 @@ f** Avoid creating tons of hidden files
 ** Language server protocol and =eglot=
 
   I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in
-  Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]) and python (using [[https://pypi.org/project/python-language-server/][python language server]] -  =pip install
-  python-lsp-server=)
+  Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =clangd=) and python (using
+  =python3-pylsp=).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; eglot
