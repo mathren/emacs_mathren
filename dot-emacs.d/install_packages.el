@@ -27,17 +27,13 @@
 (package-initialize)
 
 ;; define list of my packages
-(setq package-list '(;; all-the-icons
-		     ;; all-the-icons-dired
-		     ;; all-the-icons-ibuffer
-		     ;; all-the-icons-ivy
-		     ;; all-the-icons-ivy-rich
+(setq package-list '(fzf
 		     nerd-icons
 		     nerd-icons-completion
 		     nerd-icons-ibuffer
 		     nerd-icons-ivy-rich
 		     nerd-icons-dired
-		     snakemake-mode
+		     ; snakemake-mode
 		     auctex
 		     company-box
 		     counsel
@@ -63,7 +59,7 @@
 		     swiper
 		     use-package
 		     ;; which-key
-		     ;; yaml-mode
+		     yaml-mode
 		     company-prescient
 		     company-fuzzy
 		     company-auctex
