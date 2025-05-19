@@ -84,6 +84,24 @@ Only re-applies theme if the mode has changed."
 #+END_SRC
 
 
+** Font
+
+Try manually installed font. To install:
+
+#+BEGIN_SRC bash
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts
+wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+unzip JetBrainsMono.zip
+fc-cache -fv
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+  (set-face-attribute 'default nil
+		      :family "JetBrainsMono Nerd Font Mono"
+		      :height 120) ;; 120 = 12pt
+#+END_SRC
+
 * Append folder when two buffers have the same name
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (require 'uniquify)
