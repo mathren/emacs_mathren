@@ -22,8 +22,8 @@
   "Apply a light or dark theme based on GNOME's current color scheme.
 Falls back to dark theme if `gsettings` is unavailable.
 Only re-applies theme if the mode has changed."
-  (let* ((dark-theme 'wombat)             ;; Replace with your preferred dark theme
-         (light-theme 'adwaita)            ;; Replace with your preferred light theme
+  (let* ((dark-theme 'wombat)   ;; Replace with your preferred dark theme
+         (light-theme 'adwaita) ;; Replace with your preferred light theme
          (gsettings (executable-find "gsettings"))
          (mode
           (cond
@@ -42,6 +42,10 @@ Only re-applies theme if the mode has changed."
       (load-theme (if (eq mode 'prefer-dark) dark-theme light-theme) t))))
 
 (add-hook 'buffer-list-update-hook #'mr/apply-theme-based-on-gnome)
+
+(set-face-attribute 'default nil
+		    :family "JetBrainsMono Nerd Font Mono"
+		    :height 120) ;; 120 = 12pt
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)

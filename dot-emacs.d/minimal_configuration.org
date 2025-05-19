@@ -29,9 +29,6 @@ menus).
 
 I always want line and column numbers.
 
-And I am currently using the =wombat= theme, which is part of the
-default Emacs.
-
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (setq frame-title-format '("Emacs %@ %*" (:eval (if (buffer-name)(abbreviate-file-name (buffer-name)) "%b %*"))))
 (setq ring-bell-function 'ignore)
@@ -51,7 +48,8 @@ default Emacs.
 
 I used GNOME and decide the theme to load based on the OS preferences.
 Default light theme is =adwaita=. If =gsettings= is not available, or if
-it fails, defaults to the dark theme =wombat:=
+it fails, defaults to the dark theme =wombat=. Both themes are part of
+Emacs default installation and can easily be changed
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (defvar mr/current-theme-mode nil
@@ -61,8 +59,8 @@ it fails, defaults to the dark theme =wombat:=
   "Apply a light or dark theme based on GNOME's current color scheme.
 Falls back to dark theme if `gsettings` is unavailable.
 Only re-applies theme if the mode has changed."
-  (let* ((dark-theme 'wombat)             ;; Replace with your preferred dark theme
-         (light-theme 'adwaita)            ;; Replace with your preferred light theme
+  (let* ((dark-theme 'wombat)   ;; Replace with your preferred dark theme
+         (light-theme 'adwaita) ;; Replace with your preferred light theme
          (gsettings (executable-find "gsettings"))
          (mode
           (cond
@@ -82,7 +80,6 @@ Only re-applies theme if the mode has changed."
 
 (add-hook 'buffer-list-update-hook #'mr/apply-theme-based-on-gnome)
 #+END_SRC
-
 
 ** Font
 
