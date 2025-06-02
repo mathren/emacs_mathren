@@ -75,6 +75,8 @@
 		     ws-butler
 		     htmlize
 		     simple-httpd
+		     sudo-edit
+		     all-the-icons
 		     ))
 
 ; install the missing packages

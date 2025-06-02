@@ -7,12 +7,12 @@
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
  '(TeX-view-predicate-list '((nil nil)))
- '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)))
+ '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)) t)
  '(TeX-view-program-selection
    '((output-pdf "Okular")
      (output-pdf "dvips and gv")
      (output-dvi "Evince")
-     (output-html "xdg-open")))
+     (output-html "xdg-open")) t)
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
  '(arxiv-author-list-maximum 5)
@@ -33,7 +33,7 @@
  '(elfeed-search-date-format '("%d.%m.%y" 10 :left))
  '(elfeed-search-remain-on-entry t)
  '(elfeed-show-entry-switch 'pop-to-buffer)
- '(elpy-rpc-python-command "python3")
+ '(elpy-rpc-python-command "python3" t)
  '(elpy-rpc-virtualenv-path 'current)
  '(fci-rule-color "#383838")
  '(global-display-line-numbers-mode t)
@@ -59,7 +59,7 @@
      (".html" . "firefox %s")
      (".pdf" . "okular %s")))
  '(package-selected-packages
-   '(simple-httpd htmlize ws-butler all-the-icons-completion all-the-icons-nerd-fonts fontawesome f super-save ox-publish magit-lfs multiple-cursors arxiv-mode elfeed-goodies elfeed-org mu4e ivy-fuz company-prescient company-auctex company-bibtex company-fuzzy eglot ripgrep ein eproject markdown-mode editorconfig ac-html deadgrep pdf-tools helm-org blacken org-alert elfeed python-black yaml-mode jedi elpy eshell-prompt-extras math-preview ivy-pass pass org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired ivy org-bullets rainbow-delimiters which-key dired-icon magit flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex))
+   '(all-the-icons gh-md fzf elpy all-the-icons-nerd-fonts nerd-icons-ivy-rich nerd-icons-ibuffer nerd-icons-completion nerd-icons-dired which-key-posframe sudo-edit org-caldav snakemake-mode simple-httpd htmlize ws-butler all-the-icons-completion fontawesome f super-save ox-publish magit-lfs multiple-cursors arxiv-mode elfeed-goodies elfeed-org mu4e ivy-fuz company-prescient company-auctex company-bibtex company-fuzzy eglot ripgrep ein eproject markdown-mode editorconfig ac-html deadgrep pdf-tools helm-org blacken org-alert elfeed python-black yaml-mode jedi eshell-prompt-extras math-preview ivy-pass pass org-download helpful doom-modeline doom-themes diredful dired-single diredfl no-littering company-box ivy-prescient counsel major-mode-icons ivy org-bullets rainbow-delimiters which-key dired-icon magit flyspell-popup use-package tramp treemacs-magit org jedi-core flycheck dashboard auctex))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . main\.tex)))
  '(send-mail-function 'mailclient-send-it)
