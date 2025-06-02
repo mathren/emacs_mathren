@@ -946,6 +946,7 @@ Using the macro query above, I defined a way to jump.
 * Ongoing development
 
 When ready tangle to =:tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el=
+(=C-cvt=).
 
 ** emails in emacs with =mu4e=
 
