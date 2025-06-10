@@ -810,9 +810,7 @@ Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], light
 ** Tramp
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(setq tramp-default-method "ssh")
-(setq tramp-ssh-controlmaster-options
-      "-o ControlMaster=auto -o ControlPath=/tmp/master-%%r@%%h:%%p -o ControlPersist=yes")
+(setq tramp-default-method "scp")
 #+END_SRC
 
 * Spell checking with multiple languages
