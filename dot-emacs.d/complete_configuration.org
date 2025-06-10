@@ -93,6 +93,7 @@ lines below instead (note that the block below is not tangled to
 	   fzf/window-height 15))
 #+END_SRC
 
+
 ** Icons for dired and doom-modeline
 
 [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
@@ -805,6 +806,14 @@ Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], light
   ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 #+END_SRC
 
+
+** Tramp
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(setq tramp-default-method "ssh")
+(setq tramp-ssh-controlmaster-options
+      "-o ControlMaster=auto -o ControlPath=/tmp/master-%%r@%%h:%%p -o ControlPersist=yes")
+#+END_SRC
 
 * Spell checking with multiple languages
 

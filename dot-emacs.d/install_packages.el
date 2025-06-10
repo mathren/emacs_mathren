@@ -76,6 +76,12 @@
 		     simple-httpd
 		     sudo-edit
 		     all-the-icons
+		     all-the-icons-completion
+		     all-the-icons-dired
+		     all-the-icons-gnus
+		     all-the-icons-ibuffer
+		     all-the-icons-ivy
+		     all-the-icons-ivy-rich
 		     ))
 
 ; install the missing packages

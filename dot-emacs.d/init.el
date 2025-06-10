@@ -415,6 +415,10 @@
 ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
 ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 
+(setq tramp-default-method "ssh")
+(setq tramp-ssh-controlmaster-options
+      "-o ControlMaster=auto -o ControlPath=/tmp/master-%%r@%%h:%%p -o ControlPersist=yes")
+
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
   ;; dictionary' even though multiple dictionaries will be configured
