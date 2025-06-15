@@ -812,6 +812,16 @@ Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], light
   ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 #+END_SRC
 
+
+** Tramp
+
+Remote editing with my local configuration
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package tramp
+  :custom
+  (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/")))
+#+END_SRC
 * Spell checking with multiple languages
 
   I took this from [[https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html][here]], but I configure Italian, French, and English
