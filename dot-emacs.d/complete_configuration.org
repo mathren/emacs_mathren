@@ -532,28 +532,15 @@ Fix exporting of Sun symbol:
 
   See [[https://elpy.readthedocs.io/en/latest/introduction.html][documentation]] for dependencies
 
- #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-   (use-package elpy
-   :ensure t
-   :defer t
-   :init
-   (advice-add 'python-mode :before 'elpy-enable))
-   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-   (setq elpy-rpc-python-command "python3")
- #+END_SRC
-
- # To avoid the following error:
-
- # #+BEGIN_SRC emacs-lisp
- #    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
- #    error in process sentinel: elpy-rpc--default-error-callback: peculiar error: "exited abnormally with code 1"
- #    error in process sentinel: peculiar error: "exited abnormally with code 1"
- #    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
- # #+END_SRC
-
- # Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
- # customize-variable elpy-rpc-python-command= and set it to =current=.
-
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package elpy
+      :ensure t
+      :defer t
+      :init
+      ;; (advice-add 'python-mode :before 'elpy-enable))
+      (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+      (setq elpy-rpc-python-command "python3")
+  #+END_SRC
 
 *** Formatting
 
@@ -818,10 +805,13 @@ Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], light
 Remote editing with my local configuration
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package tramp
-  :custom
-  (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/")))
+  (use-package tramp
+    :custom
+    (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/"))
+    )
+  (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 #+END_SRC
+
 * Spell checking with multiple languages
 
   I took this from [[https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html][here]], but I configure Italian, French, and English

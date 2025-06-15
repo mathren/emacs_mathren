@@ -270,12 +270,12 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (use-package elpy
-:ensure t
-:defer t
-:init
-(advice-add 'python-mode :before 'elpy-enable))
-(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-(setq elpy-rpc-python-command "python3")
+    :ensure t
+    :defer t
+    :init
+    ;; (advice-add 'python-mode :before 'elpy-enable))
+    (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+    (setq elpy-rpc-python-command "python3")
 
 ;; Install:
 ;; pip install black
@@ -423,7 +423,9 @@
 
 (use-package tramp
   :custom
-  (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/")))
+  (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/"))
+  )
+(setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
