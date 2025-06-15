@@ -31,11 +31,15 @@
 ;; eglot
 (use-package eglot :ensure t)
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
 (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'f90-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
+;; (add-hook 'c-mode-hook 'my/eglot-ensure-local)
+;; (add-hook 'c++-mode-hook 'my/eglot-ensure-local)
+;; (add-hook 'f90-mode-hook 'my/eglot-ensure-local)
+;; (add-hook 'python-mode-hook 'my/eglot-ensure-local)
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
@@ -322,7 +326,9 @@
 (use-package editorconfig
   :ensure t
   :config
-  (editorconfig-mode 1))
+  (editorconfig-mode 1)
+  ; exclude tramp
+  (add-to-list 'editorconfig-exclude-modes 'tramp-mode))
 
 (use-package multiple-cursors
   :ensure t
@@ -414,8 +420,6 @@
 (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
 ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
 ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
-
-(setq tramp-default-method "scp")
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default

@@ -82,6 +82,7 @@
 		     all-the-icons-ibuffer
 		     all-the-icons-ivy
 		     all-the-icons-ivy-rich
+		     markdown-mode
 		     ))
 
 ; install the missing packages
