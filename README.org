@@ -1,6 +1,6 @@
 * Emacs configuration
 
-Tested and working with emacs =26.3= and now testing on =28.1.=
+Tested and currently working with emacs =29.2.=
 
 I manage my emacs configuration with GNU stow [[file:dot-emacs.d/README.org::*How%20I%20manage%20my%20configuration][here]].  See =README.org=
 inside =dot-emacs.d/= for the description of the configuration itself,
@@ -14,7 +14,6 @@ created by changing some emacs faces.
    org notes file, and [[https://github.com/manateelazycat/aweshell][aweshell]] pop-up terminal in the bottom.
 
    [[file:screenshot.jpg]]
-
 
 ** Installing emacs 28.1 on Ubuntu 20.04
 
@@ -31,13 +30,14 @@ created by changing some emacs faces.
   make install
 #+END_SRC
 
-** TODO (finish) Installing emacs 29.1 from repository
 
- *Prerequisite*: install gcc-10, e.g. [[https://ahelpme.com/linux/ubuntu/install-and-make-gnu-gcc-10-default-in-ubuntu-20-04-focal/][this guide]]
+** Installing emacs 29.1 from repository
+
+ *Prerequisite*: install =gcc-10=, e.g. [[https://ahelpme.com/linux/ubuntu/install-and-make-gnu-gcc-10-default-in-ubuntu-20-04-focal/][this guide]]
 
 
  1. Clone from =https://git.savannah.gnu.org/git/emacs.git= the
-    =emacs-29.1= branch (commit =a9b28224af0f73d1fe0f422e9b318c5b91af889b=).
+    =emacs-29.2= branch
  2. Run =./autogen.sh=
  3. Configure with:
     #+begin_src bash

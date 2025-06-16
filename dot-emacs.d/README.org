@@ -40,6 +40,7 @@
  To do so, define in your =~/.bashrc= (or equivalent) the following function:
 
  #+begin_src bash
+##emacs
 function emacs_launcher
 {
 
@@ -66,16 +67,16 @@ function emacs_launcher
     # if not start emacs daemon
     if [ $? -ne 0 ]; then
 	echo "starting emacs daemon..."
-	/usr/bin/emacs -l ~/.emacs.d/init.el --daemon
+	/usr/local/bin/emacs -l ~/.emacs.d/init.el --daemon
     fi
-    # check for ipen frames
-    /usr/bin/emacsclient -e "(frames-on-display-list \"$DISPLAY\")" &>/dev/null
+    # check for open frames
+    /usr/local/bin/emacsclient -e "(frames-on-display-list \"$DISPLAY\")" &>/dev/null
     if [ $? -eq 0 ]; then
 	# echo "open frames detected"
-	/usr/bin/emacsclient -n -t "$@"
+	/usr/local/bin/emacsclient -n -t "$@"
     else
 	# echo "no open frame"
-	/usr/bin/emacsclient -n -c "$@"
+	/usr/local/bin/emacsclient -n -c "$@"
     fi
 
 }
