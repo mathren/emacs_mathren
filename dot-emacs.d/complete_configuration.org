@@ -540,7 +540,7 @@ Fix exporting of Sun symbol:
       ;; (advice-add 'python-mode :before 'elpy-enable))
       (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
       (setq elpy-rpc-python-command "python3")
-  #+END_SRC
+#+END_SRC
 
 *** Formatting
 
@@ -809,8 +809,9 @@ Remote editing with my local configuration
     :custom
     (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/"))
     )
-  (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
+  ;; (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 #+END_SRC
+
 
 * Spell checking with multiple languages
 
