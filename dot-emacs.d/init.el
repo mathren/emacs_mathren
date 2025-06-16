@@ -275,7 +275,7 @@
     :init
     ;; (advice-add 'python-mode :before 'elpy-enable))
     (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-    (setq elpy-rpc-python-command "python3")
+    (setq elpy-rpc-python-command "python3"))
 
 ;; Install:
 ;; pip install black

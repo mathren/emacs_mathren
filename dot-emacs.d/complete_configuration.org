@@ -539,7 +539,7 @@ Fix exporting of Sun symbol:
       :init
       ;; (advice-add 'python-mode :before 'elpy-enable))
       (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-      (setq elpy-rpc-python-command "python3")
+      (setq elpy-rpc-python-command "python3"))
 #+END_SRC
 
 *** Formatting
