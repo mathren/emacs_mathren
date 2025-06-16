@@ -6,6 +6,24 @@
 
 (require 'use-package)
 
+(use-package fzf
+  :ensure t
+  :bind (("C-c f f" . fzf)               ;; FZF in current directory
+	 ("C-c f r" . fzf-recentf)       ;; FZF recent files
+	 ("C-c f g" . fzf-git-files))   ;; FZF Git tracked files
+  :commands (fzf fzf-directory fzf-git-files fzf-recentf)
+  :config
+  (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+	fzf/executable "fzf"
+	fzf/git-grep-args "-i --line-number %s"
+	;; command used for `fzf-grep-*` functions
+	;; example usage for ripgrep:
+	;; fzf/grep-command "rg --no-heading -nH"
+	fzf/grep-command "grep -nrH"
+	;; If nil, the fzf buffer will appear at the top of the window
+	fzf/position-bottom t
+	fzf/window-height 15))
+
 (use-package all-the-icons)
 
 (use-package no-littering)
@@ -13,11 +31,15 @@
 ;; eglot
 (use-package eglot :ensure t)
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
 (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
-(add-hook 'f90-mode-hook 'eglot-ensure)
-(add-hook 'python-mode-hook 'eglot-ensure)
+;;   (add-hook 'c-mode-hook 'eglot-ensure)
+;; (add-hook 'c++-mode-hook 'eglot-ensure)
+;; (add-hook 'f90-mode-hook 'eglot-ensure)
+;; (add-hook 'python-mode-hook 'eglot-ensure)
+;; (add-hook 'c-mode-hook 'my/eglot-ensure-local)
+;; (add-hook 'c++-mode-hook 'my/eglot-ensure-local)
+;; (add-hook 'f90-mode-hook 'my/eglot-ensure-local)
+;; (add-hook 'python-mode-hook 'my/eglot-ensure-local)
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
@@ -25,57 +47,69 @@
 (company-tng-configure-default)        ;; tab cycles through suggestions
 
 (use-package ivy
- :diminish
- :bind (("C-s" . swiper)
-	;; :map ivy-minibuffer-map
-	;; ("TAB" . ivy-alt-done)
-	;; ("C-l" . ivy-alt-done)
-	;; ("C-j" . ivy-next-line)
-	;; ("C-k" . ivy-previous-line)
-	;; :map ivy-switch-buffer-map
-	;; ("C-k" . ivy-previous-line)
-	;; ("C-l" . ivy-done)
-	;; ("C-d" . ivy-switch-buffer-kill)
-	;; :map ivy-reverse-i-search-map
-	;; ("C-k" . ivy-previous-line)
-	;; ("C-d" . ivy-reverse-i-search-kill)
-	)
- :config
- (ivy-mode 1))
+   :ensure t
+   :diminish
+   :init (ivy-mode 1)
+   :bind (("C-s" . swiper)
+	  ;; :map ivy-minibuffer-map
+	  ;; ("TAB" . ivy-alt-done)
+	  ;; ("C-l" . ivy-alt-done)
+	  ;; ("C-j" . ivy-next-line)
+	  ;; ("C-k" . ivy-previous-line)
+	  ;; :map ivy-switch-buffer-map
+	  ;; ("C-k" . ivy-previous-line)
+	  ;; ("C-l" . ivy-done)
+	  ;; ("C-d" . ivy-switch-buffer-kill)
+	  ;; :map ivy-reverse-i-search-map
+	  ;; ("C-k" . ivy-previous-line)
+	  ;; ("C-d" . ivy-reverse-i-search-kill)
+	  )
 
- (use-package ivy-rich
-   :init
-   (ivy-rich-mode 1)
-   ;; :config
-   ;; (setq ivy-format-function #'ivy-format-function-line)
-   ;; (setq ivy-rich--display-transformers-list
-   ;; 	(plist-put ivy-rich--display-transformers-list
-   ;; 		   'ivy-switch-buffer
-   ;; 		   '(:columns
-   ;; 		     ((ivy-rich-candidate (:width 40))
-   ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
-   ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
-   ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
-   ;; 		      ; return file path relative to project root or `default-directory' if project is nil
-   ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-   ;; 		     :predicate
-   ;; 		     (lambda (cand)
-   ;; 		       (if-let ((buffer (get-buffer cand)))
-   ;; 			   ;; Don't mess with EXWM buffers
-   ;; 			   (with-current-buffer buffer
-   ;; 			     (not (derived-mode-p 'exwm-mode))))))))
    )
+
+   (use-package ivy-rich
+     :init
+     (ivy-rich-mode 1)
+     ;; :config
+     ;; (setq ivy-format-function #'ivy-format-function-line)
+     ;; (setq ivy-rich--display-transformers-list
+     ;; 	(plist-put ivy-rich--display-transformers-list
+     ;; 		   'ivy-switch-buffer
+     ;; 		   '(:columns
+     ;; 		     ((ivy-rich-candidate (:width 40))
+     ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
+     ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
+     ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
+     ;; 		      ; return file path relative to project root or `default-directory' if project is nil
+     ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+     ;; 		     :predicate
+     ;; 		     (lambda (cand)
+     ;; 		       (if-let ((buffer (get-buffer cand)))
+     ;; 			   ;; Don't mess with EXWM buffers
+     ;; 			   (with-current-buffer buffer
+     ;; 			     (not (derived-mode-p 'exwm-mode))))))))
+     )
+
+(use-package counsel
+  :ensure t
+  :after ivy
+  :config (counsel-mode 1))
 
 (use-package dired
   :ensure nil
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first")))
-(setq global-auto-revert-non-file-buffers t)
-(use-package dired-single)
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :config
+  ;; Enable auto-revert for dired buffers
+  (setq global-auto-revert-non-file-buffers t)
+  (add-hook 'dired-mode-hook 'auto-revert-mode)
 
-(use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
+  ;; Add FZF integration in dired
+  (define-key dired-mode-map (kbd "C-c C-f") 'fzf))
+
+(use-package nerd-icons-dired
+  :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package doom-modeline
   :ensure t
@@ -236,12 +270,12 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (use-package elpy
-:ensure t
-:defer t
-:init
-(advice-add 'python-mode :before 'elpy-enable))
-(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-(setq elpy-rpc-python-command "python3")
+    :ensure t
+    :defer t
+    :init
+    ;; (advice-add 'python-mode :before 'elpy-enable))
+    (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+    (setq elpy-rpc-python-command "python3")
 
 ;; Install:
 ;; pip install black
@@ -292,7 +326,9 @@
 (use-package editorconfig
   :ensure t
   :config
-  (editorconfig-mode 1))
+  (editorconfig-mode 1)
+  ; exclude tramp
+  (add-to-list 'editorconfig-exclude-modes 'tramp-mode))
 
 (use-package multiple-cursors
   :ensure t
@@ -384,6 +420,12 @@
 (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
 ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
 ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+
+(use-package tramp
+  :custom
+  (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/"))
+  )
+;; (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default

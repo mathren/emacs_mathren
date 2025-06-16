@@ -69,6 +69,31 @@ lines below instead (note that the block below is not tangled to
  I use ivy as completion framework for the minibuffer, and company for
  pop up suggestions.
 
+** fzf
+
+ [[https://github.com/bling/fzf.el][fzf.el]]
+
+ #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+   (use-package fzf
+     :ensure t
+     :bind (("C-c f f" . fzf)               ;; FZF in current directory
+	    ("C-c f r" . fzf-recentf)       ;; FZF recent files
+	    ("C-c f g" . fzf-git-files))   ;; FZF Git tracked files
+     :commands (fzf fzf-directory fzf-git-files fzf-recentf)
+     :config
+     (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+	   fzf/executable "fzf"
+	   fzf/git-grep-args "-i --line-number %s"
+	   ;; command used for `fzf-grep-*` functions
+	   ;; example usage for ripgrep:
+	   ;; fzf/grep-command "rg --no-heading -nH"
+	   fzf/grep-command "grep -nrH"
+	   ;; If nil, the fzf buffer will appear at the top of the window
+	   fzf/position-bottom t
+	   fzf/window-height 15))
+#+END_SRC
+
+
 ** Icons for dired and doom-modeline
 
 [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
@@ -127,7 +152,8 @@ find "$fonts_dir" -name '*Windows Compatible*' -delete
 fc-cache -fv
 #+END_SRC
 
-** Avoid creating tons of hidden files
+
+f** Avoid creating tons of hidden files
 
    [[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
 
@@ -139,18 +165,22 @@ fc-cache -fv
 ** Language server protocol and =eglot=
 
   I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in
-  Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]) and python (using [[https://pypi.org/project/python-language-server/][python language server]] -  =pip install
-  python-lsp-server=)
+  Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =clangd=) and python (using
+  =python3-pylsp=).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; eglot
   (use-package eglot :ensure t)
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-  (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
-  (add-hook 'f90-mode-hook 'eglot-ensure)
-  (add-hook 'python-mode-hook 'eglot-ensure)
+  ;;   (add-hook 'c-mode-hook 'eglot-ensure)
+  ;; (add-hook 'c++-mode-hook 'eglot-ensure)
+  ;; (add-hook 'f90-mode-hook 'eglot-ensure)
+  ;; (add-hook 'python-mode-hook 'eglot-ensure)
+  ;; (add-hook 'c-mode-hook 'my/eglot-ensure-local)
+  ;; (add-hook 'c++-mode-hook 'my/eglot-ensure-local)
+  ;; (add-hook 'f90-mode-hook 'my/eglot-ensure-local)
+  ;; (add-hook 'python-mode-hook 'my/eglot-ensure-local)
 #+END_SRC
 
 
@@ -166,54 +196,62 @@ fc-cache -fv
 #+END_SRC
 
 
-** Autocompletion of minibuffer: Ivy
+** Autocompletion of minibuffer: Ivy & Counsel
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package ivy
-   :diminish
-   :bind (("C-s" . swiper)
-	  ;; :map ivy-minibuffer-map
-	  ;; ("TAB" . ivy-alt-done)
-	  ;; ("C-l" . ivy-alt-done)
-	  ;; ("C-j" . ivy-next-line)
-	  ;; ("C-k" . ivy-previous-line)
-	  ;; :map ivy-switch-buffer-map
-	  ;; ("C-k" . ivy-previous-line)
-	  ;; ("C-l" . ivy-done)
-	  ;; ("C-d" . ivy-switch-buffer-kill)
-	  ;; :map ivy-reverse-i-search-map
-	  ;; ("C-k" . ivy-previous-line)
-	  ;; ("C-d" . ivy-reverse-i-search-kill)
-	  )
-   :config
-   (ivy-mode 1))
+    (use-package ivy
+     :ensure t
+     :diminish
+     :init (ivy-mode 1)
+     :bind (("C-s" . swiper)
+	    ;; :map ivy-minibuffer-map
+	    ;; ("TAB" . ivy-alt-done)
+	    ;; ("C-l" . ivy-alt-done)
+	    ;; ("C-j" . ivy-next-line)
+	    ;; ("C-k" . ivy-previous-line)
+	    ;; :map ivy-switch-buffer-map
+	    ;; ("C-k" . ivy-previous-line)
+	    ;; ("C-l" . ivy-done)
+	    ;; ("C-d" . ivy-switch-buffer-kill)
+	    ;; :map ivy-reverse-i-search-map
+	    ;; ("C-k" . ivy-previous-line)
+	    ;; ("C-d" . ivy-reverse-i-search-kill)
+	    )
 
-   (use-package ivy-rich
-     :init
-     (ivy-rich-mode 1)
-     ;; :config
-     ;; (setq ivy-format-function #'ivy-format-function-line)
-     ;; (setq ivy-rich--display-transformers-list
-     ;; 	(plist-put ivy-rich--display-transformers-list
-     ;; 		   'ivy-switch-buffer
-     ;; 		   '(:columns
-     ;; 		     ((ivy-rich-candidate (:width 40))
-     ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
-     ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
-     ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
-     ;; 		      ; return file path relative to project root or `default-directory' if project is nil
-     ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-     ;; 		     :predicate
-     ;; 		     (lambda (cand)
-     ;; 		       (if-let ((buffer (get-buffer cand)))
-     ;; 			   ;; Don't mess with EXWM buffers
-     ;; 			   (with-current-buffer buffer
-     ;; 			     (not (derived-mode-p 'exwm-mode))))))))
      )
+
+     (use-package ivy-rich
+       :init
+       (ivy-rich-mode 1)
+       ;; :config
+       ;; (setq ivy-format-function #'ivy-format-function-line)
+       ;; (setq ivy-rich--display-transformers-list
+       ;; 	(plist-put ivy-rich--display-transformers-list
+       ;; 		   'ivy-switch-buffer
+       ;; 		   '(:columns
+       ;; 		     ((ivy-rich-candidate (:width 40))
+       ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
+       ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
+       ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
+       ;; 		      ; return file path relative to project root or `default-directory' if project is nil
+       ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+       ;; 		     :predicate
+       ;; 		     (lambda (cand)
+       ;; 		       (if-let ((buffer (get-buffer cand)))
+       ;; 			   ;; Don't mess with EXWM buffers
+       ;; 			   (with-current-buffer buffer
+       ;; 			     (not (derived-mode-p 'exwm-mode))))))))
+       )
+
+  (use-package counsel
+    :ensure t
+    :after ivy
+    :config (counsel-mode 1))
+
 #+END_SRC
 
 
-** Dired file manager
+** =Dired= file manager
 
    Show icons in the dired file manager with [[https://github.com/jtbm37/all-the-icons-dired][all-the-icons-dired]].
    Reuse the same buffer for dired, instead of opening one per folder
@@ -225,12 +263,17 @@ fc-cache -fv
     :ensure nil
     :commands (dired dired-jump)
     :bind (("C-x C-j" . dired-jump))
-    :custom ((dired-listing-switches "-agho --group-directories-first")))
-  (setq global-auto-revert-non-file-buffers t)
-  (use-package dired-single)
+    :custom ((dired-listing-switches "-agho --group-directories-first"))
+    :config
+    ;; Enable auto-revert for dired buffers
+    (setq global-auto-revert-non-file-buffers t)
+    (add-hook 'dired-mode-hook 'auto-revert-mode)
 
-  (use-package all-the-icons-dired
-    :hook (dired-mode . all-the-icons-dired-mode))
+    ;; Add FZF integration in dired
+    (define-key dired-mode-map (kbd "C-c C-f") 'fzf))
+
+  (use-package nerd-icons-dired
+    :hook (dired-mode . nerd-icons-dired-mode))
 #+END_SRC
 
 
@@ -489,28 +532,15 @@ Fix exporting of Sun symbol:
 
   See [[https://elpy.readthedocs.io/en/latest/introduction.html][documentation]] for dependencies
 
- #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-   (use-package elpy
-   :ensure t
-   :defer t
-   :init
-   (advice-add 'python-mode :before 'elpy-enable))
-   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-   (setq elpy-rpc-python-command "python3")
- #+END_SRC
-
- # To avoid the following error:
-
- # #+BEGIN_SRC emacs-lisp
- #    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
- #    error in process sentinel: elpy-rpc--default-error-callback: peculiar error: "exited abnormally with code 1"
- #    error in process sentinel: peculiar error: "exited abnormally with code 1"
- #    Elpy is creating the RPC virtualenv (’/home/math/.emacs.d/elpy/rpc-venv’)
- # #+END_SRC
-
- # Customize the variable =Elpy Rpc Virtualenv Path= with =M-x
- # customize-variable elpy-rpc-python-command= and set it to =current=.
-
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package elpy
+      :ensure t
+      :defer t
+      :init
+      ;; (advice-add 'python-mode :before 'elpy-enable))
+      (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+      (setq elpy-rpc-python-command "python3")
+#+END_SRC
 
 *** Formatting
 
@@ -606,10 +636,12 @@ Fix exporting of Sun symbol:
 ** editor config
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1))
+    (use-package editorconfig
+      :ensure t
+      :config
+      (editorconfig-mode 1)
+      ; exclude tramp
+      (add-to-list 'editorconfig-exclude-modes 'tramp-mode))
 #+END_SRC
 
 
@@ -765,6 +797,19 @@ Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], light
   (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
   ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
   ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+#+END_SRC
+
+
+** Tramp
+
+Remote editing with my local configuration
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package tramp
+    :custom
+    (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/"))
+    )
+  ;; (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 #+END_SRC
 
 
