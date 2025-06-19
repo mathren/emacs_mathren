@@ -373,6 +373,21 @@ Unbind Shift+arrows from org-agenda too.
 )
 #+END_SRC
 
+=electric-pair-preserve-balance= loaded in the minimal configuration
+breaks the shortcuts to include =org= templates. Define custom
+keybindings
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (define-key org-mode-map (kbd "C-c s")
+	      (lambda () (interactive)
+		(insert "#+BEGIN_SRC \n\n#+END_SRC")
+		(forward-line -1)))
+  (define-key org-mode-map (kbd "C-c q")
+	      (lambda () (interactive)
+		(insert "#+BEGIN_QUOTE \n\n #+END_QUOTE")
+		(forward-line -1)))
+#+END_SRC
+
 Define a function to reorder dates in the headlines of an org file
 without moving the headlines themselves
 
