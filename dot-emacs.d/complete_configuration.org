@@ -828,6 +828,36 @@ Remote editing with my local configuration
 #+END_SRC
 
 
+* Custom functions
+
+Count lines in a file or region excluding empty lines and comments
+(from [[https://lists.gnu.org/archive/html/help-gnu-emacs/2014-11/msg00600.html][this thread]]):
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(defun count-sloc-region (beg end)
+  "Count source lines of code in region (or (narrowed part of)
+the buffer when no region is active).  SLOC means that empty
+lines and comment-only lines are not taken into consideration."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (list (point-min) (point-max))))
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (let ((count 0))
+        (while (not (eobp))
+          (if (not (comment-only-p (line-beginning-position)
+(line-end-position)))
+              (setq count (1+ count)))
+          (forward-line))
+        (message "SLOC in %s: %s."
+                 (if (use-region-p) "region" "buffer")
+                 count)))))
+#+END_SRC
+
+
 * Spell checking with multiple languages
 
   I took this from [[https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html][here]], but I configure Italian, French, and English
