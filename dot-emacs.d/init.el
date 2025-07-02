@@ -32,15 +32,49 @@
 
 ;; eglot
 (use-package eglot
-     :ensure t
-     :defer t
-     :hook ((python-mode . eglot-ensure)
-	    (c-mode . eglot-ensure)
-	    (c++-mode . eglot-ensure)
-	    (f90-mode . eglot-ensure))
-     :config
-     (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-     (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2"))))
+  :ensure t
+  :defer t
+  :hook ((python-mode . eglot-ensure)
+	 (c-mode . eglot-ensure)
+	 (c++-mode . eglot-ensure)
+	 (f90-mode . eglot-ensure))
+  :config
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+  (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+
+  ;; Configure eglot to work well with flymake
+  (setq eglot-send-changes-idle-time 0.5)
+  (setq eglot-auto-display-help-buffer nil)
+  )
+
+(use-package flymake
+  :config
+  ;; Show indicators in left fringe instead of underlining
+  (setq flymake-fringe-indicator-position 'left-fringe)
+
+  ;; Completely disable all flymake face styling (no underline, background, or foreground changes)
+  (set-face-attribute 'flymake-error nil
+		      :underline nil
+		      :background nil
+		      :foreground nil
+		      :weight 'normal
+		      :inherit nil)
+  (set-face-attribute 'flymake-warning nil
+		      :underline nil
+		      :background nil
+		      :foreground nil
+		      :weight 'normal
+		      :inherit nil)
+  (set-face-attribute 'flymake-note nil
+		      :underline nil
+		      :background nil
+		      :foreground nil
+		      :weight 'normal
+		      :inherit nil)
+  ;; Don't show diagnostics at end of line
+  (setq flymake-show-diagnostics-at-end-of-line nil)
+
+)
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
@@ -306,11 +340,25 @@
   (:map python-mode-map
 	("C-c C-l" . python-black-partial-dwim)))
 
-(use-package flycheck
-  :ensure t)
-;; (when (require 'flycheck nil t)
-;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; (use-package flycheck
+;;   :ensure t
+;;   :config
+;;   ;; Disable underlining of errors/warnings
+;;   (setq flycheck-highlighting-mode nil)
+;;   ;; Enable fringe indicators
+;;   (setq flycheck-indication-mode 'left-fringe)
+
+;;   ;; ;; Optional: customize the fringe indicators
+;;   ;; ;; You can use different symbols for different error types
+;;   ;; (when (fboundp 'define-fringe-bitmap)
+;;   ;;   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+;;   ;;     [16 48 112 240 112 48 16] nil nil 'center))
+
+;;   ;; Optional: disable the error list popup if you don't want it
+;;   ;; (setq flycheck-display-errors-function nil)
+
+;;   ;; Optional: you can still see error messages in the echo area when cursor is on the line
+;;   (setq flycheck-display-errors-delay 0.5))
 
 ; ein
 (setq ein:worksheet-enable-undo t)

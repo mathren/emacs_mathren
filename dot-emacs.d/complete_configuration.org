@@ -102,8 +102,8 @@ Requires running =M-x all-the-icons-install-fonts= the first
 time you use it.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-    (use-package all-the-icons
-      :ensure t)
+  (use-package all-the-icons
+    :ensure t)
 #+END_SRC
 
 *** Script to install nerd fonts
@@ -159,8 +159,8 @@ f** Avoid creating tons of hidden files
 [[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-    (use-package no-littering
-      :ensure t)
+  (use-package no-littering
+    :ensure t)
 #+END_SRC
 
 
@@ -171,19 +171,59 @@ Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =cla
 =python3-pylsp=).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-    ;; eglot
+  ;; eglot
   (use-package eglot
-       :ensure t
-       :defer t
-       :hook ((python-mode . eglot-ensure)
-	      (c-mode . eglot-ensure)
-	      (c++-mode . eglot-ensure)
-	      (f90-mode . eglot-ensure))
-       :config
-       (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-       (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2"))))
+    :ensure t
+    :defer t
+    :hook ((python-mode . eglot-ensure)
+	   (c-mode . eglot-ensure)
+	   (c++-mode . eglot-ensure)
+	   (f90-mode . eglot-ensure))
+    :config
+    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+    (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+
+    ;; Configure eglot to work well with flymake
+    (setq eglot-send-changes-idle-time 0.5)
+    (setq eglot-auto-display-help-buffer nil)
+    )
 #+END_SRC
 
+*** Flymake
+=eglot= uses =flymake= as backend, I configure it to have annotations and
+errors in the fringe only because it's less distracting than
+underlining the whole line.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package flymake
+    :config
+    ;; Show indicators in left fringe instead of underlining
+    (setq flymake-fringe-indicator-position 'left-fringe)
+
+    ;; Completely disable all flymake face styling (no underline, background, or foreground changes)
+    (set-face-attribute 'flymake-error nil
+			:underline nil
+			:background nil
+			:foreground nil
+			:weight 'normal
+			:inherit nil)
+    (set-face-attribute 'flymake-warning nil
+			:underline nil
+			:background nil
+			:foreground nil
+			:weight 'normal
+			:inherit nil)
+    (set-face-attribute 'flymake-note nil
+			:underline nil
+			:background nil
+			:foreground nil
+			:weight 'normal
+			:inherit nil)
+    ;; Don't show diagnostics at end of line
+    (setq flymake-show-diagnostics-at-end-of-line nil)
+
+  )
+#+END_SRC
 
 ** In buffer autocompletion with company
 
@@ -583,15 +623,29 @@ Use [[https://pypi.org/project/black/][black]] to format code
 	  ("C-c C-l" . python-black-partial-dwim)))
 #+END_SRC
 
-*** Flycheck completion
+*** Flycheck
 
-
+ Not used since switching to =eglot=
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package flycheck
-    :ensure t)
-  ;; (when (require 'flycheck nil t)
-  ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+  ;; (use-package flycheck
+  ;;   :ensure t
+  ;;   :config
+  ;;   ;; Disable underlining of errors/warnings
+  ;;   (setq flycheck-highlighting-mode nil)
+  ;;   ;; Enable fringe indicators
+  ;;   (setq flycheck-indication-mode 'left-fringe)
+
+  ;;   ;; ;; Optional: customize the fringe indicators
+  ;;   ;; ;; You can use different symbols for different error types
+  ;;   ;; (when (fboundp 'define-fringe-bitmap)
+  ;;   ;;   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+  ;;   ;;     [16 48 112 240 112 48 16] nil nil 'center))
+
+  ;;   ;; Optional: disable the error list popup if you don't want it
+  ;;   ;; (setq flycheck-display-errors-function nil)
+
+  ;;   ;; Optional: you can still see error messages in the echo area when cursor is on the line
+  ;;   (setq flycheck-display-errors-delay 0.5))
 #+END_SRC
 
 *** Jupyter notebooks with ein
@@ -622,9 +676,9 @@ Then install [[https://gitlab.com/matsievskiysv/math-preview][math-preview]] and
 Finally, use math-preview
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-					    ; to see latex in ein markdown cells
-    (use-package math-preview
-      :ensure t)
+					  ; to see latex in ein markdown cells
+  (use-package math-preview
+    :ensure t)
 #+END_SRC
 
 Running =C-c C-c= (bound to =ein:worksheet-execute-cell=) on a
