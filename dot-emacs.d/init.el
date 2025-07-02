@@ -29,17 +29,16 @@
 (use-package no-littering)
 
 ;; eglot
-(use-package eglot :ensure t)
+(use-package eglot
+	 :ensure t
+	 :defer t
+	 :hook (python-mode . eglot-ensure)
+	 (c-mode . eglot-ensure)
+	 (c++-mode . eglot-ensure)
+	 (f90-mode . eglot-ensure)
+	 )
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
 (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
-;;   (add-hook 'c-mode-hook 'eglot-ensure)
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
-;; (add-hook 'f90-mode-hook 'eglot-ensure)
-;; (add-hook 'python-mode-hook 'eglot-ensure)
-;; (add-hook 'c-mode-hook 'my/eglot-ensure-local)
-;; (add-hook 'c++-mode-hook 'my/eglot-ensure-local)
-;; (add-hook 'f90-mode-hook 'my/eglot-ensure-local)
-;; (add-hook 'python-mode-hook 'my/eglot-ensure-local)
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay

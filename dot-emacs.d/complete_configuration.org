@@ -169,18 +169,17 @@ f** Avoid creating tons of hidden files
   =python3-pylsp=).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; eglot
-  (use-package eglot :ensure t)
-  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-  (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
-  ;;   (add-hook 'c-mode-hook 'eglot-ensure)
-  ;; (add-hook 'c++-mode-hook 'eglot-ensure)
-  ;; (add-hook 'f90-mode-hook 'eglot-ensure)
-  ;; (add-hook 'python-mode-hook 'eglot-ensure)
-  ;; (add-hook 'c-mode-hook 'my/eglot-ensure-local)
-  ;; (add-hook 'c++-mode-hook 'my/eglot-ensure-local)
-  ;; (add-hook 'f90-mode-hook 'my/eglot-ensure-local)
-  ;; (add-hook 'python-mode-hook 'my/eglot-ensure-local)
+;; eglot
+(use-package eglot
+	 :ensure t
+	 :defer t
+	 :hook (python-mode . eglot-ensure)
+	 (c-mode . eglot-ensure)
+	 (c++-mode . eglot-ensure)
+	 (f90-mode . eglot-ensure)
+	 )
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+(add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
 #+END_SRC
 
 
