@@ -83,6 +83,7 @@
 		     all-the-icons-ivy
 		     all-the-icons-ivy-rich
 		     markdown-mode
+		     highlight-indent-guides
 		     ))
 
 ; install the missing packages

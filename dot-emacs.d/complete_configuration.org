@@ -37,7 +37,7 @@ already. For clarity, this leaves in a separate [[file:install_packages.el][inst
 that I load.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (load "~/.emacs.d/install_packages.el")
+;  (load "~/.emacs.d/install_packages.el")
 #+END_SRC
 
 The above can be a little slow the first time. If you prefer
@@ -224,6 +224,19 @@ underlining the whole line.
 
   )
 #+END_SRC
+
+** Highlight indenting levels
+
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package highlight-indent-guides
+  :ensure t
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-responsive 'top)
+  (set-face-foreground 'highlight-indent-guides-character-face "#5f5f5f"))
+#+END_SRC
+
 
 ** In buffer autocompletion with company
 
