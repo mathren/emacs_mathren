@@ -24,21 +24,23 @@
 	fzf/position-bottom t
 	fzf/window-height 15))
 
-(use-package all-the-icons)
+(use-package all-the-icons
+  :ensure t)
 
-(use-package no-littering)
+(use-package no-littering
+  :ensure t)
 
 ;; eglot
 (use-package eglot
-	 :ensure t
-	 :defer t
-	 :hook (python-mode . eglot-ensure)
-	 (c-mode . eglot-ensure)
-	 (c++-mode . eglot-ensure)
-	 (f90-mode . eglot-ensure)
-	 )
-(add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-(add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+     :ensure t
+     :defer t
+     :hook ((python-mode . eglot-ensure)
+	    (c-mode . eglot-ensure)
+	    (c++-mode . eglot-ensure)
+	    (f90-mode . eglot-ensure))
+     :config
+     (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+     (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2"))))
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
@@ -46,48 +48,48 @@
 (company-tng-configure-default)        ;; tab cycles through suggestions
 
 (use-package ivy
-   :ensure t
-   :diminish
-   :init (ivy-mode 1)
-   :bind (("C-s" . swiper)
-	  ;; :map ivy-minibuffer-map
-	  ;; ("TAB" . ivy-alt-done)
-	  ;; ("C-l" . ivy-alt-done)
-	  ;; ("C-j" . ivy-next-line)
-	  ;; ("C-k" . ivy-previous-line)
-	  ;; :map ivy-switch-buffer-map
-	  ;; ("C-k" . ivy-previous-line)
-	  ;; ("C-l" . ivy-done)
-	  ;; ("C-d" . ivy-switch-buffer-kill)
-	  ;; :map ivy-reverse-i-search-map
-	  ;; ("C-k" . ivy-previous-line)
-	  ;; ("C-d" . ivy-reverse-i-search-kill)
-	  )
+  :ensure t
+  :diminish
+  :init (ivy-mode 1)
+  :bind (("C-s" . swiper)
+	 ;; :map ivy-minibuffer-map
+	 ;; ("TAB" . ivy-alt-done)
+	 ;; ("C-l" . ivy-alt-done)
+	 ;; ("C-j" . ivy-next-line)
+	 ;; ("C-k" . ivy-previous-line)
+	 ;; :map ivy-switch-buffer-map
+	 ;; ("C-k" . ivy-previous-line)
+	 ;; ("C-l" . ivy-done)
+	 ;; ("C-d" . ivy-switch-buffer-kill)
+	 ;; :map ivy-reverse-i-search-map
+	 ;; ("C-k" . ivy-previous-line)
+	 ;; ("C-d" . ivy-reverse-i-search-kill)
+	 )
 
-   )
+  )
 
-   (use-package ivy-rich
-     :init
-     (ivy-rich-mode 1)
-     ;; :config
-     ;; (setq ivy-format-function #'ivy-format-function-line)
-     ;; (setq ivy-rich--display-transformers-list
-     ;; 	(plist-put ivy-rich--display-transformers-list
-     ;; 		   'ivy-switch-buffer
-     ;; 		   '(:columns
-     ;; 		     ((ivy-rich-candidate (:width 40))
-     ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
-     ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
-     ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
-     ;; 		      ; return file path relative to project root or `default-directory' if project is nil
-     ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-     ;; 		     :predicate
-     ;; 		     (lambda (cand)
-     ;; 		       (if-let ((buffer (get-buffer cand)))
-     ;; 			   ;; Don't mess with EXWM buffers
-     ;; 			   (with-current-buffer buffer
-     ;; 			     (not (derived-mode-p 'exwm-mode))))))))
-     )
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1)
+  ;; :config
+  ;; (setq ivy-format-function #'ivy-format-function-line)
+  ;; (setq ivy-rich--display-transformers-list
+  ;; 	(plist-put ivy-rich--display-transformers-list
+  ;; 		   'ivy-switch-buffer
+  ;; 		   '(:columns
+  ;; 		     ((ivy-rich-candidate (:width 40))
+  ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
+  ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
+  ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
+  ;; 		      ; return file path relative to project root or `default-directory' if project is nil
+  ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+  ;; 		     :predicate
+  ;; 		     (lambda (cand)
+  ;; 		       (if-let ((buffer (get-buffer cand)))
+  ;; 			   ;; Don't mess with EXWM buffers
+  ;; 			   (with-current-buffer buffer
+  ;; 			     (not (derived-mode-p 'exwm-mode))))))))
+  )
 
 (use-package counsel
   :ensure t
@@ -168,12 +170,12 @@
   )
 
 (use-package org-agenda
-   :config
-   (define-key org-agenda-mode-map (kbd "<S-left>") nil)
-   (define-key org-agenda-mode-map (kbd "<S-right>") nil)
-   (define-key org-agenda-mode-map (kbd "<S-down>") nil)
-   (define-key org-agenda-mode-map (kbd "<S-up>") nil)
-)
+  :config
+  (define-key org-agenda-mode-map (kbd "<S-left>") nil)
+  (define-key org-agenda-mode-map (kbd "<S-right>") nil)
+  (define-key org-agenda-mode-map (kbd "<S-down>") nil)
+  (define-key org-agenda-mode-map (kbd "<S-up>") nil)
+  )
 
 (define-key org-mode-map (kbd "C-c s")
 	    (lambda () (interactive)
@@ -190,21 +192,21 @@
   (interactive)
   (when (derived-mode-p 'org-mode)
     (let* ((date-regexp "<\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\) \\([A-Za-z]\\{3\\}\\)>")
-           (headlines '())
-           (dates '())
-           (point-min (point-min))
-           (point-max (point-max)))
+	   (headlines '())
+	   (dates '())
+	   (point-min (point-min))
+	   (point-max (point-max)))
 
       ;; Extract dates and their positions
       (save-excursion
-        (goto-char point-min)
-        (while (re-search-forward (concat "^\\*+ " date-regexp) point-max t)
-          (let* ((date (match-string 1))
-                 (day-of-week (match-string 2))
-                 (start (line-beginning-position))
-                 (end (save-excursion (end-of-line) (point))))
-            (push (list start end date day-of-week) headlines)
-            (push date dates)))) ; Store dates as strings
+	(goto-char point-min)
+	(while (re-search-forward (concat "^\\*+ " date-regexp) point-max t)
+	  (let* ((date (match-string 1))
+		 (day-of-week (match-string 2))
+		 (start (line-beginning-position))
+		 (end (save-excursion (end-of-line) (point))))
+	    (push (list start end date day-of-week) headlines)
+	    (push date dates)))) ; Store dates as strings
 
       ;; Sort dates in ascending order
       (setq dates (sort dates 'string<))
@@ -214,16 +216,16 @@
 
       ;; Replace old dates with sorted dates
       (save-excursion
-        (let ((date-list (reverse dates))) ; Reverse the list to apply oldest date first
-          (dolist (headline headlines)
-            (let* ((start (car headline))
-                   (end (cadr headline))
-                   (old-date (nth 2 headline))
-                   (day-of-week (nth 3 headline))
-                   (new-date (pop date-list))) ; Pop from reversed list
-              (goto-char start)
-              (re-search-forward date-regexp end t)
-              (replace-match (concat "<" new-date " " day-of-week ">")))))))))
+	(let ((date-list (reverse dates))) ; Reverse the list to apply oldest date first
+	  (dolist (headline headlines)
+	    (let* ((start (car headline))
+		   (end (cadr headline))
+		   (old-date (nth 2 headline))
+		   (day-of-week (nth 3 headline))
+		   (new-date (pop date-list))) ; Pop from reversed list
+	      (goto-char start)
+	      (re-search-forward date-regexp end t)
+	      (replace-match (concat "<" new-date " " day-of-week ">")))))))))
 
 (setq org-latex-packages-alist '(("left=25mm, right=25mm, top=25mm, bottom=25mm" "geometry" nil)))
 (customize-set-value 'org-latex-hyperref-template
@@ -246,7 +248,7 @@
     (save-excursion
       (goto-char (point-min))
       (while (re-search-forward "\\\\odot" nil t)
-        (replace-match "☉" nil t)))))
+	(replace-match "☉" nil t)))))
 
 
 (add-hook 'org-export-before-processing-hook 'mr/export-odot-html)
@@ -259,7 +261,7 @@
 
 (defun efs/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
+	visual-fill-column-center-text t)
   ;; (visual-fill-column-mode 1)
   )
 
@@ -272,18 +274,23 @@
   (fmakunbound 'org-download-clipboard)
   )
 
+(use-package yaml-mode
+  :ensure t)
+(use-package snakemake-mode
+  :ensure t)
+
 (add-to-list 'auto-mode-alist '("/\.yaml[^/]*$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("/\.yml[^/]*$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . snakemake-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-(use-package elpy
-    :ensure t
-    :defer t
-    :init
-    ;; (advice-add 'python-mode :before 'elpy-enable))
-    (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-    (setq elpy-rpc-python-command "python3"))
+;; (use-package elpy
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   ;; (advice-add 'python-mode :before 'elpy-enable))
+;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+;;   (setq elpy-rpc-python-command "python3"))
 
 ;; Install:
 ;; pip install black
@@ -297,74 +304,77 @@
   (setq python-black-macchiato-command "~/.local/bin/black-macchiato")
   :bind
   (:map python-mode-map
-    ("C-c C-l" . python-black-partial-dwim)))
+	("C-c C-l" . python-black-partial-dwim)))
 
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+(use-package flycheck
+  :ensure t)
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
 ; ein
 (setq ein:worksheet-enable-undo t)
 (setq ein:output-area-inlined-images t)
 
 ; to see latex in ein markdown cells
-(use-package math-preview)
+(use-package math-preview
+  :ensure t)
 
 (use-package arxiv-mode
-    :ensure t
-    :config
-    (setq arxiv-default-category "astro-ph")
+  :ensure t
+  :config
+  (setq arxiv-default-category "astro-ph")
 
-    (defun mr/arxiv-show-abstract ()
-        "Show the abstract window and display appropriate information."
-	(unless (buffer-live-p arxiv-abstract-buffer)
-	(setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
-	(with-current-buffer arxiv-abstract-buffer (arxiv-abstract-mode)
-	(visual-line-mode)
-	(setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
-	(prettify-symbols-mode 1)
-	(arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
-	(unless (window-live-p arxiv-abstract-window)
-	(setq arxiv-abstract-window (display-buffer
-        "*arXiv-abstract*"t))))
+  (defun mr/arxiv-show-abstract ()
+    "Show the abstract window and display appropriate information."
+    (unless (buffer-live-p arxiv-abstract-buffer)
+      (setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
+    (with-current-buffer arxiv-abstract-buffer (arxiv-abstract-mode)
+			 (visual-line-mode)
+			 (setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
+			 (prettify-symbols-mode 1)
+			 (arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
+    (unless (window-live-p arxiv-abstract-window)
+      (setq arxiv-abstract-window (display-buffer
+				   "*arXiv-abstract*"t))))
 
-    (advice-add 'arxiv-show-abstract :override #'mr/arxiv-show-abstract)
-)
+  (advice-add 'arxiv-show-abstract :override #'mr/arxiv-show-abstract)
+  )
 
 (use-package editorconfig
   :ensure t
   :config
   (editorconfig-mode 1)
-  ; exclude tramp
+					; exclude tramp
   (add-to-list 'editorconfig-exclude-modes 'tramp-mode))
 
 (use-package multiple-cursors
   :ensure t
   :config
   (defun mc/toggle-cursor-at-point ()
-      "Add or remove a cursor at point."
-      (interactive)
-      (if multiple-cursors-mode
-	  (message "Cannot toggle cursor at point while `multiple-cursors-mode' is active.")
-	(let ((existing (mc/fake-cursor-at-point)))
-	  (if existing
-	      (mc/remove-fake-cursor existing)
-	    (mc/create-fake-cursor-at-point)))))
+    "Add or remove a cursor at point."
+    (interactive)
+    (if multiple-cursors-mode
+	(message "Cannot toggle cursor at point while `multiple-cursors-mode' is active.")
+      (let ((existing (mc/fake-cursor-at-point)))
+	(if existing
+	    (mc/remove-fake-cursor existing)
+	  (mc/create-fake-cursor-at-point)))))
 
-    (add-to-list 'mc/cmds-to-run-once 'mc/toggle-cursor-at-point)
-    (add-to-list 'mc/cmds-to-run-once 'multiple-cursors-mode)
+  (add-to-list 'mc/cmds-to-run-once 'mc/toggle-cursor-at-point)
+  (add-to-list 'mc/cmds-to-run-once 'multiple-cursors-mode)
   (define-key mc/keymap (kbd "<return>") nil)
-	(global-set-key (kbd "<f1>") 'mc/toggle-cursor-at-point)
-    (global-set-key (kbd "<M-s-return>") 'multiple-cursors-mode)
-    (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
+  (global-set-key (kbd "<f1>") 'mc/toggle-cursor-at-point)
+  (global-set-key (kbd "<M-s-return>") 'multiple-cursors-mode)
+  (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
 
 (use-package magit-lfs
-     :ensure t
-     :pin melpa)
+  :ensure t
+  :pin melpa)
 
 (use-package ws-butler
-       :ensure t
-       :pin melpa)
+  :ensure t
+  :pin melpa)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
@@ -399,7 +409,7 @@
 (setq reftex-plug-into-AUCTeX t)
 
 ;; ;; Enable synctex correlation
-;(setq TeX-source-correlate-method 'synctex)
+					;(setq TeX-source-correlate-method 'synctex)
 ;; Enable synctex generation. Even though the command show as "latex" pdflatex is actually called
 (custom-set-variables '(LaTeX-command "latex -synctex=1"))
 
@@ -415,19 +425,19 @@
 (setq flyspell-issue-message-flag nil)
 
 (add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (add-to-list 'fill-nobreak-predicate 'texmathp)))
+	  (lambda ()
+	    (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
 (use-package reftex
   :ensure auctex
   :after latex)
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(add-hook 'LaTex-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (setq reftex-plug-into-AUCTeX t)
 (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
 ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
-;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+					;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 
 (use-package tramp
   :custom
@@ -448,14 +458,14 @@ lines and comment-only lines are not taken into consideration."
       (narrow-to-region beg end)
       (goto-char (point-min))
       (let ((count 0))
-        (while (not (eobp))
-          (if (not (comment-only-p (line-beginning-position)
-(line-end-position)))
-              (setq count (1+ count)))
-          (forward-line))
-        (message "SLOC in %s: %s."
-                 (if (use-region-p) "region" "buffer")
-                 count)))))
+	(while (not (eobp))
+	  (if (not (comment-only-p (line-beginning-position)
+				   (line-end-position)))
+	      (setq count (1+ count)))
+	  (forward-line))
+	(message "SLOC in %s: %s."
+		 (if (use-region-p) "region" "buffer")
+		 count)))))
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
@@ -484,10 +494,10 @@ lines and comment-only lines are not taken into consideration."
   (save-excursion
     (let ((end (copy-marker end)))
       (while
-          (progn
-            (goto-char start)
-            (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-        (replace-match "\\1\n\\2")))))
+	  (progn
+	    (goto-char start)
+	    (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+	(replace-match "\\1\n\\2")))))
 
 (defun uniquify-all-lines-buffer ()
   "Delete duplicate lines in buffer and keep first occurrence."
