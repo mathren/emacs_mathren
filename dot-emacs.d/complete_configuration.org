@@ -34,10 +34,10 @@ setup to have a smooth workflow.
 
 Define a list of packages I use, and install them if they are not
 already. For clarity, this leaves in a separate [[file:install_packages.el][install_packages.el]]
-that I load.
+that I load. Note that this is redundant with =:ensure t= in =use-package=.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-;  (load "~/.emacs.d/install_packages.el")
+ (load "~/.emacs.d/install_packages.el")
 #+END_SRC
 
 The above can be a little slow the first time. If you prefer
@@ -48,7 +48,6 @@ lines below instead (note that the block below is not tangled to
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ;; ("org"   . "https://orgmode.org/elpa/")
 			   ("elpa"  . "https://elpa.gnu.org/packages/")
 			   ("melpa-stable" . "https://stable.melpa.org/packages/")
 			   ("org-contrib" . "https://elpa.nongnu.org/nongnu/")))
@@ -221,20 +220,15 @@ underlining the whole line.
 			:inherit nil)
     ;; Don't show diagnostics at end of line
     (setq flymake-show-diagnostics-at-end-of-line nil)
-
   )
 #+END_SRC
 
 ** Highlight indenting levels
 
 #+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package highlight-indent-guides
+  (use-package indent-bars
   :ensure t
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-responsive 'top)
-  (set-face-foreground 'highlight-indent-guides-character-face "#5f5f5f"))
+  :hook (prog-mode . indent-bars-mode))
 #+END_SRC
 
 

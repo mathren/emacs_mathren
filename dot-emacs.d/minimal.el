@@ -7,7 +7,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode 0)
-(set-fringe-mode 8)
+(set-fringe-mode 4)
 (column-number-mode)
 (global-display-line-numbers-mode t)
 ;; (load-theme 'wombat t) ;; theme chosen by OS

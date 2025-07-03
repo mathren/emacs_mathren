@@ -2,7 +2,7 @@
 
 (server-start)
 
-;  (load "~/.emacs.d/install_packages.el")
+(load "~/.emacs.d/install_packages.el")
 
 (require 'use-package)
 
@@ -73,16 +73,11 @@
 		      :inherit nil)
   ;; Don't show diagnostics at end of line
   (setq flymake-show-diagnostics-at-end-of-line nil)
-
 )
 
-(use-package highlight-indent-guides
-  :ensure t
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-responsive 'top)
-  (set-face-foreground 'highlight-indent-guides-character-face "#5f5f5f"))
+(use-package indent-bars
+:ensure t
+:hook (prog-mode . indent-bars-mode))
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
