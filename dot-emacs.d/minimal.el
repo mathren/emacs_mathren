@@ -7,7 +7,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode 0)
-(set-fringe-mode 4)
+(set-fringe-mode 4) ;; small fringe for error annotation
 (column-number-mode)
 (global-display-line-numbers-mode t)
 ;; (load-theme 'wombat t) ;; theme chosen by OS
@@ -20,26 +20,30 @@
 
 (defun mr/apply-theme-based-on-gnome ()
   "Apply a light or dark theme based on GNOME's current color scheme.
-Falls back to dark theme if `gsettings` is unavailable.
-Only re-applies theme if the mode has changed."
-  (let* ((dark-theme 'wombat)   ;; Replace with your preferred dark theme
-         (light-theme 'adwaita) ;; Replace with your preferred light theme
-         (gsettings (executable-find "gsettings"))
-         (mode
-          (cond
-           ((not gsettings) 'prefer-dark) ;; If gsettings not found, fallback to dark
-           (t
-            (let ((output (string-trim
-                           (shell-command-to-string
-                            "gsettings get org.gnome.desktop.interface color-scheme"))))
-              (if (string= output "'prefer-dark'")
-                  'prefer-dark
-                'light))))))
-    ;; Only change theme if needed
-    (unless (eq mode mr/current-theme-mode)
-      (setq mr/current-theme-mode mode)
-      (mapc #'disable-theme custom-enabled-themes)
-      (load-theme (if (eq mode 'prefer-dark) dark-theme light-theme) t))))
+   Falls back to dark theme if `gsettings` is unavailable.
+   Only re-applies theme if the mode has changed.
+   Skips execution on tramp buffers"
+  (unless (file-remote-p default-directory)
+    (let* ((dark-theme 'wombat)   ;; Replace with your preferred dark theme
+	   (light-theme 'adwaita) ;; Replace with your preferred light theme
+	   (gsettings (executable-find "gsettings"))
+	   (mode
+	    (cond
+	     ((not gsettings) 'prefer-dark) ;; If gsettings not found, fallback to dark
+	     (t
+	      (let ((output (string-trim
+			     (shell-command-to-string
+			      "gsettings get org.gnome.desktop.interface color-scheme"))))
+		(if (string= output "'prefer-dark'")
+		    'prefer-dark
+		  'light))))))
+      ;; Only change theme if needed
+      (unless (eq mode mr/current-theme-mode)
+	(setq mr/current-theme-mode mode)
+	(mapc #'disable-theme custom-enabled-themes)
+	(load-theme (if (eq mode 'prefer-dark) dark-theme light-theme) t)))
+    )
+  )
 
 (add-hook 'buffer-list-update-hook #'mr/apply-theme-based-on-gnome)
 
