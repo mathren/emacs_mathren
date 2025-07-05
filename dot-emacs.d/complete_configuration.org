@@ -758,9 +758,9 @@ Trying [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]. I w
 #+END_SRC
 
 
-** magit extras
+** Magit extras
 
-For large files
+For large files in git repositories:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package magit-lfs
@@ -768,7 +768,7 @@ For large files
     :pin melpa)
 #+END_SRC
 
-Trim white spaces only on lines that have been edited
+Trim white spaces only on lines that have been edited:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package ws-butler
@@ -892,7 +892,12 @@ Remote editing with my local configuration
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package tramp
     :custom
-    (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/"))
+    (tramp-remote-path '(tramp-default-remote-path
+			 tramp-own-remote-path
+			 "/usr/bin/"
+			 "/usr/local/bin"
+			 "/bin"))
+    (tramp-default-remote-shell "/usr/bin/sh")
     )
   (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 #+END_SRC

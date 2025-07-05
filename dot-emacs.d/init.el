@@ -492,7 +492,12 @@
 
 (use-package tramp
   :custom
-  (tramp-remote-path '(tramp-default-remote-path "/usr/bin/bash/"))
+  (tramp-remote-path '(tramp-default-remote-path
+		       tramp-own-remote-path
+		       "/usr/bin/"
+		       "/usr/local/bin"
+		       "/bin"))
+  (tramp-default-remote-shell "/usr/bin/sh")
   )
 (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 
