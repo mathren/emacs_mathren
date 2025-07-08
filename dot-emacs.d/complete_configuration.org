@@ -170,22 +170,23 @@ Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =cla
 =python3-pylsp=).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; eglot
-  (use-package eglot
-    :ensure t
-    :defer t
-    :hook ((python-mode . eglot-ensure)
-	   (c-mode . eglot-ensure)
-	   (c++-mode . eglot-ensure)
-	   (f90-mode . eglot-ensure))
-    :config
-    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-    (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+    ;; eglot
+    (use-package eglot
+      :ensure t
+      :defer t
+      :hook ((python-mode . eglot-ensure)
+	     (c-mode . eglot-ensure)
+	     (c++-mode . eglot-ensure)
+	     (f90-mode . eglot-ensure)
+	     (LaTeX-mode . eglot-ensure))
+      :config
+      (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+      (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
 
-    ;; Configure eglot to work well with flymake
-    (setq eglot-send-changes-idle-time 0.5)
-    (setq eglot-auto-display-help-buffer nil)
-    )
+      ;; Configure eglot to work well with flymake
+      (setq eglot-send-changes-idle-time 0.5)
+      (setq eglot-auto-display-help-buffer nil)
+      )
 #+END_SRC
 
 *** Flymake

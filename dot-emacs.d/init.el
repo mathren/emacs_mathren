@@ -37,7 +37,8 @@
   :hook ((python-mode . eglot-ensure)
 	 (c-mode . eglot-ensure)
 	 (c++-mode . eglot-ensure)
-	 (f90-mode . eglot-ensure))
+	 (f90-mode . eglot-ensure)
+	 (LaTeX-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
   (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
