@@ -161,6 +161,17 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package indent-bars
+  ;; :ensure t
+  :config
+    (setq
+  indent-bars-pattern "."
+  indent-bars-width-frac 0.2
+  indent-bars-pad-frac 0.5
+  indent-bars-color-by-depth nil
+  indent-bars-highlight-current-depth '(:face default :blend 0.5))
+)
+
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
@@ -289,6 +300,46 @@
 
 
 (add-hook 'org-export-before-processing-hook 'mr/export-odot-html)
+
+(defun mr/remove-bibtex-entries-without-colon ()
+  "Remove all BibTeX entries that don't have a colon after the opening brace in the first line.
+Entries are assumed to be separated by empty lines."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((modified nil))
+      (while (re-search-forward "^@\\w+{" nil t)
+        (let ((entry-start (match-beginning 0))
+              (first-line-end (line-end-position)))
+          ;; Check if there's a colon after the opening brace on the first line
+          (if (save-excursion
+                (goto-char (match-end 0))
+                (re-search-forward ":" first-line-end t))
+              ;; colon found, move to next entry
+              (progn
+                ;; Find the end of this entry (next empty line or end of buffer)
+                (while (and (forward-line 1)
+                           (not (eobp))
+                           (not (looking-at "^$"))))
+                (when (looking-at "^$")
+                  (forward-line 1)))
+            ;; No semicolon found, delete this entry
+            (let ((entry-end (save-excursion
+                              ;; Find the end of this entry
+                              (while (and (forward-line 1)
+                                         (not (eobp))
+                                         (not (looking-at "^$"))))
+                              ;; Include the empty line separator if present
+                              (when (looking-at "^$")
+                                (forward-line 1))
+                              (point))))
+              (delete-region entry-start entry-end)
+              (setq modified t)
+              ;; Don't advance position since we deleted text
+              (goto-char entry-start)))))
+      (when modified
+        (message "Removed BibTeX entries without semicolon after opening brace"))
+      modified)))
 
 (use-package org-bullets
   :after org
