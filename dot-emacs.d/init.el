@@ -507,7 +507,6 @@ Entries are assumed to be separated by empty lines."
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
-(add-hook 'LaTeX-mode-hook 'citar-mode)
 ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 
@@ -530,6 +529,44 @@ Entries are assumed to be separated by empty lines."
 (add-hook 'LaTeX-mode-hook
 	  (lambda ()
 	    (add-to-list 'fill-nobreak-predicate 'texmathp)))
+
+(use-package citar
+ :ensure t
+ :bind (("C-c i r" . citar-insert-citation)
+	  ("C-c i o" . citar-open))
+ :custom
+ (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+ (citar-symbols
+  `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+    (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+    (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
+ :config
+ ;; Load the local bibtool extension
+ (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
+
+ ;; Configure variables over-writing definition in citar-bibtool.el
+ (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+
+ ;; Set up hooks
+ (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
+ (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
+
+ ;; Ensure citar is loaded in TeX files
+ (add-hook 'latex-mode-hook #'citar-mode)
+ (add-hook 'LaTeX-mode-hook #'citar-mode)
+
+ ;; Set up key bindings
+;; Set up key bindings
+ (with-eval-after-load 'latex
+   (define-key latex-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only)
+   (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
+   (define-key latex-mode-map (kbd "C-c i k") #'citar-bibtool-insert-citation-with-local-copy))
+ ;; For AUCTeX
+ (with-eval-after-load 'tex
+   (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only)
+   (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
+   (define-key LaTeX-mode-map (kbd "C-c i k") #'citar-bibtool-insert-citation-with-local-copy))
+ )
 
 (use-package tramp
   :custom
