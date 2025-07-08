@@ -11,7 +11,8 @@ created by changing some emacs faces.
 
    Wombat theme, [[https://github.com/seagle0128/doom-modeline][doom line]]. [[https://github.com/millejoh/emacs-ipython-notebook][ein]] Ipython notebook running on remote
    server showing inline plot with matplotlib, [[https://www.emacswiki.org/emacs/TrampMode][TRAMP]] remote folder,
-   org notes file, and [[https://github.com/manateelazycat/aweshell][aweshell]] pop-up terminal in the bottom.
+   org notes file, and [[https://github.com/manateelazycat/aweshell][aweshell]] pop-up terminal in the bottom (I now
+   use the built in =term= with =zsh=).
 
    [[file:screenshot.jpg]]
 
@@ -29,7 +30,6 @@ created by changing some emacs faces.
   make -j 3
   make install
 #+END_SRC
-
 
 ** Installing emacs 29.1 from repository
 
