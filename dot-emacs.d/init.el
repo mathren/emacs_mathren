@@ -507,7 +507,8 @@ Entries are assumed to be separated by empty lines."
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTeX-mode-hook 'citar-mode)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 
 ;; ;; Enable synctex correlation
@@ -529,17 +530,6 @@ Entries are assumed to be separated by empty lines."
 (add-hook 'LaTeX-mode-hook
 	  (lambda ()
 	    (add-to-list 'fill-nobreak-predicate 'texmathp)))
-
-(use-package reftex
-  :ensure auctex
-  :after latex)
-
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(setq reftex-plug-into-AUCTeX t)
-(setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
-;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
-					;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 
 (use-package tramp
   :custom
