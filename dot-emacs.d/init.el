@@ -533,7 +533,7 @@ Entries are assumed to be separated by empty lines."
 (use-package citar
  :ensure t
  :bind (("C-c i r" . citar-insert-citation)
-	("C-c i o" . citar-open))
+	("C-c i o" . citar-open-link))
  :custom
  (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
  (citar-symbols
@@ -546,6 +546,7 @@ Entries are assumed to be separated by empty lines."
 
  ;; Configure variables over-writing definition in citar-bibtool.el
  (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+ (setq citar-open-always-create-notes nil)
 
  ;; Set up hooks
  (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
