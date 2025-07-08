@@ -533,7 +533,7 @@ Entries are assumed to be separated by empty lines."
 (use-package citar
  :ensure t
  :bind (("C-c i r" . citar-insert-citation)
-	  ("C-c i o" . citar-open))
+	("C-c i o" . citar-open))
  :custom
  (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
  (citar-symbols
@@ -558,14 +558,14 @@ Entries are assumed to be separated by empty lines."
  ;; Set up key bindings
 ;; Set up key bindings
  (with-eval-after-load 'latex
-   (define-key latex-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only)
+   (define-key latex-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only) ;; adds to local bib too
    (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-   (define-key latex-mode-map (kbd "C-c i k") #'citar-bibtool-insert-citation-with-local-copy))
+   (define-key latex-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
  ;; For AUCTeX
  (with-eval-after-load 'tex
    (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only)
    (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-   (define-key LaTeX-mode-map (kbd "C-c i k") #'citar-bibtool-insert-citation-with-local-copy))
+   (define-key LaTeX-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
  )
 
 (use-package tramp
