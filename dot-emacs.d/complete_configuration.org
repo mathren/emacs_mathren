@@ -932,21 +932,48 @@ Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], light
 
 *** References handling
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package reftex
-    :ensure auctex
-    :after latex)
-#+END_SRC
+[[https://github.com/emacs-citar/citar][Citar]] has more features than the built in =reftex=. The
+=master_bibtex.bib= file can be created using =bibtool= (that you can
+install from your package manager). To merge all your bibtex files
+(see [[https://github.com/mathren/binary_script/blob/main/merge_bibtex.sh][this bash script]]). Requires the file in
+[[./emacs_tools/citar-bibtool.el]].
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-  (setq reftex-plug-into-AUCTeX t)
-  (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
-  ;; (setq reftex-default-bibliography '("~/Documents/Research/Biblio_papers/bibtex/zotero.bib"))
-					  ;(setq reftex-bibpath-environment-variables '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
-#+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (use-package citar
+    :ensure t
+    :bind (("C-c c" . citar-insert-citation)
+	   ("C-c r" . citar-insert-reference)
+	   ("C-c o" . citar-open)
+	   ("C-c n" . citar-open-notes))
+    :custom
+    (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+    (citar-symbols
+     `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+       (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+       (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
+    :config
+    ;; Load the local bibtool extension
+    (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
 
+    ;; Configure variables over-writing definition in citar-bibtool.el
+    (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+
+    ;; Set up hooks
+    (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
+    (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
+
+    ;; Set up key bindings
+    (with-eval-after-load 'latex
+      (define-key latex-mode-map (kbd "C-c b") #'citar-bibtool-insert-citation-with-local-copy)
+      (define-key latex-mode-map (kbd "C-c B") #'citar-bibtool-sync-all-citations-to-local-bib))
+
+    ;; For AUCTeX
+    (with-eval-after-load 'tex
+      (define-key LaTeX-mode-map (kbd "C-c b") #'citar-bibtool-insert-citation-with-local-copy)
+      (define-key LaTeX-mode-map (kbd "C-c B") #'citar-bibtool-sync-all-citations-to-local-bib))
+    )
+
+#+END_SRC
 
 ** Tramp
 

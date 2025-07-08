@@ -84,6 +84,7 @@
 		     all-the-icons-ivy-rich
 		     markdown-mode
 		     indent-bars
+		     citar
 		     ))
 
 ; install the missing packages
