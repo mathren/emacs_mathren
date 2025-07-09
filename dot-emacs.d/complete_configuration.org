@@ -724,10 +724,34 @@ Use [[https://pypi.org/project/black/][black]] to format code
 [[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
 works for remote notebooks too.
 
+Launch the notebook (within your python environment) with (you can
+change the port number from =8989= to anything else that is free).
+#+BEGIN_SRC bash
+  jupyter notebook --no-browser --port=8989
+#+END_SRC
+If you run on a remote machine, the command above should be run
+remotely to start the notebook there, and then you want to tunnel an
+=ssh= connection from the local machine:
+#+BEGIN_SRC bash
+  ssh -L 8989:remote_host:8989
+#+END_SRC
+(the port numbers need not be the same). Finally from within emacs run
+=M-x ein:notebook-login.=
+
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-					  ; ein
-  (setq ein:worksheet-enable-undo t)
-  (setq ein:output-area-inlined-images t)
+    (use-package ein
+      :config
+      ;; redefined C-x B conflicts with ein
+      (defun pm--visible-buffer-name ()
+	"Get visible buffer name - compatibility function for EIN"
+	(buffer-name (window-buffer)))
+      )
+
+    (use-package auto-complete
+    ;; :ensure t
+    :after ein
+    :config
+    (add-to-list 'ac-modes 'ein:notebook-mode))
 #+END_SRC
 
 **** Latex in markdown ein cells
@@ -747,9 +771,9 @@ Then install [[https://gitlab.com/matsievskiysv/math-preview][math-preview]] and
 Finally, use math-preview
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-					  ; to see latex in ein markdown cells
-  (use-package math-preview
-    :ensure t)
+  ; to see latex in ein markdown cells
+   (use-package math-preview
+     :ensure t)
 #+END_SRC
 
 Running =C-c C-c= (bound to =ein:worksheet-execute-cell=) on a

@@ -415,13 +415,23 @@ Entries are assumed to be separated by empty lines."
 ;;   ;; Optional: you can still see error messages in the echo area when cursor is on the line
 ;;   (setq flycheck-display-errors-delay 0.5))
 
-; ein
-(setq ein:worksheet-enable-undo t)
-(setq ein:output-area-inlined-images t)
+(use-package ein
+  :config
+  ;; redefined C-x B conflicts with ein
+  (defun pm--visible-buffer-name ()
+    "Get visible buffer name - compatibility function for EIN"
+    (buffer-name (window-buffer)))
+  )
+
+(use-package auto-complete
+;; :ensure t
+:after ein
+:config
+(add-to-list 'ac-modes 'ein:notebook-mode))
 
 ; to see latex in ein markdown cells
-(use-package math-preview
-  :ensure t)
+ (use-package math-preview
+   :ensure t)
 
 (use-package arxiv-mode
   :ensure t
