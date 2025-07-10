@@ -676,9 +676,9 @@ these mostly with [[https://github.com/showyourwork/showyourwork][showyourwork]]
 
 *** Formatting
 
-Use [[https://pypi.org/project/black/][black]] to format code
+Use [[https://pypi.org/project/black/][black]] to format code. Unused since using =eglot=, block below is not tangled.
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+#+BEGIN_SRC emacs-lisp
   ;; Install:
   ;; pip install black
   ;; pip install black-macchiato
@@ -696,27 +696,28 @@ Use [[https://pypi.org/project/black/][black]] to format code
 
 *** Flycheck
 
- Not used since switching to =eglot=
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; (use-package flycheck
-  ;;   :ensure t
-  ;;   :config
-  ;;   ;; Disable underlining of errors/warnings
-  ;;   (setq flycheck-highlighting-mode nil)
-  ;;   ;; Enable fringe indicators
-  ;;   (setq flycheck-indication-mode 'left-fringe)
+ Not used since switching to =eglot= (the next block is not tangled).
 
-  ;;   ;; ;; Optional: customize the fringe indicators
-  ;;   ;; ;; You can use different symbols for different error types
-  ;;   ;; (when (fboundp 'define-fringe-bitmap)
-  ;;   ;;   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-  ;;   ;;     [16 48 112 240 112 48 16] nil nil 'center))
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :config
+    ;; Disable underlining of errors/warnings
+    (setq flycheck-highlighting-mode nil)
+    ;; Enable fringe indicators
+    (setq flycheck-indication-mode 'left-fringe)
 
-  ;;   ;; Optional: disable the error list popup if you don't want it
-  ;;   ;; (setq flycheck-display-errors-function nil)
+    ;; ;; Optional: customize the fringe indicators
+    ;; ;; You can use different symbols for different error types
+    ;; (when (fboundp 'define-fringe-bitmap)
+    ;;   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    ;;     [16 48 112 240 112 48 16] nil nil 'center))
 
-  ;;   ;; Optional: you can still see error messages in the echo area when cursor is on the line
-  ;;   (setq flycheck-display-errors-delay 0.5))
+    ;; Optional: disable the error list popup if you don't want it
+    ;; (setq flycheck-display-errors-function nil)
+
+    ;; Optional: you can still see error messages in the echo area when cursor is on the line
+    (setq flycheck-display-errors-delay 0.5))
 #+END_SRC
 
 *** Jupyter notebooks with ein
@@ -753,6 +754,12 @@ remotely to start the notebook there, and then you want to tunnel an
     (defun pm--visible-buffer-name ()
       "Get visible buffer name - compatibility function for EIN"
       (buffer-name (window-buffer)))
+
+    ;; Enable eglot in Python cells
+    ;; (add-hook 'ein:connect-mode-hook #'eglot-ensure)
+
+    ;; ;; Alternative: Enable eglot when entering Python cells
+    ;; (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
     )
 #+END_SRC
 

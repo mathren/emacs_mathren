@@ -381,40 +381,6 @@ Entries are assumed to be separated by empty lines."
 ;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 ;;   (setq elpy-rpc-python-command "python3"))
 
-;; Install:
-;; pip install black
-;; pip install black-macchiato
-(use-package python-black
-  :demand t
-  :after python
-  :custom
-  (python-black-extra-args '("--line-length=120" "--skip-string-normalization"))
-  (setq python-black-command "~/.local/bin/black")
-  (setq python-black-macchiato-command "~/.local/bin/black-macchiato")
-  :bind
-  (:map python-mode-map
-	("C-c C-l" . python-black-partial-dwim)))
-
-;; (use-package flycheck
-;;   :ensure t
-;;   :config
-;;   ;; Disable underlining of errors/warnings
-;;   (setq flycheck-highlighting-mode nil)
-;;   ;; Enable fringe indicators
-;;   (setq flycheck-indication-mode 'left-fringe)
-
-;;   ;; ;; Optional: customize the fringe indicators
-;;   ;; ;; You can use different symbols for different error types
-;;   ;; (when (fboundp 'define-fringe-bitmap)
-;;   ;;   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-;;   ;;     [16 48 112 240 112 48 16] nil nil 'center))
-
-;;   ;; Optional: disable the error list popup if you don't want it
-;;   ;; (setq flycheck-display-errors-function nil)
-
-;;   ;; Optional: you can still see error messages in the echo area when cursor is on the line
-;;   (setq flycheck-display-errors-delay 0.5))
-
 (use-package ein
   :config
   (setq ein:output-area-inlined-images t)  ;; show inline plots
@@ -429,6 +395,12 @@ Entries are assumed to be separated by empty lines."
   (defun pm--visible-buffer-name ()
     "Get visible buffer name - compatibility function for EIN"
     (buffer-name (window-buffer)))
+
+  ;; Enable eglot in Python cells
+  ;; (add-hook 'ein:connect-mode-hook #'eglot-ensure)
+
+  ;; ;; Alternative: Enable eglot when entering Python cells
+  ;; (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
   )
 
 ; to see latex in ein markdown cells
