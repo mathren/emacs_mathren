@@ -417,17 +417,19 @@ Entries are assumed to be separated by empty lines."
 
 (use-package ein
   :config
+  (setq ein:output-area-inlined-images t)  ;; show inline plots
+  (setq ein:worksheet-enable-undo t)
+  ; Enable syntax highlighting for Python cells
+  (setq ein:completion-backend 'ein:use-ac-backend)
+  ;; Set default language mode for cells
+  (add-hook 'ein:notebook-mode-hook
+	    (lambda ()
+	      (setq ein:notebook-lang "python")))
   ;; redefined C-x B conflicts with ein
   (defun pm--visible-buffer-name ()
     "Get visible buffer name - compatibility function for EIN"
     (buffer-name (window-buffer)))
   )
-
-(use-package auto-complete
-;; :ensure t
-:after ein
-:config
-(add-to-list 'ac-modes 'ein:notebook-mode))
 
 ; to see latex in ein markdown cells
  (use-package math-preview
