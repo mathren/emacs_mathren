@@ -43,6 +43,10 @@
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
   (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
 
+  ;; Configure Python LSP for EIN modes
+  (add-to-list 'eglot-server-programs '(ein:notebook-python-mode . ("pylsp")))
+  (add-to-list 'eglot-server-programs '(ein:notebook-mode . ("pylsp")))
+
   ;; Configure eglot to work well with flymake
   (setq eglot-send-changes-idle-time 0.5)
   (setq eglot-auto-display-help-buffer nil)
@@ -75,10 +79,6 @@
   ;; Don't show diagnostics at end of line
   (setq flymake-show-diagnostics-at-end-of-line nil)
 )
-
-(use-package indent-bars
-:ensure t
-:hook (prog-mode . indent-bars-mode))
 
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
@@ -397,10 +397,9 @@ Entries are assumed to be separated by empty lines."
     (buffer-name (window-buffer)))
 
   ;; Enable eglot in Python cells
-  ;; (add-hook 'ein:connect-mode-hook #'eglot-ensure)
-
+  (add-hook 'ein:connect-mode-hook #'eglot-ensure)
   ;; ;; Alternative: Enable eglot when entering Python cells
-  ;; (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
+  (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
   )
 
 ; to see latex in ein markdown cells

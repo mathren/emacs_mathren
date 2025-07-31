@@ -170,23 +170,27 @@ Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =cla
 =python3-pylsp=).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-    ;; eglot
-    (use-package eglot
-      :ensure t
-      :defer t
-      :hook ((python-mode . eglot-ensure)
-	     (c-mode . eglot-ensure)
-	     (c++-mode . eglot-ensure)
-	     (f90-mode . eglot-ensure)
-	     (LaTeX-mode . eglot-ensure))
-      :config
-      (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
-      (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+  ;; eglot
+  (use-package eglot
+    :ensure t
+    :defer t
+    :hook ((python-mode . eglot-ensure)
+	   (c-mode . eglot-ensure)
+	   (c++-mode . eglot-ensure)
+	   (f90-mode . eglot-ensure)
+	   (LaTeX-mode . eglot-ensure))
+    :config
+    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
+    (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
 
-      ;; Configure eglot to work well with flymake
-      (setq eglot-send-changes-idle-time 0.5)
-      (setq eglot-auto-display-help-buffer nil)
-      )
+    ;; Configure Python LSP for EIN modes
+    (add-to-list 'eglot-server-programs '(ein:notebook-python-mode . ("pylsp")))
+    (add-to-list 'eglot-server-programs '(ein:notebook-mode . ("pylsp")))
+
+    ;; Configure eglot to work well with flymake
+    (setq eglot-send-changes-idle-time 0.5)
+    (setq eglot-auto-display-help-buffer nil)
+    )
 #+END_SRC
 
 *** Flymake
@@ -222,14 +226,6 @@ underlining the whole line.
     ;; Don't show diagnostics at end of line
     (setq flymake-show-diagnostics-at-end-of-line nil)
   )
-#+END_SRC
-
-** Highlight indenting levels
-
-#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package indent-bars
-  :ensure t
-  :hook (prog-mode . indent-bars-mode))
 #+END_SRC
 
 
@@ -756,10 +752,9 @@ remotely to start the notebook there, and then you want to tunnel an
       (buffer-name (window-buffer)))
 
     ;; Enable eglot in Python cells
-    ;; (add-hook 'ein:connect-mode-hook #'eglot-ensure)
-
+    (add-hook 'ein:connect-mode-hook #'eglot-ensure)
     ;; ;; Alternative: Enable eglot when entering Python cells
-    ;; (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
+    (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
     )
 #+END_SRC
 
@@ -1014,9 +1009,10 @@ your bibtex files (see [[https://github.com/mathren/binary_script/blob/main/merg
    )
 #+END_SRC
 
+
 ** Tramp
 
-Remote editing with my local configuration
+Remote editing with my local configuration.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package tramp
