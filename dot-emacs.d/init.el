@@ -515,43 +515,59 @@ Entries are assumed to be separated by empty lines."
 	    (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
 (use-package citar
- :ensure t
- :bind (("C-c i r" . citar-insert-citation)
-	("C-c i o" . citar-open-link))
- :custom
- (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
- (citar-symbols
-  `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
-    (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
-    (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
- :config
- ;; Load the local bibtool extension
- (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
+   :ensure t
+   :bind (("C-c i r" . citar-insert-citation)
+	  ("C-c i o" . citar-open-link))
+   :custom
+   (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+   (citar-symbols
+    `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+      (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+      (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
+   :config
+   (defun citar-insert-tex-bib (citekeys)
+     "Insert CITEKEYS both as citation key in tex and as bibtex entry"
+     (interactive (list (citar-select-refs)))
+     (let ((local-bib-file (concat (car LaTeX-auto-bibliography) ".bib"))
+	   (updated nil))
+       ;; insert in latex buffer
+       (citar-latex-insert-citation citekeys nil "cite")
+       ;; update in local .bib
+       (with-temp-buffer
+	 (insert-file-contents local-bib-file )
+	 (mapcar (lambda (citekey)
+		   (goto-char (point-min))
+		   (unless (re-search-forward (concat "@.*?{" citekey) (point-max) t)
+		     (setq updated t)
+		     (goto-char (point-max))
+		     (citar--insert-bibtex citekey)))
+		 citekeys)
+	 (when updated (write-file local-bib-file)))))
 
- ;; Configure variables over-writing definition in citar-bibtool.el
- (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
- (setq citar-open-always-create-notes nil)
+   ;; Configure variables over-writing definition in citar-bibtool.el
+   (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+   (setq citar-open-always-create-notes nil)
 
- ;; Set up hooks
- (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
- (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
+   ;; Set up hooks
+   (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
+   (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
 
- ;; Ensure citar is loaded in TeX files
- (add-hook 'latex-mode-hook #'citar-mode)
- (add-hook 'LaTeX-mode-hook #'citar-mode)
+   ;; Ensure citar is loaded in TeX files
+   (add-hook 'latex-mode-hook #'citar-mode)
+   (add-hook 'LaTeX-mode-hook #'citar-mode)
 
- ;; Set up key bindings
-;; Set up key bindings
- (with-eval-after-load 'latex
-   (define-key latex-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only) ;; adds to local bib too
-   (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-   (define-key latex-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
- ;; For AUCTeX
- (with-eval-after-load 'tex
-   (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only)
-   (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-   (define-key LaTeX-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
- )
+   ;; Set up key bindings
+  ;; Set up key bindings
+   (with-eval-after-load 'latex
+     (define-key latex-mode-map (kbd "C-c i r") #'citar-insert-tex-bib) ;; adds to local bib too  ;; citar-bibtool-insert-key-only
+     (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
+     (define-key latex-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
+   ;; For AUCTeX
+   (with-eval-after-load 'tex
+     (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-insert-tex-bib)
+     (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
+     (define-key LaTeX-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
+   )
 
 (use-package tramp
   :custom
