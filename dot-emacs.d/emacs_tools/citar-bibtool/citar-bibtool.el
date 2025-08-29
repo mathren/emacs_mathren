@@ -224,23 +224,48 @@ With prefix ARG, insert citation without copying to local bib."
              (export-data (cdr (assoc 'export json-response))))
         export-data))))
 
-(defun ads-format-paper-for-display (paper)
-  "Format PAPER data for minibuffer display."
-  (let ((authors (nth 2 paper))
-        (title (nth 1 paper))
-        (year (nth 3 paper))
-        (pub (nth 4 paper))
-	(bibcode (nth 0 paper))
-	)
-    (format "%s | %s | %s (%s) | %s"
-            bibcode
-            (if (vectorp title) (aref title 0) (or title "No title"))
-            (if (vectorp authors)
-                (concat (aref authors 0)
-                        (if (> (length authors) 1) " et al." ""))
-              (or authors "Unknown"))
-            (or year "Unknown")
-            (or pub "Unknown journal"))))
+;; (defun ads-format-paper-for-display (paper)
+;;     "Format PAPER data for minibuffer display."
+;;     (let ((authors (nth 2 paper))
+;;           (title (nth 1 paper))
+;;           (year (nth 3 paper))
+;;           (pub (nth 4 paper))
+;;           (bibcode (nth 0 paper)))
+;;       (concat
+;;        (if (vectorp authors)
+;;            (concat (aref authors 0)
+;;                    (if (> (length authors) 1) " et al." ""))
+;;          (or authors "Unknown"))
+;;        " (" (or year "Unknown") ") | "
+;;        (propertize (if (vectorp title) (aref title 0) (or title "No title"))
+;;                    'face 'italic)
+;;        " | "
+;;        (propertize (or pub "Unknown journal")
+;;                    'face 'bold)
+;;        " | " bibcode)))
+
+  (defun ads-format-paper-for-display (paper)
+    "Format PAPER data for minibuffer display."
+    (let ((authors (nth 2 paper))
+          (title (nth 1 paper))
+          (year (nth 3 paper))
+          (pub (nth 4 paper))
+          (bibcode (nth 0 paper)))
+      (concat
+       (if (vectorp authors)
+           (cond
+            ((= (length authors) 1) (aref authors 0))
+            ((= (length authors) 2) (concat (aref authors 0) " & " (aref authors 1)))
+            ((> (length authors) 2) (concat (aref authors 0) " , " (aref authors 1) " et al.")))
+         (or authors "??"))
+       " (" (or year "??") ") ⋅"
+       (propertize (if (vectorp title) (aref title 0) (or title "No title"))
+                   'face 'italic)
+       " ⋅ "
+       (propertize (or pub "??")
+                   'face 'bold)
+       " ⋅ " bibcode)))
+
 
 (defun ads-select-paper (papers)
   "Let user select a paper from PAPERS list using completing-read."

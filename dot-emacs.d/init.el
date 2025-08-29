@@ -516,8 +516,7 @@ Entries are assumed to be separated by empty lines."
 
 (use-package citar
    :ensure t
-   :bind (("C-c i r" . citar-insert-citation)
-	  ("C-c i o" . citar-open-link))
+   :bind (("C-c i o" . citar-open-link))
    :custom
    (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
    (citar-symbols
@@ -525,24 +524,8 @@ Entries are assumed to be separated by empty lines."
       (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
       (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
    :config
-   (defun citar-insert-tex-bib (citekeys)
-     "Insert CITEKEYS both as citation key in tex and as bibtex entry"
-     (interactive (list (citar-select-refs)))
-     (let ((local-bib-file (concat (car LaTeX-auto-bibliography) ".bib"))
-	   (updated nil))
-       ;; insert in latex buffer
-       (citar-latex-insert-citation citekeys nil "cite")
-       ;; update in local .bib
-       (with-temp-buffer
-	 (insert-file-contents local-bib-file )
-	 (mapcar (lambda (citekey)
-		   (goto-char (point-min))
-		   (unless (re-search-forward (concat "@.*?{" citekey) (point-max) t)
-		     (setq updated t)
-		     (goto-char (point-max))
-		     (citar--insert-bibtex citekey)))
-		 citekeys)
-	 (when updated (write-file local-bib-file)))))
+   (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
+   (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not public
 
    ;; Configure variables over-writing definition in citar-bibtool.el
    (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
@@ -560,11 +543,13 @@ Entries are assumed to be separated by empty lines."
   ;; Set up key bindings
    (with-eval-after-load 'latex
      (define-key latex-mode-map (kbd "C-c i r") #'citar-insert-tex-bib) ;; adds to local bib too  ;; citar-bibtool-insert-key-only
+     (define-key latex-mode-map (kbd "C-c i a") #'ads-search-and-insert-citation)
      (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
      (define-key latex-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
    ;; For AUCTeX
    (with-eval-after-load 'tex
      (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-insert-tex-bib)
+     (define-key LaTeX-mode-map (kbd "C-c i a") #'ads-search-and-insert-citation)
      (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
      (define-key LaTeX-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
    )
