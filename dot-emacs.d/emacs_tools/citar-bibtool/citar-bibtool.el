@@ -122,14 +122,14 @@ First looks for \\bibliography{} command in current buffer, then checks cache."
                 (progn
                   ;; Extract the specific entry to temp file
                   (call-process "bibtool" nil nil nil
-                              "-s" "-q"
-                              "-X" key
-                              "-i" master-bib
-                              "-o" temp-file)
+				"-s" "-q"
+				"-X" key
+				"-i" master-bib
+				"-o" temp-file)
 
                   ;; Check if entry was found and temp file has content
                   (when (and (file-exists-p temp-file)
-                            (> (file-attribute-size (file-attributes temp-file)) 0))
+                             (> (file-attribute-size (file-attributes temp-file)) 0))
                     ;; Check if entry already exists in local bib
                     (unless (citar-bibtool-entry-exists-in-local-bib-p key local-bib)
                       ;; Append to local bib file
@@ -217,5 +217,144 @@ With prefix ARG, insert citation without copying to local bib."
       ;; Add comma and space if not the last key
       (unless (equal key (car (last keys)))
         (insert ", ")))))
+
+
+;; NASA/ADS search
+;; Helper functions for ADS API
+(defun ads-search-papers (query &optional max-results)
+  "Search NASA/ADS for papers matching QUERY. Returns list of papers."
+  (let* ((max-results (or max-results 20))
+         (url "https://api.adsabs.harvard.edu/v1/search/query")
+         (params `(("q" . ,query)
+                   ("fl" . "bibcode,title,author,year,pub")
+                   ("rows" . ,(number-to-string max-results))))
+         (url-request-method "GET")
+         (url-request-extra-headers
+          `(("Authorization" . ,(concat "Bearer " ads-api-token))))
+         (url-request-data nil))
+    (with-current-buffer
+        (url-retrieve-synchronously
+         (concat url "?" (mapconcat
+                          (lambda (pair)
+                            (concat (url-hexify-string (car pair))
+                                    "="
+                                    (url-hexify-string (cdr pair))))
+                          params "&")))
+      (goto-char (point-min))
+      (re-search-forward "^$")
+      (let* ((json-response (json-read))
+             (docs (cdr (assoc 'docs (cdr (assoc 'response json-response))))))
+        (mapcar (lambda (doc)
+                  (list (cdr (assoc 'bibcode doc))
+                        (cdr (assoc 'title doc))
+                        (cdr (assoc 'author doc))
+                        (cdr (assoc 'year doc))
+                        (cdr (assoc 'pub doc))))
+                docs)))))
+
+(defun ads-get-bibtex (bibcode)
+  "Retrieve BibTeX entry for given BIBCODE from NASA/ADS."
+  (let* ((url "https://api.adsabs.harvard.edu/v1/export/bibtex")
+         (url-request-method "POST")
+         (url-request-extra-headers
+          `(("Authorization" . ,(concat "Bearer " ads-api-token))
+            ("Content-Type" . "application/json")))
+         (url-request-data
+          (json-encode `(("bibcode" . (,bibcode))))))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (goto-char (point-min))
+      (re-search-forward "^$")
+      (let* ((json-response (json-read))
+             (export-data (cdr (assoc 'export json-response))))
+        export-data))))
+
+(defun ads-format-paper-for-display (paper)
+  "Format PAPER data for minibuffer display."
+  (let ((bibcode (nth 0 paper))
+        (title (nth 1 paper))
+        (authors (nth 2 paper))
+        (year (nth 3 paper))
+        (pub (nth 4 paper)))
+    (format "%s | %s | %s (%s) | %s"
+            bibcode
+            (if (vectorp title) (aref title 0) (or title "No title"))
+            (if (vectorp authors)
+                (concat (aref authors 0)
+                        (if (> (length authors) 1) " et al." ""))
+              (or authors "Unknown"))
+            (or year "Unknown")
+            (or pub "Unknown journal"))))
+
+(defun ads-select-paper (papers)
+  "Let user select a paper from PAPERS list using completing-read."
+  (let* ((formatted-papers (mapcar (lambda (paper)
+                                     (cons (ads-format-paper-for-display paper)
+                                           paper))
+                                   papers))
+         (selection (completing-read "Select paper: " formatted-papers nil t)))
+    (cdr (assoc selection formatted-papers))))
+
+(defun ads-extract-citation-key-from-bibtex (bibtex-string)
+  "Extract citation key from BIBTEX-STRING."
+  (when (string-match "@[^{]+{\\([^,\n]+\\)" bibtex-string)
+    (match-string 1 bibtex-string)))
+
+(defun ads-replace-citation-key-in-bibtex (bibtex-string old-key new-key)
+  "Replace OLD-KEY with NEW-KEY in BIBTEX-STRING."
+  (replace-regexp-in-string
+   (regexp-quote (concat "{" old-key))
+   (concat "{" new-key)
+   bibtex-string))
+
+(defun ads-search-and-insert-citation ()
+  "Search NASA/ADS, select paper, and insert citation with bibtex entry."
+  (interactive)
+  (let* ((query (read-string "Search NASA/ADS: "))
+         (papers (ads-search-papers query))
+         (selected-paper (ads-select-paper papers))
+         (bibcode (nth 0 selected-paper))
+         (bibtex-entry (ads-get-bibtex bibcode))
+         (original-key (ads-extract-citation-key-from-bibtex bibtex-entry))
+         (new-key (read-string "Citation key: " original-key))
+         (final-bibtex (if (string= original-key new-key)
+                           bibtex-entry
+                         (ads-replace-citation-key-in-bibtex
+                          bibtex-entry original-key new-key)))
+         (local-bib-file (concat (car LaTeX-auto-bibliography) ".bib")))
+
+    ;; Insert citation in LaTeX buffer
+    (citar-latex-insert-citation (list new-key) nil "cite")
+
+    ;; Add to local bib file
+    (with-temp-buffer
+      (when (file-exists-p local-bib-file)
+        (insert-file-contents local-bib-file))
+      (goto-char (point-max))
+      (unless (bobp) (insert "\n\n"))
+      (insert final-bibtex)
+      (write-file local-bib-file))
+
+    (message "Added citation %s to %s" new-key local-bib-file)))
+
+(defun citar-insert-tex-bib (citekeys)
+  "Insert CITEKEYS both as citation key in tex and as bibtex entry"
+  (interactive (list (citar-select-refs)))
+  (let ((local-bib-file (concat (car LaTeX-auto-bibliography) ".bib"))
+        (updated nil))
+    ;; insert in latex buffer
+    (citar-latex-insert-citation citekeys nil "cite")
+    ;; update in local .bib
+    (with-temp-buffer
+      (insert-file-contents local-bib-file)
+      (mapcar (lambda (citekey)
+                (goto-char (point-min))
+                (unless (re-search-forward (concat "@.*?{" citekey) (point-max) t)
+                  (setq updated t)
+                  (goto-char (point-max))
+                  (citar--insert-bibtex citekey)))
+              citekeys)
+      (when updated (write-file local-bib-file)))))
+
+
 
 (provide 'citar-bibtool)

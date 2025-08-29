@@ -969,14 +969,21 @@ install from your package manager). To merge all your bibtex files
 (see [[https://github.com/mathren/binary_script/blob/main/merge_bibtex.sh][this bash script]]).
 
 I use [[https://github.com/orgs/emacs-citar/discussions/818][a function]] to update the =.tex= and local =.bib= file copying the
-entry from the "master" =.bib= global file. In the future I would want
-this to directly search on [[ehttps://ui.adsabs.harvard.edu/][NASA/ADS]].
+entry from the "master" =.bib= global file (see the file
+[[./emacs_tools/citar-bibtool/citar-bibtool.el][citar-bibtool.el]]).
+
+I can also directly search on [[ehttps://ui.adsabs.harvard.edu/][NASA/ADS]], although this require [[https://ui.adsabs.harvard.edu/user/settings/token][getting
+an API token]]. You can do this with:
+
+#+BEGIN_SRC elisp
+(setq ads-api-token "YOUR-TOKEN")
+#+END_SRC
+
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package citar
      :ensure t
-     :bind (("C-c i r" . citar-insert-citation)
-	    ("C-c i o" . citar-open-link))
+     :bind (("C-c i o" . citar-open-link))
      :custom
      (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
      (citar-symbols
@@ -984,24 +991,8 @@ this to directly search on [[ehttps://ui.adsabs.harvard.edu/][NASA/ADS]].
 	(note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
 	(link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
      :config
-     (defun citar-insert-tex-bib (citekeys)
-       "Insert CITEKEYS both as citation key in tex and as bibtex entry"
-       (interactive (list (citar-select-refs)))
-       (let ((local-bib-file (concat (car LaTeX-auto-bibliography) ".bib"))
-	     (updated nil))
-	 ;; insert in latex buffer
-	 (citar-latex-insert-citation citekeys nil "cite")
-	 ;; update in local .bib
-	 (with-temp-buffer
-	   (insert-file-contents local-bib-file )
-	   (mapcar (lambda (citekey)
-		     (goto-char (point-min))
-		     (unless (re-search-forward (concat "@.*?{" citekey) (point-max) t)
-		       (setq updated t)
-		       (goto-char (point-max))
-		       (citar--insert-bibtex citekey)))
-		   citekeys)
-	   (when updated (write-file local-bib-file)))))
+     (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
+     (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not public
 
      ;; Configure variables over-writing definition in citar-bibtool.el
      (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
@@ -1019,11 +1010,13 @@ this to directly search on [[ehttps://ui.adsabs.harvard.edu/][NASA/ADS]].
     ;; Set up key bindings
      (with-eval-after-load 'latex
        (define-key latex-mode-map (kbd "C-c i r") #'citar-insert-tex-bib) ;; adds to local bib too  ;; citar-bibtool-insert-key-only
+       (define-key latex-mode-map (kbd "C-c i a") #'ads-search-and-insert-citation)
        (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
        (define-key latex-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
      ;; For AUCTeX
      (with-eval-after-load 'tex
        (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-insert-tex-bib)
+       (define-key LaTeX-mode-map (kbd "C-c i a") #'ads-search-and-insert-citation)
        (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
        (define-key LaTeX-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
      )
