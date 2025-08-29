@@ -973,12 +973,15 @@ entry from the "master" =.bib= global file (see the file
 [[./emacs_tools/citar-bibtool/citar-bibtool.el][citar-bibtool.el]]).
 
 I can also directly search on [[ehttps://ui.adsabs.harvard.edu/][NASA/ADS]], although this require [[https://ui.adsabs.harvard.edu/user/settings/token][getting
-an API token]]. You can do this with:
+an API token]]. You can do this with one line in a file that you *do
+not* make public:
 
 #+BEGIN_SRC elisp
 (setq ads-api-token "YOUR-TOKEN")
 #+END_SRC
 
+and load that file (in my case I name it =ADS_API_TOKEN.el=). This is
+the full setup:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package citar

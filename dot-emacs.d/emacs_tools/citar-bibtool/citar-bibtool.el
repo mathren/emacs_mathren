@@ -52,50 +52,6 @@ First looks for \\bibliography{} command in current buffer, then checks cache."
         final-path))))
 
 
-;; (defun citar-bibtool-get-local-bib-file ()
-;;   "Get the path to the local BibTeX file for the current project.
-;; First looks for \\bibliography{} command in current buffer, then checks cache."
-;;   (let* ((project-root (or (when (fboundp 'project-root)
-;;                             (project-root (project-current)))
-;;                           (locate-dominating-file default-directory ".git")
-;;                           default-directory))
-;;          (cache-key (expand-file-name "." project-root))
-;;          (cached-path (cdr (assoc cache-key citar-bibtool-local-bibliography-cache))))
-
-;;     ;; Return cached path if available
-;;     (if cached-path
-;;         cached-path
-
-;;       ;; Otherwise, search for bibliography in tex file
-;;       (let* ((bib-basename (citar-bibtool-find-bibliography-in-tex))
-;;              (bib-path-with-ext (when bib-basename
-;;                                  (expand-file-name (concat bib-basename ".bib") project-root)))
-;;              (bib-path-without-ext (when bib-basename
-;;                                     (expand-file-name bib-basename project-root)))
-;;              (final-path nil))
-
-;;         (cond
-;;          ;; No \bibliography{} command found
-;;          ((not bib-basename)
-;;           (error "No \\bibliography{} command found in current buffer"))
-
-;;          ;; Try with .bib extension first
-;;          ((and bib-path-with-ext (file-exists-p bib-path-with-ext))
-;;           (setq final-path bib-path-with-ext))
-
-;;          ;; Try without .bib extension
-;;          ((and bib-path-without-ext (file-exists-p bib-path-without-ext))
-;;           (setq final-path bib-path-without-ext))
-
-;;          ;; File not found, but we'll use the path with .bib extension for creation
-;;          (t
-;;           (setq final-path bib-path-with-ext)
-;;           (message "Bibliography file %s not found, will be created"
-;;                    (file-name-nondirectory final-path))))
-
-;;         ;; Cache the result
-;;         (push (cons cache-key final-path) citar-bibtool-local-bibliography-cache)
-;;         final-path))))
 
 (defun citar-bibtool-entry-exists-in-local-bib-p (key local-bib)
   "Check if KEY already exists in LOCAL-BIB file."
@@ -270,11 +226,12 @@ With prefix ARG, insert citation without copying to local bib."
 
 (defun ads-format-paper-for-display (paper)
   "Format PAPER data for minibuffer display."
-  (let ((bibcode (nth 0 paper))
+  (let ((authors (nth 2 paper))
         (title (nth 1 paper))
-        (authors (nth 2 paper))
         (year (nth 3 paper))
-        (pub (nth 4 paper)))
+        (pub (nth 4 paper))
+	(bibcode (nth 0 paper))
+	)
     (format "%s | %s | %s (%s) | %s"
             bibcode
             (if (vectorp title) (aref title 0) (or title "No title"))
@@ -354,7 +311,5 @@ With prefix ARG, insert citation without copying to local bib."
                   (citar--insert-bibtex citekey)))
               citekeys)
       (when updated (write-file local-bib-file)))))
-
-
 
 (provide 'citar-bibtool)
