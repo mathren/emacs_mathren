@@ -1,18 +1,18 @@
+;; Citar Bibliography Management Functions
+;; A collection of functions for managing citations and bibliography files
+
 (require 'citar)
+(require 'json)
+(require 'url)
 
-(defgroup citar-bibtool nil
-  "Automatic BibTeX entry copying with citar and bibtool."
-  :group 'citar
-  :prefix "citar-bibtool-")
-
-(defcustom citar-bibtool-master-bibliography "~/master.bib"
-  "Path to the master BibTeX file."
-  :type 'file
-  :group 'citar-bibtool)
+;; Configuration variables -- will be overwritten
+(defvar citar-bibtool-master-bibliography "~/master.bib"
+  "Path to the master BibTeX file.")
 
 (defvar citar-bibtool-local-bibliography-cache nil
   "Cache for local bibliography file path per project.")
 
+;; Core bibliography functions
 (defun citar-bibtool-find-bibliography-in-tex ()
   "Find the bibliography file specified in \\bibliography{} command."
   (save-excursion
@@ -21,7 +21,6 @@
       (let ((bib-name (match-string 1)))
         ;; Handle multiple bibliography files (comma-separated)
         (car (split-string bib-name ","))))))
-
 
 (defun citar-bibtool-get-local-bib-file ()
   "Get the path to the local BibTeX file from \\bibliography{} command.
@@ -50,8 +49,6 @@ First looks for \\bibliography{} command in current buffer, then checks cache."
         ;; Cache the result
         (push (cons cache-key final-path) citar-bibtool-local-bibliography-cache)
         final-path))))
-
-
 
 (defun citar-bibtool-entry-exists-in-local-bib-p (key local-bib)
   "Check if KEY already exists in LOCAL-BIB file."
@@ -106,7 +103,6 @@ First looks for \\bibliography{} command in current buffer, then checks cache."
       (format "\\cite{%s}" (car keys))
     (format "\\cite{%s}" (string-join keys ","))))
 
-;;;###autoload
 (defun citar-bibtool-insert-citation-with-local-copy (&optional arg)
   "Insert citation and copy entry to local bibliography.
 With prefix ARG, insert citation without copying to local bib."
@@ -123,7 +119,6 @@ With prefix ARG, insert citation without copying to local bib."
             (citar-bibtool-copy-entry-to-local-bib key))))
     (error (message "Error in citar workflow: %s" (error-message-string err)))))
 
-;;;###autoload
 (defun citar-bibtool-sync-all-citations-to-local-bib ()
   "Scan current buffer for all citations and copy them to local bibliography."
   (interactive)
@@ -145,7 +140,7 @@ With prefix ARG, insert citation without copying to local bib."
           (message "Synchronized %d citations to local bibliography" (length keys))))
     (error (message "Error syncing citations: %s" (error-message-string err)))))
 
-;;;###autoload
+
 (defun citar-bibtool-setup-local-workflow ()
   "Set up citar with local bibliography workflow."
   (interactive)
@@ -159,7 +154,6 @@ With prefix ARG, insert citation without copying to local bib."
   ;; Bind the enhanced insertion command
   (local-set-key (kbd "C-c b") #'citar-bibtool-insert-citation-with-local-copy)
   (local-set-key (kbd "C-c B") #'citar-bibtool-sync-all-citations-to-local-bib))
-
 
 (defun citar-bibtool-insert-key-only ()
   "Search master bibliography, copy entry to local bib, and insert only the citation key."
@@ -182,7 +176,7 @@ With prefix ARG, insert citation without copying to local bib."
   (let* ((max-results (or max-results 20))
          (url "https://api.adsabs.harvard.edu/v1/search/query")
          (params `(("q" . ,query)
-                   ("fl" . "bibcode,title,author,year,pub")
+                   ("fl" . "bibcode,title,author,year,pub,doi,bibstem")
                    ("rows" . ,(number-to-string max-results))))
          (url-request-method "GET")
          (url-request-extra-headers
@@ -205,8 +199,11 @@ With prefix ARG, insert citation without copying to local bib."
                         (cdr (assoc 'title doc))
                         (cdr (assoc 'author doc))
                         (cdr (assoc 'year doc))
-                        (cdr (assoc 'pub doc))))
+                        (cdr (assoc 'pub doc))
+                        (cdr (assoc 'doi doc))
+                        (cdr (assoc 'bibstem doc))))
                 docs)))))
+
 
 (defun ads-get-bibtex (bibcode)
   "Retrieve BibTeX entry for given BIBCODE from NASA/ADS."
@@ -224,27 +221,28 @@ With prefix ARG, insert citation without copying to local bib."
              (export-data (cdr (assoc 'export json-response))))
         export-data))))
 
+
 (defun ads-format-paper-for-display (paper)
-    "Format PAPER data for minibuffer display."
-    (let ((authors (nth 2 paper))
-          (title (nth 1 paper))
-          (year (nth 3 paper))
-          (pub (nth 4 paper))
-          (bibcode (nth 0 paper)))
-      (concat
-       (if (vectorp authors)
-           (cond
-            ((= (length authors) 1) (aref authors 0))
-            ((= (length authors) 2) (concat (aref authors 0) " & " (aref authors 1)))
-            ((> (length authors) 2) (concat (aref authors 0) " , " (aref authors 1) " et al.")))
-         (or authors "??"))
-       " (" (or year "??") ") ⋅"
-       (propertize (if (vectorp title) (aref title 0) (or title "No title"))
-                   'face 'italic)
-       " ⋅ "
-       (propertize (or pub "??")
-                   'face 'bold)
-       " ⋅ " bibcode)))
+  "Format PAPER data for minibuffer display."
+  (let ((authors (nth 2 paper))
+        (title (nth 1 paper))
+        (year (nth 3 paper))
+        (pub (nth 4 paper))
+        (bibcode (nth 0 paper)))
+    (concat
+     (if (vectorp authors)
+         (cond
+          ((= (length authors) 1) (aref authors 0))
+          ((= (length authors) 2) (concat (aref authors 0) " & " (aref authors 1)))
+          ((> (length authors) 2) (concat (aref authors 0) " , " (aref authors 1) " et al.")))
+       (or authors "??"))
+     " (" (or year "??") ") ⋅"
+     (propertize (if (vectorp title) (aref title 0) (or title "No title"))
+                 'face 'italic)
+     " ⋅ "
+     (propertize (or pub "??")
+                 'face 'bold)
+     " ⋅ " bibcode)))
 
 
 (defun ads-select-paper (papers)
@@ -256,10 +254,12 @@ With prefix ARG, insert citation without copying to local bib."
          (selection (completing-read "Select paper: " formatted-papers nil t)))
     (cdr (assoc selection formatted-papers))))
 
+
 (defun ads-extract-citation-key-from-bibtex (bibtex-string)
   "Extract citation key from BIBTEX-STRING."
   (when (string-match "@[^{]+{\\([^,\n]+\\)" bibtex-string)
     (match-string 1 bibtex-string)))
+
 
 (defun ads-replace-citation-key-in-bibtex (bibtex-string old-key new-key)
   "Replace OLD-KEY with NEW-KEY in BIBTEX-STRING."
@@ -268,8 +268,51 @@ With prefix ARG, insert citation without copying to local bib."
    (concat "{" new-key)
    bibtex-string))
 
+
+(defun ads-normalize-bibtex-for-comparison (bibtex-string)
+  "Normalize BIBTEX-STRING for comparison by removing key and formatting differences."
+  (let ((normalized bibtex-string))
+    ;; Remove the citation key (replace with placeholder)
+    (setq normalized (replace-regexp-in-string
+                      "@[^{]+{[^,\n]+"
+                      "@article{PLACEHOLDER"
+                      normalized))
+    ;; Normalize whitespace
+    (setq normalized (replace-regexp-in-string "\\s-+" " " normalized))
+    ;; Remove leading/trailing whitespace from lines
+    (setq normalized (replace-regexp-in-string "^\\s-+\\|\\s-+$" "" normalized))
+    ;; Convert to lowercase for case-insensitive comparison
+    (downcase normalized)))
+
+
+(defun ads-find-duplicate-entry-in-local-bib (bibtex-entry local-bib-file)
+  "Find if BIBTEX-ENTRY already exists in LOCAL-BIB-FILE.
+Returns the existing citation key if found, nil otherwise."
+  (when (file-exists-p local-bib-file)
+    (let ((normalized-new (ads-normalize-bibtex-for-comparison bibtex-entry))
+          (existing-keys '()))
+      (with-temp-buffer
+        (insert-file-contents local-bib-file)
+        (goto-char (point-min))
+        ;; Find all bibtex entries in the file
+        (while (re-search-forward "@[^{]+{\\([^,\n]+\\)" nil t)
+          (let* ((key (match-string 1))
+                 (entry-start (match-beginning 0))
+                 (entry-end (save-excursion
+                              (goto-char entry-start)
+                              (forward-sexp)
+                              (point)))
+                 (entry-content (buffer-substring entry-start entry-end))
+                 (normalized-existing (ads-normalize-bibtex-for-comparison entry-content)))
+            ;; Compare normalized versions
+            (when (string= normalized-new normalized-existing)
+              (push key existing-keys)))))
+      (car existing-keys)))) ; Return first match
+
+
 (defun ads-search-and-insert-citation ()
-  "Search NASA/ADS, select paper, and insert citation with bibtex entry."
+  "Search NASA/ADS, select paper, and insert citation with bibtex entry.
+Checks for duplicates and suggests existing keys when found."
   (interactive)
   (let* ((query (read-string "Search NASA/ADS: "))
          (papers (ads-search-papers query))
@@ -277,29 +320,70 @@ With prefix ARG, insert citation without copying to local bib."
          (bibcode (nth 0 selected-paper))
          (bibtex-entry (ads-get-bibtex bibcode))
          (original-key (ads-extract-citation-key-from-bibtex bibtex-entry))
-         (new-key (read-string "Citation key: " original-key))
-         (final-bibtex (if (string= original-key new-key)
-                           bibtex-entry
-                         (ads-replace-citation-key-in-bibtex
-                          bibtex-entry original-key new-key)))
-         (local-bib-file (concat (car LaTeX-auto-bibliography) ".bib")))
+         (local-bib-file (concat (car LaTeX-auto-bibliography) ".bib"))
+         (existing-key (ads-find-duplicate-entry-in-local-bib bibtex-entry local-bib-file))
+         (final-key nil)
+         (final-bibtex nil))
+
+    (cond
+     ;; Entry already exists - offer options
+     (existing-key
+      (let ((choice (completing-read
+                     (format "Entry already exists with key '%s'. Choose action: " existing-key)
+                     '("use-existing" "rename-existing" "create-new")
+                     nil t)))
+        (cond
+         ((string= choice "use-existing")
+          (setq final-key existing-key)
+          (setq final-bibtex nil)) ; Don't add to file
+         ((string= choice "rename-existing")
+          (let ((new-key (read-string "New key for existing entry: " existing-key)))
+            ;; Replace key in local bib file
+            (with-temp-buffer
+              (insert-file-contents local-bib-file)
+              (goto-char (point-min))
+              (when (re-search-forward (concat "@[^{]+{" (regexp-quote existing-key)) nil t)
+                (replace-match (concat "@article{" new-key) nil nil))
+              (write-file local-bib-file))
+            (setq final-key new-key)
+            (setq final-bibtex nil)))
+         ((string= choice "create-new")
+          (let ((new-key (read-string "Citation key for new entry: " original-key)))
+            (setq final-key new-key)
+            (setq final-bibtex (if (string= original-key new-key)
+                                   bibtex-entry
+				 (ads-replace-citation-key-in-bibtex
+                                  bibtex-entry original-key new-key))))))))
+
+     ;; New entry
+     (t
+      (let ((new-key (read-string "Citation key: " original-key)))
+        (setq final-key new-key)
+        (setq final-bibtex (if (string= original-key new-key)
+                               bibtex-entry
+                             (ads-replace-citation-key-in-bibtex
+                              bibtex-entry original-key new-key))))))
 
     ;; Insert citation in LaTeX buffer
-    (citar-latex-insert-citation (list new-key) nil "cite")
+    (citar-latex-insert-citation (list final-key) nil "cite")
 
-    ;; Add to local bib file
-    (with-temp-buffer
-      (when (file-exists-p local-bib-file)
-        (insert-file-contents local-bib-file))
-      (goto-char (point-max))
-      (unless (bobp) (insert "\n\n"))
-      (insert final-bibtex)
-      (write-file local-bib-file))
+    ;; Add to local bib file if needed
+    (when final-bibtex
+      (with-temp-buffer
+        (when (file-exists-p local-bib-file)
+          (insert-file-contents local-bib-file))
+        (goto-char (point-max))
+        (unless (bobp) (insert "\n\n"))
+        (insert final-bibtex)
+        (write-file local-bib-file))
+      (message "Added citation %s to %s" final-key local-bib-file))
 
-    (message "Added citation %s to %s" new-key local-bib-file)))
+    (when (and existing-key (not final-bibtex))
+      (message "Using existing citation %s" final-key))))
 
-(defun citar-insert-tex-bib (citekeys)
-  "Insert CITEKEYS both as citation key in tex and as bibtex entry"
+
+(defun citar-bibtool-insert-tex-bib (citekeys)
+  "Insert CITEKEYS both as citation key in tex and as bibtex entry."
   (interactive (list (citar-select-refs)))
   (let ((local-bib-file (concat (car LaTeX-auto-bibliography) ".bib"))
         (updated nil))
@@ -316,5 +400,41 @@ With prefix ARG, insert citation without copying to local bib."
                   (citar--insert-bibtex citekey)))
               citekeys)
       (when updated (write-file local-bib-file)))))
+
+
+(defun citar-bibtool-insert-citation-from-local-bib ()
+  "Insert citation using only entries from the local bibliography file.
+Similar to `citar-insert-citation` but reads from local bib instead of global."
+  (interactive)
+  (condition-case err
+      (let* ((local-bib-base (citar-bibtool-get-local-bib-file))
+             (local-bib (if (string-suffix-p ".bib" local-bib-base)
+                           local-bib-base
+                         (concat local-bib-base ".bib")))
+             (original-citar-bibliography citar-bibliography)
+             (citekeys nil))
+        ;; Check if local bib file exists - use full path
+        (let ((full-local-bib-path (expand-file-name local-bib)))
+          (unless (file-exists-p full-local-bib-path)
+            (error "Local bibliography file not found: %s" full-local-bib-path))
+
+          ;; Temporarily override citar-bibliography to use only local file
+          (setq citar-bibliography (list full-local-bib-path))
+
+          ;; Force citar to refresh without touching internal cache variables
+          (when (fboundp 'citar--bibliography-cache-reset)
+            (citar--bibliography-cache-reset))
+
+          ;; Use citar's selection interface with local bibliography
+          (unwind-protect
+              (progn
+                (setq citekeys (citar-select-refs))
+                ;; Insert the citation directly
+                (insert (citar-bibtool-format-citation citekeys)))
+            ;; Always restore original bibliography list
+            (setq citar-bibliography original-citar-bibliography)
+            (when (fboundp 'citar--bibliography-cache-reset)
+              (citar--bibliography-cache-reset)))))
+    (error (message "Error inserting citation from local bib: %s" (error-message-string err)))))
 
 (provide 'citar-bibtool)

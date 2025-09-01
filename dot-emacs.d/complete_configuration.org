@@ -970,14 +970,15 @@ install from your package manager). To merge all your bibtex files
 
 I use [[https://github.com/orgs/emacs-citar/discussions/818][a function]] to update the =.tex= and local =.bib= file copying the
 entry from the "master" =.bib= global file (see the file
-[[./emacs_tools/citar-bibtool/citar-bibtool.el][citar-bibtool.el]]).
+[[./emacs_tools/citar-bibtool/citar-bibtool.el][citar-bibtool.el]] and corresponding [[./emacs_tools/citar-bibtool/Readme.org][Readme]]).
 
 I can also directly search on [[ehttps://ui.adsabs.harvard.edu/][NASA/ADS]], although this require [[https://ui.adsabs.harvard.edu/user/settings/token][getting
 an API token]]. You can do this with one line in a file that you *do
 not* make public:
 
 #+BEGIN_SRC elisp
-(setq ads-api-token "YOUR-TOKEN")
+  ;; content of file ADS_API_TOKEN.el
+  (setq ads-api-token "YOUR-TOKEN")
 #+END_SRC
 
 and load that file (in my case I name it =ADS_API_TOKEN.el=). This is
