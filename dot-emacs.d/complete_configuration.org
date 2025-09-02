@@ -985,45 +985,60 @@ and load that file (in my case I name it =ADS_API_TOKEN.el=). This is
 the full setup:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
+  ;; Configure variables -- overwrites default in citar-bibtool.el
+  (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
   (use-package citar
-     :ensure t
-     :bind (("C-c i o" . citar-open-link))
-     :custom
-     (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
-     (citar-symbols
-      `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
-	(note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
-	(link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
-     :config
-     (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
-     (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not public
+    :bind (("C-c i o" . citar-open-link))
+    :custom
+    ;; (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+    (citar-symbols
+     `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+       (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+	   (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
+    :config
+    (setq citar-open-always-create-notes nil)
+    ;; load NASA/ADS token -- fail silently
+    (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not part of the repo
 
-     ;; Configure variables over-writing definition in citar-bibtool.el
-     (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
-     (setq citar-open-always-create-notes nil)
+    ;; Set up global keybindings
+    (global-set-key (kbd "C-c i l") #'citar-bibtool-insert-citation-from-local-bib) ;; from local-bibtex
+    (global-set-key (kbd "C-c i m") #'citar-bibtool-insert-tex-bib) ;; from citar-bibtool-master-bibliography
+    (global-set-key (kbd "C-c i a") #'ads-search-and-insert-citation) ;; from NASA/ADS -- requires token
 
-     ;; Set up hooks
-     (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
-     (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
+    (global-set-key (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
+    (global-set-key (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy)
 
-     ;; Ensure citar is loaded in TeX files
-     (add-hook 'latex-mode-hook #'citar-mode)
-     (add-hook 'LaTeX-mode-hook #'citar-mode)
+    ;; Set up hooks for LaTeX modes
+    (add-hook 'latex-mode-hook #'citar-mode)
+    (add-hook 'LaTeX-mode-hook #'citar-mode)
+    (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
+    (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
+    )
 
-     ;; Set up key bindings
-    ;; Set up key bindings
-     (with-eval-after-load 'latex
-       (define-key latex-mode-map (kbd "C-c i r") #'citar-insert-tex-bib) ;; adds to local bib too  ;; citar-bibtool-insert-key-only
-       (define-key latex-mode-map (kbd "C-c i a") #'ads-search-and-insert-citation)
-       (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-       (define-key latex-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
-     ;; For AUCTeX
-     (with-eval-after-load 'tex
-       (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-insert-tex-bib)
-       (define-key LaTeX-mode-map (kbd "C-c i a") #'ads-search-and-insert-citation)
-       (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-       (define-key LaTeX-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
-     )
+
+
+    ;; (use-package citar-bibtool
+    ;;   :after citar
+    ;;   :load-path "~/.emacs.d/emacs_tools/citar-bibtool.el"
+    ;;   :demand t
+    ;;   :init
+    ;;   (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not in the repo!
+    ;;   :config
+    ;;   (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+    ;;   ;; Set up global keybindings
+    ;;   (global-set-key (kbd "C-c i l") #'citar-bibtool-insert-citation-from-local-bib) ;; from local-bibtex
+    ;;   (global-set-key (kbd "C-c i m") #'citar-bibtool-insert-tex-bib) ;; from citar-bibtool-master-bibliography
+    ;;   (global-set-key (kbd "C-c i a") #'ads-search-and-insert-citation) ;; from NASA/ADS -- requires token
+
+    ;;   (global-set-key (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
+    ;;   (global-set-key (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy)
+
+    ;;   ;; Set up hooks for LaTeX modes
+    ;;   (add-hook 'latex-mode-hook #'citar-mode)
+    ;;   (add-hook 'LaTeX-mode-hook #'citar-mode)
+    ;;   (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
+    ;;   (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow))
 #+END_SRC
 
 
