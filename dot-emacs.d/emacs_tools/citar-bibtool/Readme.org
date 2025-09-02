@@ -19,7 +19,7 @@ bindings.
 =bibtool= to compare bibtex entries. Can be installed with your package manager
 
 
-* NASA/ADS token
+** NASA/ADS token
 
 To use the NASA/ADS API you need an account with them. Obtain your
 token (a long alphanumeric string) from [[https://ui.adsabs.harvard.edu/user/settings/token][here]]. You can save your token
@@ -40,7 +40,8 @@ inside the =:config= section of the =use-package= declaration for =citar=):
 #+END_SRC
 
 This way, as long as =ADS_API_TOKEN.el= remains private, my token is
-hidden.
+hidden, although it is loaded in memory in emacs (=C-h v ads-api-token=
+in your emacs will reveal the token).
 
 * Typical Workflow on a manuscript
 
@@ -79,4 +80,3 @@ citation:
 - [ ] Always check for duplicates when editing the local bib.
   Duplicates should be checked ignoring the key and if one is found
   the option to rename the key or use the existing key should be given
-- [ ] Correctly find the master bibtex
