@@ -1,6 +1,5 @@
 ;; Citar Bibliography Management Functions
 ;; A collection of functions for managing citations and bibliography files
-
 (require 'citar)
 (require 'json)
 (require 'url)
@@ -320,7 +319,11 @@ Checks for duplicates and suggests existing keys when found."
          (bibcode (nth 0 selected-paper))
          (bibtex-entry (ads-get-bibtex bibcode))
          (original-key (ads-extract-citation-key-from-bibtex bibtex-entry))
-         (local-bib-file (concat (car LaTeX-auto-bibliography) ".bib"))
+	 (local-bib-base (citar-bibtool-get-local-bib-file))
+         (local-bib-file (if (string-suffix-p ".bib" local-bib-base)
+                        local-bib-base
+                      (concat local-bib-base ".bib")))
+         ;; (local-bib-file (citar-bibtool-get-local-bib-file)) ; (concat (car LaTeX-auto-bibliography) ".bib"))
          (existing-key (ads-find-duplicate-entry-in-local-bib bibtex-entry local-bib-file))
          (final-key nil)
          (final-bibtex nil))
@@ -436,5 +439,19 @@ Similar to `citar-insert-citation` but reads from local bib instead of global."
             (when (fboundp 'citar--bibliography-cache-reset)
               (citar--bibliography-cache-reset)))))
     (error (message "Error inserting citation from local bib: %s" (error-message-string err)))))
+
+
+(defun test ()
+  (interactive)
+  (let* ((local-bib-base (citar-bibtool-get-local-bib-file))
+         (local-bib-file (if (string-suffix-p ".bib" local-bib-base)
+                        local-bib-base
+                      (concat local-bib-base ".bib")))
+         )
+    (message "==========")
+    (message local-bib-base)
+    (message local-bib-file)
+    (message "==========")
+    ))
 
 (provide 'citar-bibtool)

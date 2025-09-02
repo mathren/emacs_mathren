@@ -967,6 +967,7 @@ and load that file (in my case I name it =ADS_API_TOKEN.el=). This is
 the full setup:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
   (use-package citar
     :bind (("C-c i o" . citar-open-link))
     :custom
@@ -977,7 +978,6 @@ the full setup:
 	   (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
     :config
     (setq citar-open-always-create-notes nil)
-    (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
     ;; load NASA/ADS token -- fail silently
     (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not part of the repo
 
