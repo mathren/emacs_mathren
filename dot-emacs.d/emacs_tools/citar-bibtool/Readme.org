@@ -61,7 +61,7 @@ citation:
    my setup) to search the keys in the local =*.bib= file. Emacs will
    determine the relevant filename from the =*.tex= file. If you don't
    find the paper you want already, no worries!
-2. (Optional) Look in your master =*.bib= file. This is a (typically
+2. (Optional - *presently broken*) Look in your master =*.bib= file. This is a (typically
    giant) bibtex file with many references, e.g., created with a
    bibliography management tool, or (in my case I merge recursively
    without repeating entries all my local bibtex files using =bibtool=).
@@ -80,3 +80,4 @@ citation:
 - [ ] Always check for duplicates when editing the local bib.
   Duplicates should be checked ignoring the key and if one is found
   the option to rename the key or use the existing key should be given
+- [ ] Master bibtex functionality is currently broken
