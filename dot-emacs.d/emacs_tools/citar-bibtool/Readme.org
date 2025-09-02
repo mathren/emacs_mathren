@@ -1,0 +1,82 @@
+#+title: Citar-bibtool
+
+Enhancements to the citation manager [[https://github.com/emacs-citar/citar][citar]] to:
+1. work easily with one /local/ copy of the bibliography per project
+   (e.g., a shared latex folder with collaborators)
+2. search for papers and their bibtex entries on [[ehttps://ui.adsabs.harvard.edu/][NASA/ADS]]. This
+   require having an account and [[https://ui.adsabs.harvard.edu/user/settings/token][getting an API token]]
+
+=citar-bibtool.el= contains the functions (generated with the help of
+Claude Sonnet 4.0), and *needs to be saved in a location known to your
+emacs configuration*. In my case it's in
+=~/.emacs.d/emacs_tools/citar-bibtool/=. You can find and customize this
+string in [[../..//complete_configuration.org::*References handling][References handling section]] of my complete configuration.
+This also provides an example of using =use-package= to setup =citar= and
+load the customizations of =citar-bibtool=, including defining key
+bindings.
+
+** Requirements
+=bibtool= to compare bibtex entries. Can be installed with your package manager
+
+
+* NASA/ADS token
+
+To use the NASA/ADS API you need an account with them. Obtain your
+token (a long alphanumeric string) from [[https://ui.adsabs.harvard.edu/user/settings/token][here]]. You can save your token
+in a file (named, e.g., =ADS_API_TOKEN.el=) containing only a line like
+the one below. *Do not make this file public* (make sure you don't push
+it in a =git= repo, for example!):
+
+#+BEGIN_SRC elisp
+  (setq ads-api-token "YOUR-TOKEN")
+#+END_SRC
+
+This defines the variable =ads-api-token= and assigns it as value your
+token string. I then load this file from my configuration (e.g.,
+inside the =:config= section of the =use-package= declaration for =citar=):
+
+#+BEGIN_SRC elisp
+    (load "/path/to/file/token.el")
+#+END_SRC
+
+This way, as long as =ADS_API_TOKEN.el= remains private, my token is
+hidden.
+
+* Typical Workflow on a manuscript
+
+:TL;DR:
+- =C-c i l=: look for bibtex entry in local =*.bib= file
+- =C-c i m=: look for bibtex entry in master =*.bib= file, update local
+- =C-c i a=: look on NASA/ADS and update local =*.bib= file, including
+  renaming key
+:end:
+
+Open a =*.tex= file (this could be from an overleaf project that [[https://www.overleaf.com/learn/how-to/Git_Integration_and_GitHub_Synchronization][you
+clone locally]]), and start working. When you need to insert a
+citation:
+
+1. Look in the local =*.bib= file: run =M-x
+   citar-bibtool-insert-citation-from-local-bib= (bound to =C-c i l= in
+   my setup) to search the keys in the local =*.bib= file. Emacs will
+   determine the relevant filename from the =*.tex= file. If you don't
+   find the paper you want already, no worries!
+2. (Optional) Look in your master =*.bib= file. This is a (typically
+   giant) bibtex file with many references, e.g., created with a
+   bibliography management tool, or (in my case I merge recursively
+   without repeating entries all my local bibtex files using =bibtool=).
+   Run =M-x citar-bibtool-insert-tex-bib= (bound to =C-c i m=). This will
+   copy the entry from your master bibtex file to the local one. If
+   the entry you look for is /not/ even in you master bibtex file,
+3. Search NASA/ADS directly (prerequisite: ADS token, see above): run
+   =M-x ads-search-and-insert-citation= (bound to =C-c i a=). This will
+   prompt you with a search box that queries exactly like NASA/ADS's
+   one. Once you select the paper you need, the corresponding bibtex
+   entry will be copied in your bibtex entry and you will be asked to
+   chose a citation key.
+
+* TODO enhancements missing
+
+- [ ] Always check for duplicates when editing the local bib.
+  Duplicates should be checked ignoring the key and if one is found
+  the option to rename the key or use the existing key should be given
+- [ ] Correctly find the master bibtex
