@@ -971,7 +971,7 @@ the full setup:
   (use-package citar
     :bind (("C-c i o" . citar-open-link))
     :custom
-    (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+    (citar-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
     (citar-symbols
      `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
        (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
