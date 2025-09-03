@@ -62,8 +62,12 @@ First looks for \\bibliography{} command in current buffer, then checks cache."
 (defun citar-bibtool-copy-entry-to-local-bib (key)
   "Copy a BibTeX entry with KEY from master to local bibliography using bibtool."
   (condition-case err
-      (let ((local-bib (citar-bibtool-get-local-bib-file))
-            (master-bib citar-bibtool-master-bibliography))
+      (let* ((local-bib-file (citar-bibtool-get-local-bib-file))
+             (master-bib citar-bibtool-master-bibliography)
+             ;; Ensure local-bib has .bib extension
+             (local-bib (if (string-suffix-p ".bib" local-bib-file)
+                            local-bib-file
+                          (concat local-bib ".bib"))))
         (when (and (file-exists-p master-bib) key)
           ;; Create local bib file if it doesn't exist
           (unless (file-exists-p local-bib)
@@ -110,7 +114,6 @@ First looks for \\bibliography{} command in current buffer, then checks cache."
                 (when (file-exists-p temp-file)
                   (delete-file temp-file)))))))
     (error (message "Error copying entry '%s': %s" key (error-message-string err)))))
-
 
 
 (defun citar-bibtool-update-citar-bibliography ()
@@ -175,21 +178,6 @@ With prefix ARG, insert citation without copying to local bib."
   ;; Bind the enhanced insertion command
   (local-set-key (kbd "C-c b") #'citar-bibtool-insert-citation-with-local-copy)
   (local-set-key (kbd "C-c B") #'citar-bibtool-sync-all-citations-to-local-bib))
-
-
-;; (defun citar-bibtool-setup-local-workflow ()
-;;   "Set up citar with local bibliography workflow."
-;;   (interactive)
-;;   ;; Add local bib to citar-bibliography if it exists
-;;   (condition-case nil
-;;       (let ((local-bib (citar-bibtool-get-local-bib-file)))
-;;         (when (file-exists-p local-bib)
-;;           (add-to-list 'citar-bibliography local-bib)))
-;;     (error nil)) ; Ignore errors if no \bibliography{} command found
-
-  ;; ;; Bind the enhanced insertion command
-  ;; (local-set-key (kbd "C-c b") #'citar-bibtool-insert-citation-with-local-copy)
-  ;; (local-set-key (kbd "C-c B") #'citar-bibtool-sync-all-citations-to-local-bib))
 
 (defun citar-bibtool-insert-key-only ()
   "Search master bibliography, copy entry to local bib, and insert only the citation key."
@@ -420,16 +408,25 @@ Checks for duplicates and suggests existing keys when found."
     (when (and existing-key (not final-bibtex))
       (message "Using existing citation %s" final-key))))
 
-
 (defun citar-bibtool-insert-tex-bib (citekeys)
   "Insert CITEKEYS both as citation key in tex and as bibtex entry."
-  (interactive (list (citar-select-refs)))
+  (interactive
+   (let ((original-citar-bibliography citar-bibliography))
+     (unwind-protect
+         (progn
+           ;; Temporarily set citar-bibliography to master for selection
+           (setq citar-bibliography citar-bibtool-master-bibliography)
+           (when (fboundp 'citar--bibliography-cache-reset)
+             (citar--bibliography-cache-reset))
+           (list (citar-select-refs)))
+       ;; Restore original bibliography
+       (setq citar-bibliography original-citar-bibliography)
+       (when (fboundp 'citar--bibliography-cache-reset)
+         (citar--bibliography-cache-reset)))))
   (let* ((local-bib-file (citar-bibtool-get-local-bib-file))
-        (local-bib-path (if (string-suffix-p ".bib" local-bib-file)
-                            local-bib-file
-                          (concat local-bib-file ".bib")))
-        (updated nil))
-    (message "TEX-BIB")
+			 (local-bib-path (if (string-suffix-p ".bib" local-bib-file)
+					     local-bib-file
+					   (concat local-bib-file ".bib"))))
     ;; insert in latex buffer
     (citar-latex-insert-citation citekeys nil "cite")
     ;; Check for duplicates and update local .bib
@@ -448,7 +445,7 @@ Checks for duplicates and suggests existing keys when found."
                   (when (re-search-forward (concat "@[^{]+{" (regexp-quote citekey)) nil t)
                     (replace-match (concat "@article{" new-key) nil nil))
                   (write-file local-bib-path)))))
-        ;; Entry doesn't exist, copy from master
+        ;; Entry doesn't exist, copy from master - function gets local bib path itself
         (citar-bibtool-copy-entry-to-local-bib citekey)))))
 
 (defun citar-bibtool-insert-citation-from-local-bib ()
