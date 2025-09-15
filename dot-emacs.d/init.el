@@ -37,10 +37,15 @@
   :hook ((python-mode . eglot-ensure)
 	 (c-mode . eglot-ensure)
 	 (c++-mode . eglot-ensure)
-	 (f90-mode . eglot-ensure))
+	 (f90-mode . eglot-ensure)
+	 (LaTeX-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
   (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
+
+  ;; Configure Python LSP for EIN modes
+  (add-to-list 'eglot-server-programs '(ein:notebook-python-mode . ("pylsp")))
+  (add-to-list 'eglot-server-programs '(ein:notebook-mode . ("pylsp")))
 
   ;; Configure eglot to work well with flymake
   (setq eglot-send-changes-idle-time 0.5)
@@ -75,10 +80,6 @@
   (setq flymake-show-diagnostics-at-end-of-line nil)
 )
 
-(use-package indent-bars
-:ensure t
-:hook (prog-mode . indent-bars-mode))
-
 (setq company-minimum-prefix-length 1) ;; start at first characted
 (setq company-idle-delay 0)            ;; no time delay
 (setq company-selection-wrap-around t) ;; wrap around suggestion list
@@ -108,24 +109,6 @@
 (use-package ivy-rich
   :init
   (ivy-rich-mode 1)
-  ;; :config
-  ;; (setq ivy-format-function #'ivy-format-function-line)
-  ;; (setq ivy-rich--display-transformers-list
-  ;; 	(plist-put ivy-rich--display-transformers-list
-  ;; 		   'ivy-switch-buffer
-  ;; 		   '(:columns
-  ;; 		     ((ivy-rich-candidate (:width 40))
-  ;; 		      (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
-  ;; 		      (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
-  ;; 		      (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
-  ;; 		      ; return file path relative to project root or `default-directory' if project is nil
-  ;; 		      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-  ;; 		     :predicate
-  ;; 		     (lambda (cand)
-  ;; 		       (if-let ((buffer (get-buffer cand)))
-  ;; 			   ;; Don't mess with EXWM buffers
-  ;; 			   (with-current-buffer buffer
-  ;; 			     (not (derived-mode-p 'exwm-mode))))))))
   )
 
 (use-package counsel
@@ -380,47 +363,30 @@ Entries are assumed to be separated by empty lines."
 ;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 ;;   (setq elpy-rpc-python-command "python3"))
 
-;; Install:
-;; pip install black
-;; pip install black-macchiato
-(use-package python-black
-  :demand t
-  :after python
-  :custom
-  (python-black-extra-args '("--line-length=120" "--skip-string-normalization"))
-  (setq python-black-command "~/.local/bin/black")
-  (setq python-black-macchiato-command "~/.local/bin/black-macchiato")
-  :bind
-  (:map python-mode-map
-	("C-c C-l" . python-black-partial-dwim)))
+(use-package ein
+  :config
+  (setq ein:output-area-inlined-images t)  ;; show inline plots
+  (setq ein:worksheet-enable-undo t)
+  ; Enable syntax highlighting for Python cells
+  (setq ein:completion-backend 'ein:use-ac-backend)
+  ;; Set default language mode for cells
+  (add-hook 'ein:notebook-mode-hook
+	    (lambda ()
+	      (setq ein:notebook-lang "python")))
+  ;; redefined C-x B conflicts with ein
+  (defun pm--visible-buffer-name ()
+    "Get visible buffer name - compatibility function for EIN"
+    (buffer-name (window-buffer)))
 
-;; (use-package flycheck
-;;   :ensure t
-;;   :config
-;;   ;; Disable underlining of errors/warnings
-;;   (setq flycheck-highlighting-mode nil)
-;;   ;; Enable fringe indicators
-;;   (setq flycheck-indication-mode 'left-fringe)
-
-;;   ;; ;; Optional: customize the fringe indicators
-;;   ;; ;; You can use different symbols for different error types
-;;   ;; (when (fboundp 'define-fringe-bitmap)
-;;   ;;   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-;;   ;;     [16 48 112 240 112 48 16] nil nil 'center))
-
-;;   ;; Optional: disable the error list popup if you don't want it
-;;   ;; (setq flycheck-display-errors-function nil)
-
-;;   ;; Optional: you can still see error messages in the echo area when cursor is on the line
-;;   (setq flycheck-display-errors-delay 0.5))
-
-; ein
-(setq ein:worksheet-enable-undo t)
-(setq ein:output-area-inlined-images t)
+  ;; Enable eglot in Python cells
+  (add-hook 'ein:connect-mode-hook #'eglot-ensure)
+  ;; ;; Alternative: Enable eglot when entering Python cells
+  (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
+  )
 
 ; to see latex in ein markdown cells
-(use-package math-preview
-  :ensure t)
+ (use-package math-preview
+   :ensure t)
 
 (use-package arxiv-mode
   :ensure t
@@ -530,43 +496,37 @@ Entries are assumed to be separated by empty lines."
 	  (lambda ()
 	    (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
+(load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
 (use-package citar
- :ensure t
- :bind (("C-c i r" . citar-insert-citation)
-	("C-c i o" . citar-open))
- :custom
- (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
- (citar-symbols
-  `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
-    (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
-    (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
- :config
- ;; Load the local bibtool extension
- (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
+  :bind (("C-c i o" . citar-open-link))
+  :custom
+  (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+  (citar-symbols
+   `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+     (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+	 (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
+  :config
+  (setq citar-open-always-create-notes nil)
+  ;; load NASA/ADS token -- fail silently
+  (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not part of the repo
 
- ;; Configure variables over-writing definition in citar-bibtool.el
- (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
+  ;; Configure variables -- overwrites default in citar-bibtool.el
+  (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
 
- ;; Set up hooks
- (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
- (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
+  ;; Set up global keybindings
+  (global-set-key (kbd "C-c i l") #'citar-bibtool-insert-citation-from-local-bib) ;; from local-bibtex
+  (global-set-key (kbd "C-c i m") #'citar-bibtool-insert-tex-bib) ;; from citar-bibtool-master-bibliography
+  (global-set-key (kbd "C-c i a") #'ads-search-and-insert-citation) ;; from NASA/ADS -- requires token
 
- ;; Ensure citar is loaded in TeX files
- (add-hook 'latex-mode-hook #'citar-mode)
- (add-hook 'LaTeX-mode-hook #'citar-mode)
+  (global-set-key (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
+  (global-set-key (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy)
 
- ;; Set up key bindings
-;; Set up key bindings
- (with-eval-after-load 'latex
-   (define-key latex-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only) ;; adds to local bib too
-   (define-key latex-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-   (define-key latex-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
- ;; For AUCTeX
- (with-eval-after-load 'tex
-   (define-key LaTeX-mode-map (kbd "C-c i r") #'citar-bibtool-insert-key-only)
-   (define-key LaTeX-mode-map (kbd "C-c i R") #'citar-bibtool-sync-all-citations-to-local-bib)
-   (define-key LaTeX-mode-map (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy))
- )
+  ;; Set up hooks for LaTeX modes
+  (add-hook 'latex-mode-hook #'citar-mode)
+  (add-hook 'LaTeX-mode-hook #'citar-mode)
+  (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
+  (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
+  )
 
 (use-package tramp
   :custom
