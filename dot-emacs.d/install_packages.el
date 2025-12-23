@@ -70,21 +70,22 @@
 		     magit-lfs
 		     ;; super-save
 		     fontawesome
-		     all-the-icons-nerd-fonts
+		     ;; all-the-icons-nerd-fonts
 		     ws-butler
 		     htmlize
 		     simple-httpd
 		     sudo-edit
-		     all-the-icons
-		     all-the-icons-completion
-		     all-the-icons-dired
-		     all-the-icons-gnus
-		     all-the-icons-ibuffer
-		     all-the-icons-ivy
-		     all-the-icons-ivy-rich
+		     ;; all-the-icons
+		     ;; all-the-icons-completion
+		     ;; all-the-icons-dired
+		     ;; all-the-icons-gnus
+		     ;; all-the-icons-ibuffer
+		     ;; all-the-icons-ivy
+		     ;; all-the-icons-ivy-rich
 		     markdown-mode
 		     indent-bars
 		     citar
+		     rg
 		     ))
 
 ; install the missing packages
