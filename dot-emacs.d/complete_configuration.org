@@ -383,7 +383,7 @@ images. And I configure several different kind of notes for =org-capture=.
     ;; capture templates
     (setq org-capture-templates
 	  '(("n" "Research note" entry
-	     (file+headline "~/Documents/Research/Todos.org" "Research notes")
+	     (file+headline "~/Documents/Research/Todo_research.org" "Research notes")
 	     "* %?\n %T")
 	    ("p" "Personal note" entry
 	     (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
@@ -394,11 +394,11 @@ images. And I configure several different kind of notes for =org-capture=.
 	    ("j" "Job applications idea" entry
 	     (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
 	     "* %?\n %T")
-	    ("f" "FLASH and PPISN" entry
-	     (file+headline "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "FLASH and PPISN notes")
-	     "* %?\n %T")
-	    ("r" "Random throwaway" entry
+	    ("t" "Throwaway Random" entry
 	     (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
+	     "* %?\n %T")
+	    ("g" "General Random" entry
+	     (file+headline "~/Documents/Todo.org" "General Todo")
 	     "* %?\n %T")
 	    ))
     (setq org-latex-with-hyperref nil)

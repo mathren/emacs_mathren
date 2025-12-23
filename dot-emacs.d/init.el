@@ -179,7 +179,7 @@
   ;; capture templates
   (setq org-capture-templates
 	'(("n" "Research note" entry
-	   (file+headline "~/Documents/Research/Todos.org" "Research notes")
+	   (file+headline "~/Documents/Research/Todo_research.org" "Research notes")
 	   "* %?\n %T")
 	  ("p" "Personal note" entry
 	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
@@ -190,11 +190,11 @@
 	  ("j" "Job applications idea" entry
 	   (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
 	   "* %?\n %T")
-	  ("f" "FLASH and PPISN" entry
-	   (file+headline "~/Documents/Research/Projects/PP/FLASH/FLASH_notes.org" "FLASH and PPISN notes")
-	   "* %?\n %T")
-	  ("r" "Random throwaway" entry
+	  ("t" "Throwaway Random" entry
 	   (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
+	   "* %?\n %T")
+	  ("g" "General Random" entry
+	   (file+headline "~/Documents/Todo.org" "General Todo")
 	   "* %?\n %T")
 	  ))
   (setq org-latex-with-hyperref nil)
@@ -219,7 +219,8 @@
 
 (defun reorder-org-headlines-dates ()
   "Extract dates from Org mode headlines, sort them chronologically
-  from oldest to newest, and replace them in the headlines."
+from oldest to newest, and replace them in the headlines.
+Preserves TODO keywords and other text before dates."
   (interactive)
   (when (derived-mode-p 'org-mode)
     (let* ((date-regexp "<\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\) \\([A-Za-z]\\{3\\}\\)>")
@@ -227,17 +228,21 @@
 	   (dates '())
 	   (point-min (point-min))
 	   (point-max (point-max)))
-
       ;; Extract dates and their positions
       (save-excursion
 	(goto-char point-min)
-	(while (re-search-forward (concat "^\\*+ " date-regexp) point-max t)
+	(while (re-search-forward (concat "^\\*+\\s-+\\(?:TODO\\s-+\\)?.*?" date-regexp) point-max t)
 	  (let* ((date (match-string 1))
 		 (day-of-week (match-string 2))
-		 (start (line-beginning-position))
-		 (end (save-excursion (end-of-line) (point))))
-	    (push (list start end date day-of-week) headlines)
-	    (push date dates)))) ; Store dates as strings
+		 (date-start (match-beginning 0))
+		 (date-end (match-end 0))
+		 (line-start (line-beginning-position))
+		 (line-end (line-end-position)))
+	    (push (list line-start line-end date-start date-end date day-of-week) headlines)
+	    (push date dates))))
+
+      ;; Reverse headlines to get them in document order
+      (setq headlines (reverse headlines))
 
       ;; Sort dates in ascending order
       (setq dates (sort dates 'string<))
@@ -245,18 +250,21 @@
       ;; Debugging: Print sorted dates
       ;; (message "Sorted dates: %s" dates)
 
-      ;; Replace old dates with sorted dates
-      (save-excursion
-	(let ((date-list (reverse dates))) ; Reverse the list to apply oldest date first
-	  (dolist (headline headlines)
-	    (let* ((start (car headline))
-		   (end (cadr headline))
-		   (old-date (nth 2 headline))
-		   (day-of-week (nth 3 headline))
-		   (new-date (pop date-list))) ; Pop from reversed list
-	      (goto-char start)
-	      (re-search-forward date-regexp end t)
-	      (replace-match (concat "<" new-date " " day-of-week ">")))))))))
+      ;; Replace dates - pair each headline position with corresponding sorted date
+      (let ((date-index 0))
+	(dolist (headline headlines)
+	  (let* ((line-start (nth 0 headline))
+		 (line-end (nth 1 headline))
+		 (date-start (nth 2 headline))
+		 (date-end (nth 3 headline))
+		 (old-date (nth 4 headline))
+		 (day-of-week (nth 5 headline))
+		 (new-date (nth date-index dates)))
+	    (save-excursion
+	      (goto-char date-start)
+	      (when (re-search-forward date-regexp line-end t)
+		(replace-match (concat "<" new-date " " day-of-week ">") t t)))
+	    (setq date-index (1+ date-index))))))))
 
 (setq org-latex-packages-alist '(("left=25mm, right=25mm, top=25mm, bottom=25mm" "geometry" nil)))
 (customize-set-value 'org-latex-hyperref-template
@@ -500,7 +508,7 @@ Entries are assumed to be separated by empty lines."
 (use-package citar
   :bind (("C-c i o" . citar-open-link))
   :custom
-  (citar-bibliography '("~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib"))
+  (citar-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
   (citar-symbols
    `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
      (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
