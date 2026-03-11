@@ -1023,7 +1023,10 @@ Remote editing with my local configuration.
 			 "/bin"))
     (tramp-default-remote-shell "/usr/bin/sh")
     )
-  (setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
+  (setq remote-file-name-inhibit-locks t
+	tramp-use-scp-direct-remote-copying t
+	remote-file-name-inhibit-auto-save-visited t
+	tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 #+END_SRC
 
 

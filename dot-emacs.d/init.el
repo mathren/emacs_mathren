@@ -545,7 +545,10 @@ Entries are assumed to be separated by empty lines."
 		       "/bin"))
   (tramp-default-remote-shell "/usr/bin/sh")
   )
-(setq tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
+(setq remote-file-name-inhibit-locks t
+      tramp-use-scp-direct-remote-copying t
+      remote-file-name-inhibit-auto-save-visited t
+      tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 
 (defun count-sloc-region (beg end)
   "Count source lines of code in region (or (narrowed part of)
