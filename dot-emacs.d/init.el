@@ -134,9 +134,9 @@
 
 (use-package doom-modeline
   :ensure t
-  :custom ((doom-modeline-height 10))
+  :custom ((doom-modeline-height 5)
+	   (doom-modeline-icon t))
   :init (doom-modeline-mode 1))
-(setq doom-modeline-icon t)
 
 ;; these are configured in minimal.el
 ;; (electric-pair-mode 1)
@@ -544,11 +544,21 @@ Entries are assumed to be separated by empty lines."
 		       "/usr/local/bin"
 		       "/bin"))
   (tramp-default-remote-shell "/usr/bin/sh")
+  (remote-file-name-inhibit-locks t)
+  (tramp-use-scp-direct-remote-copying t)
+  (remote-file-name-inhibit-auto-save-visited t)
+  (tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
+  ;; for TRAMP 2.7
+  ;;   (connection-local-set-profile-variables
+  ;;  'remote-direct-async-process
+  ;;  '((tramp-direct-async-process . t)))
+
+  ;; (connection-local-set-profiles
+  ;;  '(:application tramp :protocol "scp")
+  ;;  'remote-direct-async-process)
+
+  ;; (setq magit-tramp-pipe-stty-settings 'pty)
   )
-(setq remote-file-name-inhibit-locks t
-      tramp-use-scp-direct-remote-copying t
-      remote-file-name-inhibit-auto-save-visited t
-      tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 
 (defun count-sloc-region (beg end)
   "Count source lines of code in region (or (narrowed part of)

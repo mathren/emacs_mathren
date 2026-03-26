@@ -313,9 +313,9 @@ default, so if using daemon mode (=daemonp= is true) add a hook to set
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package doom-modeline
     :ensure t
-    :custom ((doom-modeline-height 10))
+    :custom ((doom-modeline-height 5)
+	     (doom-modeline-icon t))
     :init (doom-modeline-mode 1))
-  (setq doom-modeline-icon t)
 #+END_SRC
 
 
@@ -1009,7 +1009,7 @@ the full setup:
 #+END_SRC
 
 
-** Tramp
+** TRAMP
 
 Remote editing with my local configuration.
 
@@ -1022,11 +1022,21 @@ Remote editing with my local configuration.
 			 "/usr/local/bin"
 			 "/bin"))
     (tramp-default-remote-shell "/usr/bin/sh")
+    (remote-file-name-inhibit-locks t)
+    (tramp-use-scp-direct-remote-copying t)
+    (remote-file-name-inhibit-auto-save-visited t)
+    (tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
+    ;; for TRAMP 2.7
+    ;;   (connection-local-set-profile-variables
+    ;;  'remote-direct-async-process
+    ;;  '((tramp-direct-async-process . t)))
+
+    ;; (connection-local-set-profiles
+    ;;  '(:application tramp :protocol "scp")
+    ;;  'remote-direct-async-process)
+
+    ;; (setq magit-tramp-pipe-stty-settings 'pty)
     )
-  (setq remote-file-name-inhibit-locks t
-	tramp-use-scp-direct-remote-copying t
-	remote-file-name-inhibit-auto-save-visited t
-	tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
 #+END_SRC
 
 
