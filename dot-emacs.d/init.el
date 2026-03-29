@@ -453,6 +453,34 @@ Entries are assumed to be separated by empty lines."
   :pin melpa)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 
+(setq ediff-window-setup-function #'ediff-setup-windows-plain)
+
+(use-package vdiff
+  :config
+  (setq vdiff-lock-scrolling t))
+
+(defun mr/vdiff-magit-compare-file (ref-a ref-b file)
+  "Compare FILE between REF-A and REF-B using vdiff (side-by-side, scroll-synced, read-only)."
+  (interactive
+   (list (magit-read-branch-or-commit "Ref A")
+	 (magit-read-branch-or-commit "Ref B")
+	 (read-file-name "File: " (magit-toplevel))))
+  (let* ((file (file-relative-name file (magit-toplevel)))
+	 (buf-a (magit-find-file-noselect ref-a file))
+	 (buf-b (magit-find-file-noselect ref-b file)))
+    (with-current-buffer buf-a
+      (read-only-mode 1)
+      (setq-local truncate-lines nil)
+      (setq-local auto-hscroll-mode t))
+    (with-current-buffer buf-b
+      (read-only-mode 1)
+      (setq-local truncate-lines nil)
+      (setq-local auto-hscroll-mode t))
+    (vdiff-buffers buf-a buf-b nil nil t)
+    ;; After vdiff sets up its windows, disable horizontal scroll sync
+    ;; vdiff only syncs vertical scrolling, but set explicitly to be safe
+    (setq-local vdiff-lock-scrolling t)))
+
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
 
 (use-package super-save

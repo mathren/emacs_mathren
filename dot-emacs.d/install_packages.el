@@ -82,10 +82,12 @@
 		     ;; all-the-icons-ibuffer
 		     ;; all-the-icons-ivy
 		     ;; all-the-icons-ivy-rich
+		     auto-complete-auctex
 		     markdown-mode
 		     indent-bars
 		     citar
 		     rg
+		     vdiff
 		     ))
 
 ; install the missing packages

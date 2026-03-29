@@ -158,7 +158,6 @@ configuration between here and there.
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
 #+END_SRC
-
 * Open certain files in given mode
 
   =dot-*= files in =shell-script-mode=
