@@ -462,8 +462,8 @@ Entries are assumed to be separated by empty lines."
 (defun mr/vdiff-magit-compare-file (ref-a ref-b file)
   "Compare FILE between REF-A and REF-B using vdiff (side-by-side, scroll-synced, read-only)."
   (interactive
-   (list (magit-read-branch-or-commit "Ref A")
-	 (magit-read-branch-or-commit "Ref B")
+   (list (magit-read-branch-or-commit "Left (ref A):")
+	 (magit-read-branch-or-commit "Right (ref B):")
 	 (read-file-name "File: " (magit-toplevel))))
   (let* ((file (file-relative-name file (magit-toplevel)))
 	 (buf-a (magit-find-file-noselect ref-a file))
