@@ -462,8 +462,8 @@ Entries are assumed to be separated by empty lines."
 (defun mr/vdiff-magit-compare-file (ref-a ref-b file)
   "Compare FILE between REF-A and REF-B using vdiff (side-by-side, scroll-synced, read-only)."
   (interactive
-   (list (magit-read-branch-or-commit "Left (ref A):")
-	 (magit-read-branch-or-commit "Right (ref B):")
+   (list (magit-read-branch-or-commit "Left (ref A)")
+	 (magit-read-branch-or-commit "Right (ref B)")
 	 (read-file-name "File: " (magit-toplevel))))
   (let* ((file (file-relative-name file (magit-toplevel)))
 	 (buf-a (magit-find-file-noselect ref-a file))
@@ -574,6 +574,7 @@ Entries are assumed to be separated by empty lines."
   (tramp-default-remote-shell "/usr/bin/sh")
   (remote-file-name-inhibit-locks t)
   (tramp-use-scp-direct-remote-copying t)
+  (vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
   (remote-file-name-inhibit-auto-save-visited t)
   (tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
   ;; for TRAMP 2.7
