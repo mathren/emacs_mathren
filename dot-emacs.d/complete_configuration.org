@@ -153,7 +153,7 @@ time you use it.
 #+END_SRC
 
 
-f** Avoid creating tons of hidden files
+** Avoid creating tons of hidden files
 
 [[https://github.com/emacscollective/no-littering][no-littering]] to avoid creating too many hidden files.
 
@@ -799,6 +799,13 @@ Running =C-c C-c= (bound to =ein:worksheet-execute-cell=) on a
     )
 #+END_SRC
 
+** Unfill
+To work sanely with files with infinite lines
+
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package unfill
+  :bind ("M-q" . unfill-toggle))
+#+END_SRC
 
 ** editor config
 
@@ -840,7 +847,7 @@ Trying [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]. I w
 #+END_SRC
 
 
-** TODO Magit extras
+** Magit extras
 
 For large files in git repositories:
 
@@ -1056,7 +1063,9 @@ Remote editing with my local configuration.
 			 "/usr/local/bin"
 			 "/bin"))
     (tramp-default-remote-shell "/usr/bin/sh")
+    (tramp-persistency-file-name "/tmp/tramp-cache")
     (remote-file-name-inhibit-locks t)
+    (customize-set-variable 'tramp-connection-timeout 100)
     (tramp-use-scp-direct-remote-copying t)
     (vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
     (remote-file-name-inhibit-auto-save-visited t)

@@ -88,6 +88,7 @@
 		     citar
 		     rg
 		     vdiff
+		     unfill
 		     ))
 
 ; install the missing packages

@@ -417,6 +417,9 @@ Entries are assumed to be separated by empty lines."
   (advice-add 'arxiv-show-abstract :override #'mr/arxiv-show-abstract)
   )
 
+(use-package unfill
+  :bind ("M-q" . unfill-toggle))
+
 (use-package editorconfig
   :ensure t
   :config
@@ -572,7 +575,9 @@ Entries are assumed to be separated by empty lines."
 		       "/usr/local/bin"
 		       "/bin"))
   (tramp-default-remote-shell "/usr/bin/sh")
+  (tramp-persistency-file-name "/tmp/tramp-cache")
   (remote-file-name-inhibit-locks t)
+  (customize-set-variable 'tramp-connection-timeout 100)
   (tramp-use-scp-direct-remote-copying t)
   (vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
   (remote-file-name-inhibit-auto-save-visited t)
