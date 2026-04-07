@@ -60,20 +60,14 @@
   ;; Completely disable all flymake face styling (no underline, background, or foreground changes)
   (set-face-attribute 'flymake-error nil
 		      :underline nil
-		      :background nil
-		      :foreground nil
 		      :weight 'normal
 		      :inherit nil)
   (set-face-attribute 'flymake-warning nil
 		      :underline nil
-		      :background nil
-		      :foreground nil
 		      :weight 'normal
 		      :inherit nil)
   (set-face-attribute 'flymake-note nil
 		      :underline nil
-		      :background nil
-		      :foreground nil
 		      :weight 'normal
 		      :inherit nil)
   ;; Don't show diagnostics at end of line
