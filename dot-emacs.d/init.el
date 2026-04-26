@@ -652,15 +652,15 @@ lines and comment-only lines are not taken into consideration."
   (interactive "*")
   (uniquify-all-lines-region (point-min) (point-max)))
 
-;; Recent buffers in a new Emacs session
+;; Recent buffers in a new Emacs buffer
 (use-package recentf
-  :config
-  (setq recentf-auto-cleanup 'never)
-  (setq recentf-max-menu-items 50)
-  (setq recentf-max-saved-items 250)
-  (recentf-mode t)
-  (global-set-key "\M-[" 'recentf-open-files)
-  :diminish nil)
+	  :config
+	  (setq recentf-auto-cleanup 'never)
+	  (setq recentf-max-menu-items 50)
+	  (setq recentf-max-saved-items 250)
+	  (recentf-mode t)
+	  (global-set-key "\M-[" 'recentf-open-files)
+	  :diminish nil)
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
