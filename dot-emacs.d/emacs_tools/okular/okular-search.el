@@ -97,3 +97,6 @@ Partly copied from tex.el's TeX-master-file and TeX-add-local-master."
       (set (make-local-variable 'TeX-master) master-file))))
 
 (provide 'okular-search)
+
+;; Local Variables:
+;; End:
