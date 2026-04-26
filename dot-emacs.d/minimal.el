@@ -15,6 +15,12 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (set-default 'size-indication-mode t)
 
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+(setq help-window-select t)
+
 (defvar mr/current-theme-mode nil
   "Track the last applied GNOME theme mode to avoid redundant reloading.")
 
@@ -51,6 +57,15 @@
 		    :family "JetBrainsMono Nerd Font Mono"
 		    :height 120) ;; 120 = 12pt
 
+(setq redisplay-skip-fontification-on-input t)
+
+(setq save-interprogram-paste-before-kill t)
+
+(setq kill-do-not-save-duplicates t)
+
+(add-hook 'after-save-hook
+          #'executable-make-buffer-file-executable-if-script-p)
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
@@ -70,6 +85,20 @@
      display-buffer-reuse-mode-window
      display-buffer-same-window
      display-buffer-in-previous-window)))
+
+(setq window-combination-resize t)
+
+(winner-mode +1)
+
+(defun toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+
+(global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
 
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)

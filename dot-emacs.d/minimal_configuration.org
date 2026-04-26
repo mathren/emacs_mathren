@@ -44,6 +44,21 @@ I always want line and column numbers.
 (set-default 'size-indication-mode t)
 #+END_SRC
 
+Disable bidirectional text scanning (I don't use scripts that are
+written left-to-right very often):
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+#+END_SRC
+
+Auto select help buffer if opened:
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(setq help-window-select t)
+#+END_SRC
+
 ** Theme based on OS preferences
 
 I used GNOME and decide the theme to load based on the OS preferences.
@@ -103,6 +118,33 @@ fc-cache -fv
 		      :height 120) ;; 120 = 12pt
 #+END_SRC
 
+Avoid syntax highlighting as you type
+
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(setq redisplay-skip-fontification-on-input t)
+#+END_SRC
+
+* Clipboard settings
+
+Save clipboard content from programs other than emacs in the kill ring
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(setq save-interprogram-paste-before-kill t)
+#+END_SRC
+
+Prevent duplicates in kill ring
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(setq kill-do-not-save-duplicates t)
+#+END_SRC
+
+* Make scripts executable
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(add-hook 'after-save-hook
+          #'executable-make-buffer-file-executable-if-script-p)
+#+END_SRC
+
 * Append folder when two buffers have the same name
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (require 'uniquify)
@@ -147,6 +189,30 @@ Finally, to kill the current buffer I use =M-super-k=.
      display-buffer-same-window
      display-buffer-in-previous-window)))
  #+END_SRC
+
+When creating a new buffer (e.g., with =C-x 2= or =C-x 3=) I want to resize
+all buffers
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(setq window-combination-resize t)
+#+END_SRC
+
+Make focusing on current buffer with =C-x 1= reversible:
+
+#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(winner-mode +1)
+
+(defun toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+
+(global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
+#+END_SRC
+
 * Basic parenthesis handling
 
 Colorizing of parenthesis is loaded in the complete

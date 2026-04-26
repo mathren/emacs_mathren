@@ -50,6 +50,9 @@
   ;; Configure eglot to work well with flymake
   (setq eglot-send-changes-idle-time 0.5)
   (setq eglot-auto-display-help-buffer nil)
+
+  ;; increase size of output buffer
+  (setq read-process-output-max (* 4 1024 1024))
   )
 
 (use-package flymake

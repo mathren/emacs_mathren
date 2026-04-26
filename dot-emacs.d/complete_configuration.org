@@ -190,6 +190,9 @@ Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =cla
     ;; Configure eglot to work well with flymake
     (setq eglot-send-changes-idle-time 0.5)
     (setq eglot-auto-display-help-buffer nil)
+
+    ;; increase size of output buffer
+    (setq read-process-output-max (* 4 1024 1024))
     )
 #+END_SRC
 
@@ -480,7 +483,7 @@ without moving the headlines themselves
 	      (setq date-index (1+ date-index))))))))
 #+END_SRC
 
-Define headers for latex export
+Define headers for latex export:
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (setq org-latex-packages-alist '(("left=25mm, right=25mm, top=25mm, bottom=25mm" "geometry" nil)))
