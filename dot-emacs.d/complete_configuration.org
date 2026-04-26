@@ -1018,11 +1018,13 @@ the full setup:
     :bind (("C-c i o" . citar-open-link))
     :custom
     (citar-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
-    (citar-symbols
-     `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
-       (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
-	   (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " ")))
     :config
+    (with-eval-after-load 'all-the-icons
+      (setq citar-symbols
+	    `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+	      (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+	      (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " "))))
+
     (setq citar-open-always-create-notes nil)
     ;; load NASA/ADS token -- fail silently
     (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not part of the repo
