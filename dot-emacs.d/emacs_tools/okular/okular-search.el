@@ -86,7 +86,7 @@ Partly copied from tex.el's TeX-master-file and TeX-add-local-master."
 			(kill-line 1))
 		    (beginning-of-line 1))
 		  (insert prefix "TeX-master: " (prin1-to-string master-file) "\n"))
-	      (insert "\n%%% Local Variables: "
+	      (insert "\n%%% Local " "Variables: "
 ;;; mode is of little use without AucTeX ...
 ;;;		      "\n%%% mode: " (substring (symbol-name major-mode) 0 -5)
 		      "\n%%% TeX-master: " (prin1-to-string master-file)
@@ -97,6 +97,3 @@ Partly copied from tex.el's TeX-master-file and TeX-add-local-master."
       (set (make-local-variable 'TeX-master) master-file))))
 
 (provide 'okular-search)
-
-;; Local Variables:
-;; End:
