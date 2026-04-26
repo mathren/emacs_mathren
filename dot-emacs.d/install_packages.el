@@ -49,7 +49,6 @@
 		     jedi
 		     jedi-core
 		     magit
-		     major-mode-icons
 		     math-preview
 		     no-littering
 		     org-bullets
