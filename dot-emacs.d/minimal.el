@@ -73,6 +73,16 @@
                               (when (not (or (derived-mode-p 'markdown-mode)))
                                 (delete-trailing-whitespace))))
 
+(defun mr/sudo-save ()
+  "Save buffer to file using sudo, without switching to sudo-mode."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (if (not file)
+        (message "Buffer is not visiting a file.")
+      (write-region (point-min) (point-max)
+                    (concat "/sudo::" file))
+      (set-buffer-modified-p nil))))
+
 (when (fboundp 'windmove-default-keybindings)
    (windmove-default-keybindings))
 

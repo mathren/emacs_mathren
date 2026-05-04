@@ -144,7 +144,6 @@ Prevent duplicates in kill ring
 (add-hook 'after-save-hook
           #'executable-make-buffer-file-executable-if-script-p)
 #+END_SRC
-
 * Append folder when two buffers have the same name
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (require 'uniquify)
@@ -159,6 +158,20 @@ Except for markdown.
 (add-hook 'before-save-hook (lambda()
                               (when (not (or (derived-mode-p 'markdown-mode)))
                                 (delete-trailing-whitespace))))
+#+END_SRC
+
+* Save with =sudo=
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(defun mr/sudo-save ()
+  "Save buffer to file using sudo, without switching to sudo-mode."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (if (not file)
+        (message "Buffer is not visiting a file.")
+      (write-region (point-min) (point-max)
+                    (concat "/sudo::" file))
+      (set-buffer-modified-p nil))))
 #+END_SRC
 
 * Buffer navigation
