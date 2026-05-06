@@ -22,31 +22,46 @@ I manage my emacs configuration with GNU stow, see [[file:dot-emacs.d/README.org
    various formats (=tex= \rightarrow =pdf= for printing, =html= to make websites,
    etc.).
 
-** Installing Emacs 29.2 from repository
+** Installing Emacs 30.1
 
- *Prerequisite*: install =gcc-10=, e.g. [[https://ahelpme.com/linux/ubuntu/install-and-make-gnu-gcc-10-default-in-ubuntu-20-04-focal/][this guide]].
+*Prerequisites*:
 
- 1. Clone from [[https://git.savannah.gnu.org/git/emacs.git][the Emacs resitory]] the =emacs-29.2= branch
- 2. Run =./autogen.sh=
- 3. Configure with (you may want to change the =--prefix= to your
-    installation location):
-    #+begin_src bash
-      ./configure --prefix=/tmp/emacs29.2/ \
-		  --with-native-compilation=aot --with-imagemagick --with-json \
-		  --with-tree-sitter --with-xft \
-		  --build x86_64-linux-gnu \
-		  --sharedstatedir=/var/lib --libexecdir=/usr/lib \
-		  --localstatedir=/var/lib --infodir=/usr/share/info \
-		  --mandir=/usr/share/man --with-pop=yes \
-		  --enable-locallisppath=/etc/emacs --with-sound=alsa \
-		  --without-gconf --with-mailutils \
-		  --build x86_64-linux-gnu \
-		  --sharedstatedir=/var/lib --libexecdir=/usr/lib \
-		  --localstatedir=/var/lib --infodir=/usr/share/info \
-		  --mandir=/usr/share/man --with-native-compilation \
-		  --with-pop=yes \
-		  --enable-locallisppath=/etc/emacs:/usr/local/share/emacs/site-lisp:/usr/share/emacs/site-lisp \
-		  --with-sound=alsa --without-gconf --with-mailutils --with-x=yes \
-		  --with-x-toolkit=gtk3 \
-		  --with-toolkit-scroll-bars 'CFLAGS=-g -O2 -fdebug-prefix-map=/build/emacs-mEZBk7/emacs-26.3+1=.fstack-protector-strong -Wformat -Werror=format-security -Wall' 'CPPFLAGS=-Wdate-time -D_FORTIFY_SOURCE=2''LDFLAGS=-Wl,-Bsymbolic-functions -Wl,-z,relro'
-    #+end_src
+#+begin_src bash
+sudo apt build-dep emacs
+sudo apt install libgccjit-12-dev libtree-sitter-dev libjansson-dev \
+  libsqlite3-dev libharfbuzz-dev libcairo2-dev librsvg2-dev \
+  libgnutls28-dev libxml2-dev libgif-dev libtiff-dev
+#+end_src
+
+Then download emacs 30.1, unpack it, get in the folder and configure
+with
+
+#+begin_src bash
+./configure \
+  --with-native-compilation=aot \
+  --with-tree-sitter \
+  --with-x-toolkit=gtk3 \
+  --with-toolkit-scroll-bars \
+  --with-cairo \
+  --with-harfbuzz \
+  --with-gnutls \
+  --with-xml2 \
+  --with-rsvg \
+  --with-imagemagick \
+  --with-jpeg \
+  --with-png \
+  --with-gif \
+  --with-tiff \
+  --with-xpm \
+  --with-modules \
+  --with-threads \
+  --with-sqlite3 \
+  --with-mailutils \
+  --with-sound=alsa \
+  --without-gconf \
+  --with-pop=yes \
+  --disable-gc-mark-trace
+#+end_src
+
+then =make -j= and test running =./src/emacs -Q=. If vanilla emacs looks
+good, install system-wide with =sudo make install=.
