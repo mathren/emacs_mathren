@@ -9,20 +9,20 @@
 (use-package fzf
   :ensure t
   :bind (("C-c f f" . fzf)               ;; FZF in current directory
-	 ("C-c f r" . fzf-recentf)       ;; FZF recent files
-	 ("C-c f g" . fzf-git-files))   ;; FZF Git tracked files
+	   ("C-c f r" . fzf-recentf)       ;; FZF recent files
+	   ("C-c f g" . fzf-git-files))   ;; FZF Git tracked files
   :commands (fzf fzf-directory fzf-git-files fzf-recentf)
   :config
   (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
-	fzf/executable "fzf"
-	fzf/git-grep-args "-i --line-number %s"
-	;; command used for `fzf-grep-*` functions
-	;; example usage for ripgrep:
-	;; fzf/grep-command "rg --no-heading -nH"
-	fzf/grep-command "grep -nrH"
-	;; If nil, the fzf buffer will appear at the top of the window
-	fzf/position-bottom t
-	fzf/window-height 15))
+	  fzf/executable "fzf"
+	  fzf/git-grep-args "-i --line-number %s"
+	  ;; command used for `fzf-grep-*` functions
+	  ;; example usage for ripgrep:
+	  ;; fzf/grep-command "rg --no-heading -nH"
+	  fzf/grep-command "grep -nrH"
+	  ;; If nil, the fzf buffer will appear at the top of the window
+	  fzf/position-bottom t
+	  fzf/window-height 15))
 
 (use-package all-the-icons
   :ensure t)
@@ -35,10 +35,10 @@
   :ensure t
   :defer t
   :hook ((python-mode . eglot-ensure)
-	 (c-mode . eglot-ensure)
-	 (c++-mode . eglot-ensure)
-	 (f90-mode . eglot-ensure)
-	 (LaTeX-mode . eglot-ensure))
+	   (c-mode . eglot-ensure)
+	   (c++-mode . eglot-ensure)
+	   (f90-mode . eglot-ensure)
+	   (LaTeX-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "/usr/bin/clangd-10"))
   (add-to-list 'eglot-server-programs '(f90-mode . ("fortls" "--notify_init" "--nthreads=2")))
@@ -62,17 +62,17 @@
 
   ;; Completely disable all flymake face styling (no underline, background, or foreground changes)
   (set-face-attribute 'flymake-error nil
-		      :underline nil
-		      :weight 'normal
-		      :inherit nil)
+			:underline nil
+			:weight 'normal
+			:inherit nil)
   (set-face-attribute 'flymake-warning nil
-		      :underline nil
-		      :weight 'normal
-		      :inherit nil)
+			:underline nil
+			:weight 'normal
+			:inherit nil)
   (set-face-attribute 'flymake-note nil
-		      :underline nil
-		      :weight 'normal
-		      :inherit nil)
+			:underline nil
+			:weight 'normal
+			:inherit nil)
   ;; Don't show diagnostics at end of line
   (setq flymake-show-diagnostics-at-end-of-line nil)
 )
@@ -87,19 +87,19 @@
   :diminish
   :init (ivy-mode 1)
   :bind (("C-s" . swiper)
-	 ;; :map ivy-minibuffer-map
-	 ;; ("TAB" . ivy-alt-done)
-	 ;; ("C-l" . ivy-alt-done)
-	 ;; ("C-j" . ivy-next-line)
-	 ;; ("C-k" . ivy-previous-line)
-	 ;; :map ivy-switch-buffer-map
-	 ;; ("C-k" . ivy-previous-line)
-	 ;; ("C-l" . ivy-done)
-	 ;; ("C-d" . ivy-switch-buffer-kill)
-	 ;; :map ivy-reverse-i-search-map
-	 ;; ("C-k" . ivy-previous-line)
-	 ;; ("C-d" . ivy-reverse-i-search-kill)
-	 )
+	   ;; :map ivy-minibuffer-map
+	   ;; ("TAB" . ivy-alt-done)
+	   ;; ("C-l" . ivy-alt-done)
+	   ;; ("C-j" . ivy-next-line)
+	   ;; ("C-k" . ivy-previous-line)
+	   ;; :map ivy-switch-buffer-map
+	   ;; ("C-k" . ivy-previous-line)
+	   ;; ("C-l" . ivy-done)
+	   ;; ("C-d" . ivy-switch-buffer-kill)
+	   ;; :map ivy-reverse-i-search-map
+	   ;; ("C-k" . ivy-previous-line)
+	   ;; ("C-d" . ivy-reverse-i-search-kill)
+	   )
 
   )
 
@@ -132,7 +132,7 @@
 (use-package doom-modeline
   :ensure t
   :custom ((doom-modeline-height 5)
-	   (doom-modeline-icon t))
+	     (doom-modeline-icon t))
   :init (doom-modeline-mode 1))
 
 ;; these are configured in minimal.el
@@ -175,25 +175,25 @@
   (setq org-startup-folded t)
   ;; capture templates
   (setq org-capture-templates
-	'(("n" "Research note" entry
-	   (file+headline "~/Documents/Research/Todo_research.org" "Research notes")
-	   "* %?\n %T")
-	  ("p" "Personal note" entry
-	   (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
-	   "* %?\n %T")
-	  ("i" "Future project idea" entry
-	   (file "~/Documents/Research/Projects/ideas.org")
-	   "* %?\n %T")
-	  ("j" "Job applications idea" entry
-	   (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
-	   "* %?\n %T")
-	  ("t" "Throwaway Random" entry
-	   (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
-	   "* %?\n %T")
-	  ("g" "General Random" entry
-	   (file+headline "~/Documents/Todo.org" "General Todo")
-	   "* %?\n %T")
-	  ))
+	  '(("n" "Research note" entry
+	     (file+headline "~/Documents/Research/Todo_research.org" "Research notes")
+	     "* %?\n %T")
+	    ("p" "Personal note" entry
+	     (file+headline "~/Documents/Mathieu/Todos.org" "Personal notes")
+	     "* %?\n %T")
+	    ("i" "Future project idea" entry
+	     (file "~/Documents/Research/Projects/ideas.org")
+	     "* %?\n %T")
+	    ("j" "Job applications idea" entry
+	     (file+headline "~/Documents/Research/Applications/Notes.org" "Application related notes")
+	     "* %?\n %T")
+	    ("t" "Throwaway Random" entry
+	     (file+headline "/tmp/Random_notes.org" "Random throughaway notes")
+	     "* %?\n %T")
+	    ("g" "General Random" entry
+	     (file+headline "~/Documents/Todo.org" "General Todo")
+	     "* %?\n %T")
+	    ))
   (setq org-latex-with-hyperref nil)
   )
 
@@ -206,13 +206,13 @@
   )
 
 (define-key org-mode-map (kbd "C-c s")
-	    (lambda () (interactive)
-	      (insert "#+BEGIN_SRC \n\n#+END_SRC")
-	      (forward-line -1)))
+	      (lambda () (interactive)
+		(insert "#+BEGIN_SRC \n\n#+END_SRC")
+		(forward-line -1)))
 (define-key org-mode-map (kbd "C-c q")
-	    (lambda () (interactive)
-	      (insert "#+BEGIN_QUOTE \n\n #+END_QUOTE")
-	      (forward-line -1)))
+	      (lambda () (interactive)
+		(insert "#+BEGIN_QUOTE \n\n #+END_QUOTE")
+		(forward-line -1)))
 
 (defun reorder-org-headlines-dates ()
   "Extract dates from Org mode headlines, sort them chronologically
@@ -221,51 +221,51 @@ Preserves TODO keywords and other text before dates."
   (interactive)
   (when (derived-mode-p 'org-mode)
     (let* ((date-regexp "<\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\) \\([A-Za-z]\\{3\\}\\)>")
-	   (headlines '())
-	   (dates '())
-	   (point-min (point-min))
-	   (point-max (point-max)))
-      ;; Extract dates and their positions
-      (save-excursion
-	(goto-char point-min)
-	(while (re-search-forward (concat "^\\*+\\s-+\\(?:TODO\\s-+\\)?.*?" date-regexp) point-max t)
-	  (let* ((date (match-string 1))
-		 (day-of-week (match-string 2))
-		 (date-start (match-beginning 0))
-		 (date-end (match-end 0))
-		 (line-start (line-beginning-position))
-		 (line-end (line-end-position)))
-	    (push (list line-start line-end date-start date-end date day-of-week) headlines)
-	    (push date dates))))
+	     (headlines '())
+	     (dates '())
+	     (point-min (point-min))
+	     (point-max (point-max)))
+	;; Extract dates and their positions
+	(save-excursion
+	  (goto-char point-min)
+	  (while (re-search-forward (concat "^\\*+\\s-+\\(?:TODO\\s-+\\)?.*?" date-regexp) point-max t)
+	    (let* ((date (match-string 1))
+		   (day-of-week (match-string 2))
+		   (date-start (match-beginning 0))
+		   (date-end (match-end 0))
+		   (line-start (line-beginning-position))
+		   (line-end (line-end-position)))
+	      (push (list line-start line-end date-start date-end date day-of-week) headlines)
+	      (push date dates))))
 
-      ;; Reverse headlines to get them in document order
-      (setq headlines (reverse headlines))
+	;; Reverse headlines to get them in document order
+	(setq headlines (reverse headlines))
 
-      ;; Sort dates in ascending order
-      (setq dates (sort dates 'string<))
+	;; Sort dates in ascending order
+	(setq dates (sort dates 'string<))
 
-      ;; Debugging: Print sorted dates
-      ;; (message "Sorted dates: %s" dates)
+	;; Debugging: Print sorted dates
+	;; (message "Sorted dates: %s" dates)
 
-      ;; Replace dates - pair each headline position with corresponding sorted date
-      (let ((date-index 0))
-	(dolist (headline headlines)
-	  (let* ((line-start (nth 0 headline))
-		 (line-end (nth 1 headline))
-		 (date-start (nth 2 headline))
-		 (date-end (nth 3 headline))
-		 (old-date (nth 4 headline))
-		 (day-of-week (nth 5 headline))
-		 (new-date (nth date-index dates)))
-	    (save-excursion
-	      (goto-char date-start)
-	      (when (re-search-forward date-regexp line-end t)
-		(replace-match (concat "<" new-date " " day-of-week ">") t t)))
-	    (setq date-index (1+ date-index))))))))
+	;; Replace dates - pair each headline position with corresponding sorted date
+	(let ((date-index 0))
+	  (dolist (headline headlines)
+	    (let* ((line-start (nth 0 headline))
+		   (line-end (nth 1 headline))
+		   (date-start (nth 2 headline))
+		   (date-end (nth 3 headline))
+		   (old-date (nth 4 headline))
+		   (day-of-week (nth 5 headline))
+		   (new-date (nth date-index dates)))
+	      (save-excursion
+		(goto-char date-start)
+		(when (re-search-forward date-regexp line-end t)
+		  (replace-match (concat "<" new-date " " day-of-week ">") t t)))
+	      (setq date-index (1+ date-index))))))))
 
 (setq org-latex-packages-alist '(("left=25mm, right=25mm, top=25mm, bottom=25mm" "geometry" nil)))
 (customize-set-value 'org-latex-hyperref-template
-		     "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true,\n citecolor=blue,\n linkcolor=blue,\n urlcolor=blue\n}\n")
+		       "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true,\n citecolor=blue,\n linkcolor=blue,\n urlcolor=blue\n}\n")
 (setq org-export-with-toc nil)
 (setq org-export-with-section-numbers nil)
 (setq org-export-headline-levels 4)
@@ -282,9 +282,9 @@ Preserves TODO keywords and other text before dates."
   "Custom filter to replace LaTeX \odot with HTML sun symbol `&#9737;`."
   (when (org-export-derived-backend-p backend 'html)
     (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward "\\\\odot" nil t)
-	(replace-match "☉" nil t)))))
+	(goto-char (point-min))
+	(while (re-search-forward "\\\\odot" nil t)
+	  (replace-match "☉" nil t)))))
 
 
 (add-hook 'org-export-before-processing-hook 'mr/export-odot-html)
@@ -337,7 +337,7 @@ Entries are assumed to be separated by empty lines."
 
 (defun efs/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
-	visual-fill-column-center-text t)
+	  visual-fill-column-center-text t)
   ;; (visual-fill-column-mode 1)
   )
 
@@ -351,73 +351,73 @@ Entries are assumed to be separated by empty lines."
   )
 
 (defun mr/email-org-setup ()
-	"Setup org buffer for email writing."
-	(turn-on-auto-fill)
-	(flyspell-mode 1))
+	  "Setup org buffer for email writing."
+	  (turn-on-auto-fill)
+	  (flyspell-mode 1))
 
-      (defun mr/org-export-to-eml ()
-	"Export org buffer back to the .eml file, preserving headers."
-	(message "mr/org-export-to-eml fired for %s" buffer-file-name)
-	(when (and buffer-file-name
-		   (string-suffix-p ".eml" buffer-file-name))
-	  (set-buffer-modified-p nil)
-	  (let* ((eml-file buffer-file-name)
-		 (done-file mr/eml-done-file)
-		 (body (org-export-as 'ascii nil nil t))
-		 (eml-content (with-temp-buffer
-				(insert-file-contents eml-file)
-				(buffer-string)))
-		 (header-lines (cl-loop for line in (split-string eml-content "\n")
-					while (not (string-match-p "^<!DOCTYPE" line))
-					collect line))
-		 (headers (string-join header-lines "\n")))
-	    (let ((inhibit-message t))
-	      (write-region (concat headers "\n" body) nil eml-file))
-	    (when done-file
-	      (write-region "" nil done-file))
-	    (message "Exported to %s" eml-file))))
+	(defun mr/org-export-to-eml ()
+	  "Export org buffer back to the .eml file, preserving headers."
+	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
+	  (when (and buffer-file-name
+		     (string-suffix-p ".eml" buffer-file-name))
+	    (set-buffer-modified-p nil)
+	    (let* ((eml-file buffer-file-name)
+		   (done-file mr/eml-done-file)
+		   (body (org-export-as 'ascii nil nil t))
+		   (eml-content (with-temp-buffer
+				  (insert-file-contents eml-file)
+				  (buffer-string)))
+		   (header-lines (cl-loop for line in (split-string eml-content "\n")
+					  while (not (string-match-p "^<!DOCTYPE" line))
+					  collect line))
+		   (headers (string-join header-lines "\n")))
+	      (let ((inhibit-message t))
+		(write-region (concat headers "\n" body) nil eml-file))
+	      (when done-file
+		(write-region "" nil done-file))
+	      (message "Exported to %s" eml-file))))
 
-      (add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
-      (add-hook 'org-mode-hook 'mr/email-org-setup)
-      (add-hook 'server-done-hook 'mr/org-export-to-eml)
+	(add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
+	(add-hook 'org-mode-hook 'mr/email-org-setup)
+	(add-hook 'server-done-hook 'mr/org-export-to-eml)
 
 
 ;;     (defun mr/email-org-setup ()
-	;; 	    "Setup org buffer for email writing."
-	;; 	    (turn-on-auto-fill)
-	;; 	    (flyspell-mode 1))
+	  ;; 	    "Setup org buffer for email writing."
+	  ;; 	    (turn-on-auto-fill)
+	  ;; 	    (flyspell-mode 1))
 
-	;; (defun mr/org-export-to-eml ()
-	;;   "Export org buffer back to the .eml file, preserving headers."
-	;; 	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
-	;; 	  (when (and buffer-file-name
-	;; 		 (string-suffix-p ".eml" buffer-file-name))
-	;; 	    (let* ((eml-file buffer-file-name)
-	;; 	       (done-file mr/eml-done-file)
-	;; 	       (body (org-export-as 'ascii nil nil t))
-	;; 	       (eml-content (with-temp-buffer
-	;; 			      (insert-file-contents eml-file)
-	;; 			      (buffer-string)))
-	;; 	       ;; Only keep lines starting with a header pattern or blank line
-	;; 	       (header-lines (cl-loop for line in (split-string eml-content "\n")
-	;; 				      while (not (string-match-p "^<!DOCTYPE" line))
-	;; 				      collect line))
-	;; 	       (headers (string-join header-lines "\n")))
-	;; 	      (set-buffer-modified-p nil)
-	;; 	      (let ((inhibit-message t))
-	;; 	    (write-region (concat headers "\n" body) nil eml-file))
-	;; 	      (when done-file
-	;; 	    (write-region "" nil done-file))
-	;; 	      (message "Exported to %s" eml-file))))
+	  ;; (defun mr/org-export-to-eml ()
+	  ;;   "Export org buffer back to the .eml file, preserving headers."
+	  ;; 	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
+	  ;; 	  (when (and buffer-file-name
+	  ;; 		 (string-suffix-p ".eml" buffer-file-name))
+	  ;; 	    (let* ((eml-file buffer-file-name)
+	  ;; 	       (done-file mr/eml-done-file)
+	  ;; 	       (body (org-export-as 'ascii nil nil t))
+	  ;; 	       (eml-content (with-temp-buffer
+	  ;; 			      (insert-file-contents eml-file)
+	  ;; 			      (buffer-string)))
+	  ;; 	       ;; Only keep lines starting with a header pattern or blank line
+	  ;; 	       (header-lines (cl-loop for line in (split-string eml-content "\n")
+	  ;; 				      while (not (string-match-p "^<!DOCTYPE" line))
+	  ;; 				      collect line))
+	  ;; 	       (headers (string-join header-lines "\n")))
+	  ;; 	      (set-buffer-modified-p nil)
+	  ;; 	      (let ((inhibit-message t))
+	  ;; 	    (write-region (concat headers "\n" body) nil eml-file))
+	  ;; 	      (when done-file
+	  ;; 	    (write-region "" nil done-file))
+	  ;; 	      (message "Exported to %s" eml-file))))
 
-	;;   (add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
-	;;   (add-hook 'org-mode-hook 'mr/email-org-setup)
-	;; 	  (add-hook 'server-done-hook
-	;; 		    (lambda ()
-	;; 		      (when (and buffer-file-name
-	;; 				 (string-suffix-p ".eml" buffer-file-name))
-	;; 			(set-buffer-modified-p nil)))
-	;; 		    nil t)  ;; t = buffer-local, runs BEFORE mr/org-export-to-eml
+	  ;;   (add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
+	  ;;   (add-hook 'org-mode-hook 'mr/email-org-setup)
+	  ;; 	  (add-hook 'server-done-hook
+	  ;; 		    (lambda ()
+	  ;; 		      (when (and buffer-file-name
+	  ;; 				 (string-suffix-p ".eml" buffer-file-name))
+	  ;; 			(set-buffer-modified-p nil)))
+	  ;; 		    nil t)  ;; t = buffer-local, runs BEFORE mr/org-export-to-eml
 
 (use-package yaml-mode
   :ensure t)
@@ -445,8 +445,8 @@ Entries are assumed to be separated by empty lines."
   (setq ein:completion-backend 'ein:use-ac-backend)
   ;; Set default language mode for cells
   (add-hook 'ein:notebook-mode-hook
-	    (lambda ()
-	      (setq ein:notebook-lang "python")))
+	      (lambda ()
+		(setq ein:notebook-lang "python")))
   ;; redefined C-x B conflicts with ein
   (defun pm--visible-buffer-name ()
     "Get visible buffer name - compatibility function for EIN"
@@ -470,15 +470,15 @@ Entries are assumed to be separated by empty lines."
   (defun mr/arxiv-show-abstract ()
     "Show the abstract window and display appropriate information."
     (unless (buffer-live-p arxiv-abstract-buffer)
-      (setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
+	(setq arxiv-abstract-buffer (get-buffer-create "*arXiv-abstract*")))
     (with-current-buffer arxiv-abstract-buffer (arxiv-abstract-mode)
-			 (visual-line-mode)
-			 (setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
-			 (prettify-symbols-mode 1)
-			 (arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
+			   (visual-line-mode)
+			   (setq-local prettify-symbols-alist arxiv-abstract-prettify-symbols-alist)
+			   (prettify-symbols-mode 1)
+			   (arxiv-format-abstract-page (nth arxiv-current-entry arxiv-entry-list)))
     (unless (window-live-p arxiv-abstract-window)
-      (setq arxiv-abstract-window (display-buffer
-				   "*arXiv-abstract*"t))))
+	(setq arxiv-abstract-window (display-buffer
+				     "*arXiv-abstract*"t))))
 
   (advice-add 'arxiv-show-abstract :override #'mr/arxiv-show-abstract)
   )
@@ -490,7 +490,7 @@ Entries are assumed to be separated by empty lines."
   :ensure t
   :config
   (editorconfig-mode 1)
-					; exclude tramp
+					  ; exclude tramp
   (add-to-list 'editorconfig-exclude-modes 'tramp-mode))
 
 (use-package multiple-cursors
@@ -500,11 +500,11 @@ Entries are assumed to be separated by empty lines."
     "Add or remove a cursor at point."
     (interactive)
     (if multiple-cursors-mode
-	(message "Cannot toggle cursor at point while `multiple-cursors-mode' is active.")
-      (let ((existing (mc/fake-cursor-at-point)))
-	(if existing
-	    (mc/remove-fake-cursor existing)
-	  (mc/create-fake-cursor-at-point)))))
+	  (message "Cannot toggle cursor at point while `multiple-cursors-mode' is active.")
+	(let ((existing (mc/fake-cursor-at-point)))
+	  (if existing
+	      (mc/remove-fake-cursor existing)
+	    (mc/create-fake-cursor-at-point)))))
 
   (add-to-list 'mc/cmds-to-run-once 'mc/toggle-cursor-at-point)
   (add-to-list 'mc/cmds-to-run-once 'multiple-cursors-mode)
@@ -532,19 +532,19 @@ Entries are assumed to be separated by empty lines."
   "Compare FILE between REF-A and REF-B using vdiff (side-by-side, scroll-synced, read-only)."
   (interactive
    (list (magit-read-branch-or-commit "Left (ref A)")
-	 (magit-read-branch-or-commit "Right (ref B)")
-	 (read-file-name "File: " (magit-toplevel))))
+	   (magit-read-branch-or-commit "Right (ref B)")
+	   (read-file-name "File: " (magit-toplevel))))
   (let* ((file (file-relative-name file (magit-toplevel)))
-	 (buf-a (magit-find-file-noselect ref-a file))
-	 (buf-b (magit-find-file-noselect ref-b file)))
+	   (buf-a (magit-find-file-noselect ref-a file))
+	   (buf-b (magit-find-file-noselect ref-b file)))
     (with-current-buffer buf-a
-      (read-only-mode 1)
-      (setq-local truncate-lines nil)
-      (setq-local auto-hscroll-mode t))
+	(read-only-mode 1)
+	(setq-local truncate-lines nil)
+	(setq-local auto-hscroll-mode t))
     (with-current-buffer buf-b
-      (read-only-mode 1)
-      (setq-local truncate-lines nil)
-      (setq-local auto-hscroll-mode t))
+	(read-only-mode 1)
+	(setq-local truncate-lines nil)
+	(setq-local auto-hscroll-mode t))
     (vdiff-buffers buf-a buf-b nil nil t)
     ;; After vdiff sets up its windows, disable horizontal scroll sync
     ;; vdiff only syncs vertical scrolling, but set explicitly to be safe
@@ -582,7 +582,7 @@ Entries are assumed to be separated by empty lines."
 (setq reftex-plug-into-AUCTeX t)
 
 ;; ;; Enable synctex correlation
-					;(setq TeX-source-correlate-method 'synctex)
+					  ;(setq TeX-source-correlate-method 'synctex)
 ;; Enable synctex generation. Even though the command show as "latex" pdflatex is actually called
 (custom-set-variables '(LaTeX-command "latex -synctex=1"))
 
@@ -598,8 +598,8 @@ Entries are assumed to be separated by empty lines."
 (setq flyspell-issue-message-flag nil)
 
 (add-hook 'LaTeX-mode-hook
-	  (lambda ()
-	    (add-to-list 'fill-nobreak-predicate 'texmathp)))
+	    (lambda ()
+	      (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
 (load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
 (use-package citar
@@ -609,9 +609,9 @@ Entries are assumed to be separated by empty lines."
   :config
   (with-eval-after-load 'all-the-icons
     (setq citar-symbols
-	  `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
-	    (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
-	    (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " "))))
+	    `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+	      (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+	      (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " "))))
 
   (setq citar-open-always-create-notes nil)
   ;; load NASA/ADS token -- fail silently
@@ -629,8 +629,8 @@ Entries are assumed to be separated by empty lines."
   (global-set-key (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy)
 
   ;; Set up hooks for LaTeX modes
-  (add-hook 'latex-mode-hook #'citar-mode)
-  (add-hook 'LaTeX-mode-hook #'citar-mode)
+  (add-hook 'latex-mode-hook #'citar-capf-setup)
+  (add-hook 'LaTeX-mode-hook #'citar-capf-setup)
   (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
   (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
   )
@@ -638,10 +638,10 @@ Entries are assumed to be separated by empty lines."
 (use-package tramp
   :custom
   (tramp-remote-path '(tramp-default-remote-path
-		       tramp-own-remote-path
-		       "/usr/bin/"
-		       "/usr/local/bin"
-		       "/bin"))
+			 tramp-own-remote-path
+			 "/usr/bin/"
+			 "/usr/local/bin"
+			 "/bin"))
   (tramp-default-remote-shell "/usr/bin/sh")
   (tramp-persistency-file-name "/tmp/tramp-cache")
   (remote-file-name-inhibit-locks t)
@@ -668,21 +668,21 @@ the buffer when no region is active).  SLOC means that empty
 lines and comment-only lines are not taken into consideration."
   (interactive
    (if (use-region-p)
-       (list (region-beginning) (region-end))
+	 (list (region-beginning) (region-end))
      (list (point-min) (point-max))))
   (save-excursion
     (save-restriction
-      (narrow-to-region beg end)
-      (goto-char (point-min))
-      (let ((count 0))
-	(while (not (eobp))
-	  (if (not (comment-only-p (line-beginning-position)
-				   (line-end-position)))
-	      (setq count (1+ count)))
-	  (forward-line))
-	(message "SLOC in %s: %s."
-		 (if (use-region-p) "region" "buffer")
-		 count)))))
+	(narrow-to-region beg end)
+	(goto-char (point-min))
+	(let ((count 0))
+	  (while (not (eobp))
+	    (if (not (comment-only-p (line-beginning-position)
+				     (line-end-position)))
+		(setq count (1+ count)))
+	    (forward-line))
+	  (message "SLOC in %s: %s."
+		   (if (use-region-p) "region" "buffer")
+		   count)))))
 
 (with-eval-after-load "ispell"
   ;; Configure `LANG`, otherwise ispell.el cannot find a 'default
@@ -710,11 +710,11 @@ lines and comment-only lines are not taken into consideration."
   (interactive "*r")
   (save-excursion
     (let ((end (copy-marker end)))
-      (while
-	  (progn
-	    (goto-char start)
-	    (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-	(replace-match "\\1\n\\2")))))
+	(while
+	    (progn
+	      (goto-char start)
+	      (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+	  (replace-match "\\1\n\\2")))))
 
 (defun uniquify-all-lines-buffer ()
   "Delete duplicate lines in buffer and keep first occurrence."
@@ -723,13 +723,13 @@ lines and comment-only lines are not taken into consideration."
 
 ;; Recent buffers in a new Emacs buffer
 (use-package recentf
-	  :config
-	  (setq recentf-auto-cleanup 'never)
-	  (setq recentf-max-menu-items 50)
-	  (setq recentf-max-saved-items 250)
-	  (recentf-mode t)
-	  (global-set-key "\M-[" 'recentf-open-files)
-	  :diminish nil)
+	    :config
+	    (setq recentf-auto-cleanup 'never)
+	    (setq recentf-max-menu-items 50)
+	    (setq recentf-max-saved-items 250)
+	    (recentf-mode t)
+	    (global-set-key "\M-[" 'recentf-open-files)
+	    :diminish nil)
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
@@ -742,7 +742,7 @@ lines and comment-only lines are not taken into consideration."
 (global-set-key (kbd "M-g TAB") 'go-to-column)
 
 (fset 'last-line-which-col
-      "\C-[>\C-[OA\C-a\C-[g\C-i\C-u\C-xq[OB")
+	"\C-[>\C-[OA\C-a\C-[g\C-i\C-u\C-xq[OB")
 
 (put 'last-line-which-col 'kmacro t)
 

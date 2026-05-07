@@ -165,9 +165,11 @@ time you use it.
 
 ** Language server protocol and =eglot=
 
-I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in
-Fortran 90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =clangd=) and python (using
-=python3-pylsp=).
+I am using [[https://github.com/joaotavora/eglot][eglot]] for language server protocol needs, mostly in Fortran
+90 (using [[https://fortls.fortran-lang.org/][fortls]]), C++ (using =clangd=), python (using =python3-pylsp=),
+LaTeX (using =texlab=). Note that these need to be installed separately
+outside of Emacs (using a package manager like =apt=, =pacman=, or =pip=
+depending on the specifics).
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   ;; eglot
@@ -1107,9 +1109,9 @@ the full setup:
     :config
     (with-eval-after-load 'all-the-icons
       (setq citar-symbols
-	    `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
-	      (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
-	      (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " "))))
+  	    `((file ,(all-the-icons-faicon "file-pdf-o" :face 'all-the-icons-red) . " ")
+  	      (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue) . " ")
+  	      (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange) . " "))))
 
     (setq citar-open-always-create-notes nil)
     ;; load NASA/ADS token -- fail silently
@@ -1127,8 +1129,8 @@ the full setup:
     (global-set-key (kbd "C-c i C") #'citar-bibtool-insert-citation-with-local-copy)
 
     ;; Set up hooks for LaTeX modes
-    (add-hook 'latex-mode-hook #'citar-mode)
-    (add-hook 'LaTeX-mode-hook #'citar-mode)
+    (add-hook 'latex-mode-hook #'citar-capf-setup)
+    (add-hook 'LaTeX-mode-hook #'citar-capf-setup)
     (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
     (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
     )
