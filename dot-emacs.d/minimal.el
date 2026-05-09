@@ -14,7 +14,6 @@
 (set-default 'truncate-lines t)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (set-default 'size-indication-mode t)
-(sudo-edit-indicator-mode 1)
 
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
@@ -74,15 +73,8 @@
                               (when (not (or (derived-mode-p 'markdown-mode)))
                                 (delete-trailing-whitespace))))
 
-(defun mr/sudo-save ()
-  "Save buffer to file using sudo, without switching to sudo-mode."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (if (not file)
-        (message "Buffer is not visiting a file.")
-      (write-region (point-min) (point-max)
-                    (concat "/sudo::" file))
-      (set-buffer-modified-p nil))))
+(when (fboundp 'sudo-edit-indicator-mode)
+  (sudo-edit-indicator-mode 1))
 
 (when (fboundp 'windmove-default-keybindings)
    (windmove-default-keybindings))
