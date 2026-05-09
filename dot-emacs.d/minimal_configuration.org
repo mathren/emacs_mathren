@@ -30,18 +30,19 @@ menus).
 I always want line and column numbers.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(setq frame-title-format '("Emacs %@ %*" (:eval (if (buffer-name)(abbreviate-file-name (buffer-name)) "%b %*"))))
-(setq ring-bell-function 'ignore)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode 0)
-(set-fringe-mode 4) ;; small fringe for error annotation
-(column-number-mode)
-(global-display-line-numbers-mode t)
-;; (load-theme 'wombat t) ;; theme chosen by OS
-(set-default 'truncate-lines t)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(set-default 'size-indication-mode t)
+  (setq frame-title-format '("Emacs %@ %*" (:eval (if (buffer-name)(abbreviate-file-name (buffer-name)) "%b %*"))))
+  (setq ring-bell-function 'ignore)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode 0)
+  (set-fringe-mode 4) ;; small fringe for error annotation
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+  ;; (load-theme 'wombat t) ;; theme chosen by OS
+  (set-default 'truncate-lines t)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (set-default 'size-indication-mode t)
+  (sudo-edit-indicator-mode 1)
 #+END_SRC
 
 Disable bidirectional text scanning (I don't use scripts that are

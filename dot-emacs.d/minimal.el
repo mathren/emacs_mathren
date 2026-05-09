@@ -14,6 +14,7 @@
 (set-default 'truncate-lines t)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (set-default 'size-indication-mode t)
+(sudo-edit-indicator-mode 1)
 
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
@@ -31,31 +32,31 @@
    Skips execution on tramp buffers"
   (unless (file-remote-p default-directory)
     (let* ((dark-theme 'wombat)   ;; Replace with your preferred dark theme
-	   (light-theme 'adwaita) ;; Replace with your preferred light theme
-	   (gsettings (executable-find "gsettings"))
-	   (mode
-	    (cond
-	     ((not gsettings) 'prefer-dark) ;; If gsettings not found, fallback to dark
-	     (t
-	      (let ((output (string-trim
-			     (shell-command-to-string
-			      "gsettings get org.gnome.desktop.interface color-scheme"))))
-		(if (string= output "'prefer-dark'")
-		    'prefer-dark
-		  'light))))))
-      ;; Only change theme if needed
-      (unless (eq mode mr/current-theme-mode)
-	(setq mr/current-theme-mode mode)
-	(mapc #'disable-theme custom-enabled-themes)
-	(load-theme (if (eq mode 'prefer-dark) dark-theme light-theme) t)))
+	     (light-theme 'adwaita) ;; Replace with your preferred light theme
+	     (gsettings (executable-find "gsettings"))
+	     (mode
+	      (cond
+	       ((not gsettings) 'prefer-dark) ;; If gsettings not found, fallback to dark
+	       (t
+		(let ((output (string-trim
+			       (shell-command-to-string
+				"gsettings get org.gnome.desktop.interface color-scheme"))))
+		  (if (string= output "'prefer-dark'")
+		      'prefer-dark
+		    'light))))))
+	;; Only change theme if needed
+	(unless (eq mode mr/current-theme-mode)
+	  (setq mr/current-theme-mode mode)
+	  (mapc #'disable-theme custom-enabled-themes)
+	  (load-theme (if (eq mode 'prefer-dark) dark-theme light-theme) t)))
     )
   )
 
 (add-hook 'buffer-list-update-hook #'mr/apply-theme-based-on-gnome)
 
 (set-face-attribute 'default nil
-		    :family "JetBrainsMono Nerd Font Mono"
-		    :height 120) ;; 120 = 12pt
+		      :family "JetBrainsMono Nerd Font Mono"
+		      :height 120) ;; 120 = 12pt
 
 (setq redisplay-skip-fontification-on-input t)
 
@@ -124,13 +125,13 @@
 (defun zoom-in ()
   (interactive)
   (let ((x (+ (face-attribute 'default :height)
-	      10)))
+		 10)))
     (set-face-attribute 'default nil :height x)))
 
 (defun zoom-out ()
   (interactive)
   (let ((x (- (face-attribute 'default :height)
-	      10)))
+		 10)))
     (set-face-attribute 'default nil :height x)))
 
 (defun zoom-set-default ()
@@ -182,7 +183,7 @@
 
 ;; ;; hide show mode configuration
 (add-hook 'f90-mode-hook
-	  (lambda()
-	    (local-set-key (kbd "\M-ss") 'hs-show-block)
-	    (local-set-key (kbd "\M-sh") 'hs-hide-block)
-	    (hs-minor-mode t)))
+	    (lambda()
+	      (local-set-key (kbd "\M-ss") 'hs-show-block)
+	      (local-set-key (kbd "\M-sh") 'hs-hide-block)
+	      (hs-minor-mode t)))

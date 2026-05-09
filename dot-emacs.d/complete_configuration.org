@@ -1157,16 +1157,6 @@ Remote editing with my local configuration.
     (vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
     (remote-file-name-inhibit-auto-save-visited t)
     (tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
-    ;; for TRAMP 2.7
-    ;;   (connection-local-set-profile-variables
-    ;;  'remote-direct-async-process
-    ;;  '((tramp-direct-async-process . t)))
-
-    ;; (connection-local-set-profiles
-    ;;  '(:application tramp :protocol "scp")
-    ;;  'remote-direct-async-process)
-
-    ;; (setq magit-tramp-pipe-stty-settings 'pty)
     )
 #+END_SRC
 
@@ -1378,4 +1368,14 @@ from ubuntu repositories is old and yields an error.
     ;;       ("/[Gmail]/Drafts"    . ?d)
     ;;       ("/[Gmail]/All Mail"  . ?a)))
     )
+#+END_SRC
+
+
+*** TODO Add to =AUCTEX= autocomplete =textpos=
+
+I often define it in an included header file that AUCtex doesn't parse
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(with-eval-after-load 'latex
+  (TeX-load-style "textpos"))
 #+END_SRC
