@@ -133,12 +133,12 @@ exist, this leads to many errors.
 
 This hook allows to create the parent directory if non existing:
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(add-hook 'find-file-not-found-functions
-          (lambda ()
-            (make-directory (file-name-directory buffer-file-name) t)
-            nil))
+(advice-add 'find-file :before
+            (lambda (filename &optional wildcards)
+              (let ((dir (file-name-directory (expand-file-name filename))))
+                (when (and dir (not (file-exists-p dir)))
+                  (make-directory dir t)))))
 #+END_SRC
-
 
 * editorconfig
 

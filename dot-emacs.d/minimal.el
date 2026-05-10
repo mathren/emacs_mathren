@@ -59,6 +59,17 @@
 
 (setq redisplay-skip-fontification-on-input t)
 
+(advice-add 'find-file :before
+            (lambda (filename &optional wildcards)
+              (let ((dir (file-name-directory (expand-file-name filename))))
+                (when (and dir (not (file-exists-p dir)))
+                  (make-directory dir t)))))
+
+(editorconfig-mode 1)
+(add-to-list 'editorconfig-exclude-modes 'tramp-mode)
+
+(which-key-mode 1)
+
 (setq save-interprogram-paste-before-kill t)
 
 (setq kill-do-not-save-duplicates t)
