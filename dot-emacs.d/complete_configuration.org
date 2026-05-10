@@ -262,8 +262,9 @@ Path selection
   (use-package vertico-directory
     :after vertico
     :ensure nil  ;; no need to install, it comes with vertico
-    ;; :bind (:map vertico-map
-    ;;   ("DEL" . vertico-directory-delete-char))
+    :bind
+    (:map vertico-map
+  	("DEL" . vertico-directory-delete-char))
     )
 #+END_SRC
 
