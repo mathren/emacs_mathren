@@ -13,22 +13,21 @@
 		     nerd-icons-ivy-rich
 		     nerd-icons-dired
 		     auctex
-		     company-box
-		     counsel
 		     dired-icon
 		     doom-modeline
 		     ein
 		     elpy
-		     eshell-prompt-extras
+		     ;; eshell-prompt-extras
 		     helpful
 		     orderless
 		     vertico
+		     vertico-prescient
 		     corfu
+		     corfu-prescient
 		     embark
+		     embark-consult
 		     consult
-		     ;; ivy
-		     ;; ivy-rich
-		     ;; ivy-prescient
+		     marginalia
 		     jedi
 		     jedi-core
 		     magit
@@ -41,10 +40,10 @@
 		     swiper
 		     use-package
 		     yaml-mode
-		     company-prescient
-		     company-fuzzy
-		     company-auctex
-		     company-bibtex
+		     ;; company-prescient
+		     ;; company-fuzzy
+		     ;; company-auctex
+		     ;; company-bibtex
 		     editorconfig
 		     arxiv-mode
 		     multiple-cursors

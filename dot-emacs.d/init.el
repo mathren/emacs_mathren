@@ -101,30 +101,48 @@
   )
 
 (use-package orderless
+  :demand t
   :custom
   ;; Activate orderless completion
   (completion-styles '(orderless basic))
   ;; Enable partial completion for file wildcard support
-  (completion-category-overrides '((file (styles partial-completion)))))
+  (completion-category-overrides '((file (styles partial-completion))))
+  )
 
 (use-package consult
-  :custom
-  ;; Disable preview
-  (consult-preview-key nil)
-  :bind
-  (("C-x b" . 'consult-buffer)    ;; Switch buffer, including recentf and bookmarks
-   ("M-l"   . 'consult-git-grep)  ;; Search inside a project
-   ("M-y"   . 'consult-yank-pop)  ;; Paste by selecting the kill-ring
-   ("M-s"   . 'consult-line)      ;; Search current buffer, like swiper
-   ))
+:bind
+(;; ;; Replace find-file with recursive search from current directory
+ ;; Search files in current project
+ ("s-<XF86TouchpadOff>" . consult-find)
+
+ ("C-x b" . 'consult-buffer)    ;; Switch buffer, including recentf and bookmarks
+ ("M-l"   . 'consult-git-grep)  ;; Search inside a project
+ ("M-y"   . 'consult-yank-pop)  ;; Paste by selecting the kill-ring
+ ("M-s"   . 'consult-line)      ;; Search current buffer, like swiper
+ )
+)
+
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  :init
+
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
 
 (use-package embark
   :bind
   (("C-."   . embark-act)         ;; Begin the embark process
    ("C-;"   . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-  :config
-  (use-package embark-consult))
+  )
+(use-package embark-consult)
 
 (use-package corfu
   :ensure t
@@ -133,17 +151,27 @@
   :init
   (global-corfu-mode)
   :custom
-  (corfu-auto t)                 ;; Enable auto completion
-  (corfu-auto-prefix 2)          ;; Complete after 2 characters
-  (corfu-auto-delay 0.1)         ;; Faster response
-  (corfu-quit-at-boundary 'separator) ;; Allow spaces for Orderless
-  (corfu-echo-documentation t)   ;; Show documentation in echo area
+  (corfu-auto t)				;; Enable auto completion
+  (corfu-auto-prefix 2)			;; Complete after 2 characters
+  (corfu-auto-delay 0.1)			;; Faster response
+  (corfu-quit-at-boundary 'separator)	        ;; Allow spaces for Orderless
+  (corfu-echo-documentation t)		;; Show documentation in echo area
+  (corfu-quit-no-match t)			;; Automatically quit if no match is found
+  (corfu-preselect 'prompt)                   ;; Preselect the prompt, making it easier to exit
+  (corfu-on-at-pt-timer-die nil)              ;; Don't leave artifacts if the timer dies
   :bind
   (:map corfu-map
-        ("SPC" . corfu-insert-separator) ;; Essential for Orderless
+        ("SPC" . corfu-insert-separator)      ;; Essential for Orderless
         ("<escape>" . corfu-quit)
         ("C-n" . corfu-next)
         ("C-p" . corfu-previous)))
+
+(use-package dabbrev
+  :custom
+  (dabbrev-quiet t))
+
+(use-package vertico-prescient)
+(use-package corfu-prescient)
 
 (use-package dired
   :ensure nil

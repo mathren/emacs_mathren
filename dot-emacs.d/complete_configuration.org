@@ -239,6 +239,8 @@ I use [[https://company-mode.github.io/][company]] for autocompletion
 
 ** Autocompletion framework, minibuffer, and in-line suggestions
 
+Inspired largely by this [[https://midirus.com/blog/from-ivy-to-vertico][blog post]].
+
 Completion framework: =vertico=.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -284,16 +286,36 @@ anything with the string =FOO= and =BA= regardless of their order) with
 Minibuffer/search framework: =consult=. Allows for live preview.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package consult
-    :custom
-    ;; Disable preview
-    (consult-preview-key nil)
+    (use-package consult
     :bind
-    (("C-x b" . 'consult-buffer)    ;; Switch buffer, including recentf and bookmarks
+    (;; ;; Replace find-file with recursive search from current directory
+     ;; Search files in current project
+     ("s-<XF86TouchpadOff>" . consult-find)
+
+     ("C-x b" . 'consult-buffer)    ;; Switch buffer, including recentf and bookmarks
      ("M-l"   . 'consult-git-grep)  ;; Search inside a project
      ("M-y"   . 'consult-yank-pop)  ;; Paste by selecting the kill-ring
      ("M-s"   . 'consult-line)      ;; Search current buffer, like swiper
-     ))
+     )
+    )
+#+END_SRC
+
+More info with =marginalia=.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  :init
+
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
 #+END_SRC
 
 Allow to first select files, then act on them with =embark=.
@@ -304,9 +326,8 @@ Allow to first select files, then act on them with =embark=.
     (("C-."   . embark-act)         ;; Begin the embark process
      ("C-;"   . embark-dwim)        ;; good alternative: M-.
      ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-    :config
-    (use-package embark-consult))
-
+    )
+  (use-package embark-consult)
 #+END_SRC
 
 In line suggestions with popup: =corfu=.
@@ -333,6 +354,20 @@ In line suggestions with popup: =corfu=.
           ("<escape>" . corfu-quit)
           ("C-n" . corfu-next)
           ("C-p" . corfu-previous)))
+#+END_SRC
+
+Quiet minibuffer warnings.
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package dabbrev
+  :custom
+  (dabbrev-quiet t))
+#+END_SRC
+
+Use =prescient= for sorting suggestions.
+
+#+BEGIN_SRC   emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package vertico-prescient)
+  (use-package corfu-prescient)
 #+END_SRC
 
 

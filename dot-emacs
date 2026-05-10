@@ -71,23 +71,24 @@
 	     all-the-icons-nerd-fonts arxiv-mode auctex
 	     auto-complete-auctex blacken chronometer citar
 	     company-auctex company-bibtex company-box company-fuzzy
-	     company-prescient consult corfu counsel dashboard
-	     deadgrep dired-icon dired-single diredfl diredful
-	     doom-modeline doom-themes editorconfig eglot ein elfeed
-	     elfeed-goodies elfeed-org elpy embark eproject
-	     eshell-prompt-extras f flycheck flyspell-popup
-	     fontawesome fzf gh-md helm-org helpful
+	     company-prescient consult corfu corfu-prescient counsel
+	     dashboard deadgrep dired-icon dired-single diredfl
+	     diredful doom-modeline doom-themes editorconfig eglot ein
+	     elfeed elfeed-goodies elfeed-org elpy embark
+	     embark-consult eproject eshell-prompt-extras f flycheck
+	     flyspell-popup fontawesome fzf gh-md helm-org helpful
 	     highlight-indent-guides htmlize indent-bars ivy ivy-fuz
 	     ivy-pass ivy-prescient jedi jedi-core magit magit-lfs
-	     markdown-mode math-preview mu4e multiple-cursors
-	     nerd-icons-completion nerd-icons-dired nerd-icons-ibuffer
-	     nerd-icons-ivy-rich no-littering orderless org org-alert
-	     org-bullets org-caldav org-download ox-publish pass
-	     pdf-tools python-black rainbow-delimiters rg ripgrep
-	     simple-httpd snake-mode snakemake-mode sudo-edit
-	     super-save tramp treemacs-magit unfill use-package vdiff
-	     vdiff-magit vertico which-key which-key-posframe
-	     ws-butler yaml-mode))
+	     marginalia markdown-mode math-preview mu4e
+	     multiple-cursors nerd-icons-completion nerd-icons-dired
+	     nerd-icons-ibuffer nerd-icons-ivy-rich no-littering
+	     orderless org org-alert org-bullets org-caldav
+	     org-download ox-publish pass pdf-tools python-black
+	     rainbow-delimiters rg ripgrep simple-httpd snake-mode
+	     snakemake-mode sudo-edit super-save tramp treemacs-magit
+	     unfill use-package vdiff vdiff-magit vertico
+	     vertico-prescient which-key which-key-posframe ws-butler
+	     yaml-mode))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . main.tex)))
  '(send-mail-function 'mailclient-send-it)
