@@ -116,10 +116,11 @@
  ;; Search files in current project
  ("s-<XF86TouchpadOff>" . consult-find)
 
- ("C-x b" . 'consult-buffer)    ;; Switch buffer, including recentf and bookmarks
- ("M-l"   . 'consult-git-grep)  ;; Search inside a project
- ("M-y"   . 'consult-yank-pop)  ;; Paste by selecting the kill-ring
- ("M-s"   . 'consult-line)      ;; Search current buffer, like swiper
+ ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
+ ("M-l"   . 'consult-git-grep)    ;; Search inside a project
+ ("M-y"   . 'consult-yank-pop)    ;; Paste by selecting the kill-ring
+ ("M-s"   . 'consult-line)        ;; Search current buffer, like swiper
+ ("M-["   . 'consult-recent-file) ;; rebind recent files
  )
 )
 
@@ -771,16 +772,6 @@ lines and comment-only lines are not taken into consideration."
   "Delete duplicate lines in buffer and keep first occurrence."
   (interactive "*")
   (uniquify-all-lines-region (point-min) (point-max)))
-
-;; Recent buffers in a new Emacs buffer
-(use-package recentf
-	    :config
-	    (setq recentf-auto-cleanup 'never)
-	    (setq recentf-max-menu-items 50)
-	    (setq recentf-max-saved-items 250)
-	    (recentf-mode t)
-	    (global-set-key "\M-[" 'recentf-open-files)
-	    :diminish nil)
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
