@@ -82,36 +82,68 @@
 (setq company-selection-wrap-around t) ;; wrap around suggestion list
 (company-tng-configure-default)        ;; tab cycles through suggestions
 
-(use-package ivy
-  :ensure t
-  :diminish
-  :init (ivy-mode 1)
-  :bind (("C-s" . swiper)
-	   ;; :map ivy-minibuffer-map
-	   ;; ("TAB" . ivy-alt-done)
-	   ;; ("C-l" . ivy-alt-done)
-	   ;; ("C-j" . ivy-next-line)
-	   ;; ("C-k" . ivy-previous-line)
-	   ;; :map ivy-switch-buffer-map
-	   ;; ("C-k" . ivy-previous-line)
-	   ;; ("C-l" . ivy-done)
-	   ;; ("C-d" . ivy-switch-buffer-kill)
-	   ;; :map ivy-reverse-i-search-map
-	   ;; ("C-k" . ivy-previous-line)
-	   ;; ("C-d" . ivy-reverse-i-search-kill)
-	   )
+(use-package vertico
+:custom
+(vertico-count 20)  ;; limit to a fixed size
+:bind (:map vertico-map
+  ;; Use page-up/down to scroll vertico buffer, like ivy does by default.
+  ("<prior>" . 'vertico-scroll-down)
+  ("<next>"  . 'vertico-scroll-up))
+:init
+;; Activate vertico
+(vertico-mode))
 
+(use-package vertico-directory
+  :after vertico
+  :ensure nil  ;; no need to install, it comes with vertico
+  ;; :bind (:map vertico-map
+  ;;   ("DEL" . vertico-directory-delete-char))
   )
 
-(use-package ivy-rich
+(use-package orderless
+  :custom
+  ;; Activate orderless completion
+  (completion-styles '(orderless basic))
+  ;; Enable partial completion for file wildcard support
+  (completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package consult
+  :custom
+  ;; Disable preview
+  (consult-preview-key nil)
+  :bind
+  (("C-x b" . 'consult-buffer)    ;; Switch buffer, including recentf and bookmarks
+   ("M-l"   . 'consult-git-grep)  ;; Search inside a project
+   ("M-y"   . 'consult-yank-pop)  ;; Paste by selecting the kill-ring
+   ("M-s"   . 'consult-line)      ;; Search current buffer, like swiper
+   ))
+
+(use-package embark
+  :bind
+  (("C-."   . embark-act)         ;; Begin the embark process
+   ("C-;"   . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :config
+  (use-package embark-consult))
+
+(use-package corfu
+  :ensure t
+  ;; Optional: Enable Corfu globally.
+  ;; For ad-hoc completion, use M-x corfu-mode instead.
   :init
-  (ivy-rich-mode 1)
-  )
-
-(use-package counsel
-  :ensure t
-  :after ivy
-  :config (counsel-mode 1))
+  (global-corfu-mode)
+  :custom
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-auto-prefix 2)          ;; Complete after 2 characters
+  (corfu-auto-delay 0.1)         ;; Faster response
+  (corfu-quit-at-boundary 'separator) ;; Allow spaces for Orderless
+  (corfu-echo-documentation t)   ;; Show documentation in echo area
+  :bind
+  (:map corfu-map
+        ("SPC" . corfu-insert-separator) ;; Essential for Orderless
+        ("<escape>" . corfu-quit)
+        ("C-n" . corfu-next)
+        ("C-p" . corfu-previous)))
 
 (use-package dired
   :ensure nil
@@ -650,16 +682,6 @@ Entries are assumed to be separated by empty lines."
   (vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
   (remote-file-name-inhibit-auto-save-visited t)
   (tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
-  ;; for TRAMP 2.7
-  ;;   (connection-local-set-profile-variables
-  ;;  'remote-direct-async-process
-  ;;  '((tramp-direct-async-process . t)))
-
-  ;; (connection-local-set-profiles
-  ;;  '(:application tramp :protocol "scp")
-  ;;  'remote-direct-async-process)
-
-  ;; (setq magit-tramp-pipe-stty-settings 'pty)
   )
 
 (defun count-sloc-region (beg end)
@@ -747,3 +769,6 @@ lines and comment-only lines are not taken into consideration."
 (put 'last-line-which-col 'kmacro t)
 
 (global-set-key (kbd "C-c C-l") 'last-line-which-col)
+
+(with-eval-after-load 'latex
+  (TeX-load-style "textpos"))

@@ -12,7 +12,6 @@
 		     nerd-icons-ibuffer
 		     nerd-icons-ivy-rich
 		     nerd-icons-dired
-		     ;; snakemake-mode
 		     auctex
 		     company-box
 		     counsel
@@ -22,9 +21,14 @@
 		     elpy
 		     eshell-prompt-extras
 		     helpful
-		     ivy
-		     ivy-rich
-		     ivy-prescient
+		     orderless
+		     vertico
+		     corfu
+		     embark
+		     consult
+		     ;; ivy
+		     ;; ivy-rich
+		     ;; ivy-prescient
 		     jedi
 		     jedi-core
 		     magit
@@ -36,7 +40,6 @@
 		     rainbow-delimiters
 		     swiper
 		     use-package
-		     ;; which-key
 		     yaml-mode
 		     company-prescient
 		     company-fuzzy
@@ -46,20 +49,11 @@
 		     arxiv-mode
 		     multiple-cursors
 		     magit-lfs
-		     ;; super-save
 		     fontawesome
-		     ;; all-the-icons-nerd-fonts
 		     ws-butler
 		     htmlize
 		     simple-httpd
 		     sudo-edit
-		     ;; all-the-icons
-		     ;; all-the-icons-completion
-		     ;; all-the-icons-dired
-		     ;; all-the-icons-gnus
-		     ;; all-the-icons-ibuffer
-		     ;; all-the-icons-ivy
-		     ;; all-the-icons-ivy-rich
 		     auto-complete-auctex
 		     markdown-mode
 		     indent-bars

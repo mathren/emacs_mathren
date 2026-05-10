@@ -7,10 +7,10 @@
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
  '(TeX-view-predicate-list '((nil nil)))
- '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)))
+ '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)) t)
  '(TeX-view-program-selection
    '((output-pdf "Okular") (output-pdf "dvips and gv")
-     (output-dvi "Evince") (output-html "xdg-open")))
+     (output-dvi "Evince") (output-html "xdg-open")) t)
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3"
     "#DCDCCC"])
@@ -26,7 +26,7 @@
  '(custom-safe-themes
    '("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd"
      default))
- '(ein:output-area-inlined-images t)
+ '(ein:output-area-inlined-images t t)
  '(elfeed-goodies/entry-pane-position 'bottom)
  '(elfeed-goodies/entry-pane-size 0.4)
  '(elfeed-goodies/powerline-default-separator 'slant)
@@ -71,22 +71,23 @@
 	     all-the-icons-nerd-fonts arxiv-mode auctex
 	     auto-complete-auctex blacken chronometer citar
 	     company-auctex company-bibtex company-box company-fuzzy
-	     company-prescient counsel dashboard deadgrep dired-icon
-	     dired-single diredfl diredful doom-modeline doom-themes
-	     editorconfig eglot ein elfeed elfeed-goodies elfeed-org
-	     elpy eproject eshell-prompt-extras f flycheck
-	     flyspell-popup fontawesome fzf gh-md helm-org helpful
+	     company-prescient consult corfu counsel dashboard
+	     deadgrep dired-icon dired-single diredfl diredful
+	     doom-modeline doom-themes editorconfig eglot ein elfeed
+	     elfeed-goodies elfeed-org elpy embark eproject
+	     eshell-prompt-extras f flycheck flyspell-popup
+	     fontawesome fzf gh-md helm-org helpful
 	     highlight-indent-guides htmlize indent-bars ivy ivy-fuz
 	     ivy-pass ivy-prescient jedi jedi-core magit magit-lfs
 	     markdown-mode math-preview mu4e multiple-cursors
 	     nerd-icons-completion nerd-icons-dired nerd-icons-ibuffer
-	     nerd-icons-ivy-rich no-littering org org-alert
+	     nerd-icons-ivy-rich no-littering orderless org org-alert
 	     org-bullets org-caldav org-download ox-publish pass
 	     pdf-tools python-black rainbow-delimiters rg ripgrep
 	     simple-httpd snake-mode snakemake-mode sudo-edit
 	     super-save tramp treemacs-magit unfill use-package vdiff
-	     vdiff-magit which-key which-key-posframe ws-butler
-	     yaml-mode))
+	     vdiff-magit vertico which-key which-key-posframe
+	     ws-butler yaml-mode))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . main.tex)))
  '(send-mail-function 'mailclient-send-it)
