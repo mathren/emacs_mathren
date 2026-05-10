@@ -175,6 +175,15 @@
 (use-package vertico-prescient)
 (use-package corfu-prescient)
 
+;; Recent buffers in a new Emacs buffer
+(use-package recentf
+	    :config
+	    (setq recentf-auto-cleanup 'never)
+	    (setq recentf-max-menu-items 50)
+	    (setq recentf-max-saved-items 250)
+	    (recentf-mode t)
+	    :diminish nil)
+
 (use-package dired
   :ensure nil
   :commands (dired dired-jump)

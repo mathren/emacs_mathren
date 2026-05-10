@@ -124,6 +124,35 @@ Avoid syntax highlighting as you type
 (setq redisplay-skip-fontification-on-input t)
 #+END_SRC
 
+* Create parent directory if not existing for new files
+A common situation: I am in folder =/foo= and I want to create a
+subfolder =bar/= and inside it a text file =file-name=. I do =C-x C-f= to
+launch =find-file=, type =bar/file-name= which gets appended to the local
+path =/foo=, and emacs opens a new buffer. But because =bar= doesn't
+exist, this leads to many errors.
+
+This hook allows to create the parent directory if non existing:
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(add-hook 'find-file-not-found-functions
+          (lambda ()
+            (make-directory (file-name-directory buffer-file-name) t)
+            nil))
+#+END_SRC
+
+
+* editorconfig
+
+Built-in from Emacs 30+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(editorconfig-mode 1)
+(add-to-list 'editorconfig-exclude-modes 'tramp-mode)
+#+END_SRC
+
+* which-key
+Also built-in from Emacs 30+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+(which-key-mode 1)
+#+END_SRC
 * Clipboard settings
 
 Save clipboard content from programs other than emacs in the kill ring

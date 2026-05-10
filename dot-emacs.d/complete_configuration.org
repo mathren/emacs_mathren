@@ -372,6 +372,18 @@ Use =prescient= for sorting suggestions.
   (use-package corfu-prescient)
 #+END_SRC
 
+** Configure recent files handling
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  ;; Recent buffers in a new Emacs buffer
+  (use-package recentf
+  	    :config
+  	    (setq recentf-auto-cleanup 'never)
+  	    (setq recentf-max-menu-items 50)
+  	    (setq recentf-max-saved-items 250)
+  	    (recentf-mode t)
+  	    :diminish nil)
+#+END_SRC
 
 ** =Dired= file manager
 
@@ -426,7 +438,6 @@ default, so if using daemon mode (=daemonp= is true) add a hook to set
 
 ** Highlight code indentation
 
-
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package indent-bars
     ;; :ensure t
@@ -442,15 +453,6 @@ default, so if using daemon mode (=daemonp= is true) add a hook to set
 
 
 
-** Suggestions for key bindings
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package which-key
-    :init (which-key-mode)
-    :diminish which-key-mode
-    :config
-    (setq which-key-idle-delay 1))
-#+END_SRC
 
 
 ** Org mode related stuff
@@ -987,18 +989,6 @@ To work sanely with files with infinite lines
 (use-package unfill
   :bind ("M-q" . unfill-toggle))
 #+END_SRC
-
-** editor config
-
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package editorconfig
-    :ensure t
-    :config
-    (editorconfig-mode 1)
-					  ; exclude tramp
-    (add-to-list 'editorconfig-exclude-modes 'tramp-mode))
-#+END_SRC
-
 
 ** multiple cursors
 
