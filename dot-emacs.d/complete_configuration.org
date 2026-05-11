@@ -236,7 +236,6 @@ Completion framework: =vertico=.
   (use-package vertico
   :custom
   (vertico-count 15)  ;; limit to a fixed size
-  (vertico-grid-mode nil)
   (vertico-mouse-mode 1)
   :bind (:map vertico-map
     ;; Use page-up/down to scroll vertico buffer, like ivy does by default.
@@ -277,8 +276,9 @@ anything with the string =FOO= and =BA= regardless of their order) with
 
 #+END_SRC
 
-*** Minibuffer suggestions
-Minibuffer/search framework: =consult=. Allows for live preview.
+*** Minibuffer suggestions =consult=
+
+=C-x b= Allows for live preview.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package consult
@@ -731,91 +731,6 @@ This adds a line in the =~/.emacs= file.
     )
 #+END_SRC
 
-*** Thunderbird and  External Editor Revived
-
-Use Emacs with =External Editor Revived=, and open email text in =org-mode=.
-
-First create a script [[./emacs_tools/emacs-thunderbird.sh]], and
-configure external editor to run it like this (remember to =Apply=):
-
-#+DOWNLOADED: screenshot @ 2026-05-03 19:39:03
-[[file:.org_notes_figures/Thunderbird_external_editor/2026-05-03_19-39-03_screenshot.png]]
-
-This will use a environment variable =EMACS_TB_DONE_FILE= to make sure
-External Editor Revived catches the output.
-
-Ask if export the email to =html= or plain text:
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-	(defun mr/email-org-setup ()
-	  "Setup org buffer for email writing."
-	  (turn-on-auto-fill)
-	  (flyspell-mode 1))
-
-	(defun mr/org-export-to-eml ()
-	  "Export org buffer back to the .eml file, preserving headers."
-	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
-	  (when (and buffer-file-name
-		     (string-suffix-p ".eml" buffer-file-name))
-	    (set-buffer-modified-p nil)
-	    (let* ((eml-file buffer-file-name)
-		   (done-file mr/eml-done-file)
-		   (body (org-export-as 'ascii nil nil t))
-		   (eml-content (with-temp-buffer
-				  (insert-file-contents eml-file)
-				  (buffer-string)))
-		   (header-lines (cl-loop for line in (split-string eml-content "\n")
-					  while (not (string-match-p "^<!DOCTYPE" line))
-					  collect line))
-		   (headers (string-join header-lines "\n")))
-	      (let ((inhibit-message t))
-		(write-region (concat headers "\n" body) nil eml-file))
-	      (when done-file
-		(write-region "" nil done-file))
-	      (message "Exported to %s" eml-file))))
-
-	(add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
-	(add-hook 'org-mode-hook 'mr/email-org-setup)
-	(add-hook 'server-done-hook 'mr/org-export-to-eml)
-
-
-  ;;     (defun mr/email-org-setup ()
-	  ;; 	    "Setup org buffer for email writing."
-	  ;; 	    (turn-on-auto-fill)
-	  ;; 	    (flyspell-mode 1))
-
-	  ;; (defun mr/org-export-to-eml ()
-	  ;;   "Export org buffer back to the .eml file, preserving headers."
-	  ;; 	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
-	  ;; 	  (when (and buffer-file-name
-	  ;; 		 (string-suffix-p ".eml" buffer-file-name))
-	  ;; 	    (let* ((eml-file buffer-file-name)
-	  ;; 	       (done-file mr/eml-done-file)
-	  ;; 	       (body (org-export-as 'ascii nil nil t))
-	  ;; 	       (eml-content (with-temp-buffer
-	  ;; 			      (insert-file-contents eml-file)
-	  ;; 			      (buffer-string)))
-	  ;; 	       ;; Only keep lines starting with a header pattern or blank line
-	  ;; 	       (header-lines (cl-loop for line in (split-string eml-content "\n")
-	  ;; 				      while (not (string-match-p "^<!DOCTYPE" line))
-	  ;; 				      collect line))
-	  ;; 	       (headers (string-join header-lines "\n")))
-	  ;; 	      (set-buffer-modified-p nil)
-	  ;; 	      (let ((inhibit-message t))
-	  ;; 	    (write-region (concat headers "\n" body) nil eml-file))
-	  ;; 	      (when done-file
-	  ;; 	    (write-region "" nil done-file))
-	  ;; 	      (message "Exported to %s" eml-file))))
-
-	  ;;   (add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
-	  ;;   (add-hook 'org-mode-hook 'mr/email-org-setup)
-	  ;; 	  (add-hook 'server-done-hook
-	  ;; 		    (lambda ()
-	  ;; 		      (when (and buffer-file-name
-	  ;; 				 (string-suffix-p ".eml" buffer-file-name))
-	  ;; 			(set-buffer-modified-p nil)))
-	  ;; 		    nil t)  ;; t = buffer-local, runs BEFORE mr/org-export-to-eml
-#+END_SRC
 
 
 ** =yaml-mode= and =snakemake-mode=
@@ -1133,15 +1048,15 @@ Content of [[sile:./emacs_tools/okular/okular-latex.el][okular-latex.el]], light
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
-  ;; (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+  ;; (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (setq reftex-plug-into-AUCTeX t)
 
   ;; ;; Enable synctex correlation
-					  ;(setq TeX-source-correlate-method 'synctex)
+  					  ;(setq TeX-source-correlate-method 'synctex)
   ;; Enable synctex generation. Even though the command show as "latex" pdflatex is actually called
   (custom-set-variables '(LaTeX-command "latex -synctex=1"))
 
@@ -1410,7 +1325,7 @@ Using the macro query above, I defined a way to jump.
 * Ongoing development
 
 When ready tangle to =:tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el=
-(=C-cvt=).
+(=C-c v t=).
 
 ** emails in emacs with =mu4e=
 
@@ -1458,14 +1373,51 @@ I often define it in an included header file that AUCtex doesn't parse
 (with-eval-after-load 'latex
   (TeX-load-style "textpos"))
 #+END_SRC
+** Thunderbird and  External Editor Revived
 
-** TODO minor customization desires
+Use Emacs with =External Editor Revived=, and open email text in =org-mode=.
 
-*** *** =org-comment-dwim=
-This function seems to comment the wrong number of lines inside code blocks
-Try it below, it's bound to =M-;=.
+First create a script [[./emacs_tools/emacs-thunderbird.sh]], and
+configure external editor to run it like this (remember to =Apply=):
 
-#+BEGIN_SRC elisp
-  (message "works")
-  (message "2")
+#+DOWNLOADED: screenshot @ 2026-05-03 19:39:03
+[[file:.org_notes_figures/Thunderbird_external_editor/2026-05-03_19-39-03_screenshot.png]]
+
+This will use a environment variable =EMACS_TB_DONE_FILE= to make sure
+External Editor Revived catches the output.
+
+Ask if export the email to =html= or plain text:
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+	(defun mr/email-org-setup ()
+	  "Setup org buffer for email writing."
+	  (turn-on-auto-fill)
+	  (flyspell-mode 1))
+
+	(defun mr/org-export-to-eml ()
+	  "Export org buffer back to the .eml file, preserving headers."
+	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
+	  (when (and buffer-file-name
+		     (string-suffix-p ".eml" buffer-file-name))
+	    (set-buffer-modified-p nil)
+	    (let* ((eml-file buffer-file-name)
+		   (done-file mr/eml-done-file)
+		   (body (org-export-as 'ascii nil nil t))
+		   (eml-content (with-temp-buffer
+				  (insert-file-contents eml-file)
+				  (buffer-string)))
+		   (header-lines (cl-loop for line in (split-string eml-content "\n")
+					  while (not (string-match-p "^<!DOCTYPE" line))
+					  collect line))
+		   (headers (string-join header-lines "\n")))
+	      (let ((inhibit-message t))
+		(write-region (concat headers "\n" body) nil eml-file))
+	      (when done-file
+		(write-region "" nil done-file))
+	      (message "Exported to %s" eml-file))))
+
+	(add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
+	(add-hook 'org-mode-hook 'mr/email-org-setup)
+	(add-hook 'server-done-hook 'mr/org-export-to-eml)
 #+END_SRC
+*** TODO set cursor position and clean headers

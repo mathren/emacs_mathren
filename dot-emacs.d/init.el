@@ -80,7 +80,6 @@
 (use-package vertico
 :custom
 (vertico-count 15)  ;; limit to a fixed size
-(vertico-grid-mode nil)
 (vertico-mouse-mode 1)
 :bind (:map vertico-map
   ;; Use page-up/down to scroll vertico buffer, like ivy does by default.
@@ -419,75 +418,6 @@ Entries are assumed to be separated by empty lines."
   (fmakunbound 'org-download-clipboard)
   )
 
-(defun mr/email-org-setup ()
-	  "Setup org buffer for email writing."
-	  (turn-on-auto-fill)
-	  (flyspell-mode 1))
-
-	(defun mr/org-export-to-eml ()
-	  "Export org buffer back to the .eml file, preserving headers."
-	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
-	  (when (and buffer-file-name
-		     (string-suffix-p ".eml" buffer-file-name))
-	    (set-buffer-modified-p nil)
-	    (let* ((eml-file buffer-file-name)
-		   (done-file mr/eml-done-file)
-		   (body (org-export-as 'ascii nil nil t))
-		   (eml-content (with-temp-buffer
-				  (insert-file-contents eml-file)
-				  (buffer-string)))
-		   (header-lines (cl-loop for line in (split-string eml-content "\n")
-					  while (not (string-match-p "^<!DOCTYPE" line))
-					  collect line))
-		   (headers (string-join header-lines "\n")))
-	      (let ((inhibit-message t))
-		(write-region (concat headers "\n" body) nil eml-file))
-	      (when done-file
-		(write-region "" nil done-file))
-	      (message "Exported to %s" eml-file))))
-
-	(add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
-	(add-hook 'org-mode-hook 'mr/email-org-setup)
-	(add-hook 'server-done-hook 'mr/org-export-to-eml)
-
-
-;;     (defun mr/email-org-setup ()
-	  ;; 	    "Setup org buffer for email writing."
-	  ;; 	    (turn-on-auto-fill)
-	  ;; 	    (flyspell-mode 1))
-
-	  ;; (defun mr/org-export-to-eml ()
-	  ;;   "Export org buffer back to the .eml file, preserving headers."
-	  ;; 	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
-	  ;; 	  (when (and buffer-file-name
-	  ;; 		 (string-suffix-p ".eml" buffer-file-name))
-	  ;; 	    (let* ((eml-file buffer-file-name)
-	  ;; 	       (done-file mr/eml-done-file)
-	  ;; 	       (body (org-export-as 'ascii nil nil t))
-	  ;; 	       (eml-content (with-temp-buffer
-	  ;; 			      (insert-file-contents eml-file)
-	  ;; 			      (buffer-string)))
-	  ;; 	       ;; Only keep lines starting with a header pattern or blank line
-	  ;; 	       (header-lines (cl-loop for line in (split-string eml-content "\n")
-	  ;; 				      while (not (string-match-p "^<!DOCTYPE" line))
-	  ;; 				      collect line))
-	  ;; 	       (headers (string-join header-lines "\n")))
-	  ;; 	      (set-buffer-modified-p nil)
-	  ;; 	      (let ((inhibit-message t))
-	  ;; 	    (write-region (concat headers "\n" body) nil eml-file))
-	  ;; 	      (when done-file
-	  ;; 	    (write-region "" nil done-file))
-	  ;; 	      (message "Exported to %s" eml-file))))
-
-	  ;;   (add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
-	  ;;   (add-hook 'org-mode-hook 'mr/email-org-setup)
-	  ;; 	  (add-hook 'server-done-hook
-	  ;; 		    (lambda ()
-	  ;; 		      (when (and buffer-file-name
-	  ;; 				 (string-suffix-p ".eml" buffer-file-name))
-	  ;; 			(set-buffer-modified-p nil)))
-	  ;; 		    nil t)  ;; t = buffer-local, runs BEFORE mr/org-export-to-eml
-
 (use-package yaml-mode
   :ensure t)
 (use-package snakemake-mode
@@ -636,10 +566,10 @@ Entries are assumed to be separated by empty lines."
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-;; (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+;; (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 
@@ -789,3 +719,34 @@ lines and comment-only lines are not taken into consideration."
 (put 'last-line-which-col 'kmacro t)
 
 (global-set-key (kbd "C-c C-l") 'last-line-which-col)
+
+(defun mr/email-org-setup ()
+  "Setup org buffer for email writing."
+  (turn-on-auto-fill)
+  (flyspell-mode 1))
+
+(defun mr/org-export-to-eml ()
+  "Export org buffer back to the .eml file, preserving headers."
+  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
+  (when (and buffer-file-name
+	     (string-suffix-p ".eml" buffer-file-name))
+    (set-buffer-modified-p nil)
+    (let* ((eml-file buffer-file-name)
+	   (done-file mr/eml-done-file)
+	   (body (org-export-as 'ascii nil nil t))
+	   (eml-content (with-temp-buffer
+			  (insert-file-contents eml-file)
+			  (buffer-string)))
+	   (header-lines (cl-loop for line in (split-string eml-content "\n")
+				  while (not (string-match-p "^<!DOCTYPE" line))
+				  collect line))
+	   (headers (string-join header-lines "\n")))
+      (let ((inhibit-message t))
+	(write-region (concat headers "\n" body) nil eml-file))
+      (when done-file
+	(write-region "" nil done-file))
+      (message "Exported to %s" eml-file))))
+
+(add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
+(add-hook 'org-mode-hook 'mr/email-org-setup)
+(add-hook 'server-done-hook 'mr/org-export-to-eml)
