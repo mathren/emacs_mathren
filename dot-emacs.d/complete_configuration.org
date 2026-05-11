@@ -332,7 +332,7 @@ In line suggestions with popup: =corfu=.
     ;; Optional: Enable Corfu globally.
     ;; For ad-hoc completion, use M-x corfu-mode instead.
     :init
-    (global-corfu-mode)
+    (global-corfu-mode 1)
     :custom
     (corfu-auto t)				;; Enable auto completion
     (corfu-auto-prefix 2)			;; Complete after 2 characters
@@ -349,6 +349,16 @@ In line suggestions with popup: =corfu=.
           ("C-n" . corfu-next)
           ("C-p" . corfu-previous)))
 #+END_SRC
+
+Add completion at point
+#+BEGIN_SRC   emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package cape
+  :init
+  ;; Extend capf chain: dabbrev (buffer words) + file paths
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
+  (add-to-list 'completion-at-point-functions #'cape-file    t))
+#+END_SRC
+
 
 Quiet minibuffer warnings.
 #+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -1467,3 +1477,5 @@ Example prompt for LLM prototyping:
   editing can be through tramp, but the communication with the kernel
   should not
 #+END_SRC
+
+So far, I have not obtained anything usable or fixable.

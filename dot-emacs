@@ -69,7 +69,7 @@
  '(package-selected-packages
    '(ac-html all-the-icons all-the-icons-completion
 	     all-the-icons-nerd-fonts arxiv-mode auctex
-	     auto-complete-auctex blacken chronometer citar
+	     auto-complete-auctex blacken cape chronometer citar
 	     company-auctex company-bibtex company-box company-fuzzy
 	     company-prescient consult corfu corfu-prescient counsel
 	     dashboard deadgrep dired-icon dired-single diredfl

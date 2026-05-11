@@ -66,7 +66,6 @@
                   (make-directory dir t)))))
 
 (editorconfig-mode 1)
-(add-to-list 'editorconfig-exclude-modes 'tramp-mode)
 
 (which-key-mode 1)
 

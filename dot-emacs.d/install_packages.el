@@ -24,6 +24,7 @@
 		     vertico-prescient
 		     corfu
 		     corfu-prescient
+		     cape
 		     embark
 		     embark-consult
 		     consult

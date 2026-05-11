@@ -144,7 +144,6 @@ This hook allows to create the parent directory if non existing:
 Built-in from Emacs 30+
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (editorconfig-mode 1)
-(add-to-list 'editorconfig-exclude-modes 'tramp-mode)
 #+END_SRC
 
 * which-key
