@@ -1438,3 +1438,32 @@ Ask if export the email to =html= or plain text:
 #+END_SRC
 *** TODO set cursor position and clean headers
 Try without org mode and just plain text first.
+** Substitute =ein=
+=ein= is a great package that I used throughout my PhD and postdoc.
+However, it is fragile and unmaintained. Try to develop something
+else.
+
+Example prompt for LLM prototyping:
+#+BEGIN_SRC markdown
+  Using code-cell.el​, jupyter.el​ I want to recreate as a standalone
+  elisp file (to be tried with emacs -Q -l​) to:
+  1. connect to a port where a jupyter server is running (this could be
+  from an ssh tunnel onto a remote machine)
+  2. have a notebook where the python dev environment is through the
+  vertico​ corfu​, consult​, stack in emacs (or whatever default stack the
+  user is using) and eglot with `​python3-pylsp` for language server
+  3. remotely reads from the server the conda environment and uses that for
+  eglot displays inline plots, possibly widgets, and
+  4. respects cells order (with re-ordering functions) to create
+  narratives
+  5. muscle memory portable from emacs EIN (`C-c C-c` to run a cell `C-c
+  <up>/<down>` to reorder cells)
+  6. renders the background of the output area in `#808080` has a
+  "one-command" entry point that takes in the ssh port as input and sets
+  everything up.
+
+  Draft an elisp file following modern convention (using use-package)
+  and a README.org with synthetic, minimal explanations. The file
+  editing can be through tramp, but the communication with the kernel
+  should not
+#+END_SRC
