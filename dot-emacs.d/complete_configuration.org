@@ -1389,35 +1389,35 @@ External Editor Revived catches the output.
 Ask if export the email to =html= or plain text:
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-	(defun mr/email-org-setup ()
-	  "Setup org buffer for email writing."
-	  (turn-on-auto-fill)
-	  (flyspell-mode 1))
+  (defun mr/email-org-setup ()
+    "Setup org buffer for email writing."
+    (turn-on-auto-fill)
+    (flyspell-mode 1))
 
-	(defun mr/org-export-to-eml ()
-	  "Export org buffer back to the .eml file, preserving headers."
-	  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
-	  (when (and buffer-file-name
-		     (string-suffix-p ".eml" buffer-file-name))
-	    (set-buffer-modified-p nil)
-	    (let* ((eml-file buffer-file-name)
-		   (done-file mr/eml-done-file)
-		   (body (org-export-as 'ascii nil nil t))
-		   (eml-content (with-temp-buffer
-				  (insert-file-contents eml-file)
-				  (buffer-string)))
-		   (header-lines (cl-loop for line in (split-string eml-content "\n")
-					  while (not (string-match-p "^<!DOCTYPE" line))
-					  collect line))
-		   (headers (string-join header-lines "\n")))
-	      (let ((inhibit-message t))
-		(write-region (concat headers "\n" body) nil eml-file))
-	      (when done-file
-		(write-region "" nil done-file))
-	      (message "Exported to %s" eml-file))))
+  (defun mr/org-export-to-eml ()
+    "Export org buffer back to the .eml file, preserving headers."
+    (message "mr/org-export-to-eml fired for %s" buffer-file-name)
+    (when (and buffer-file-name
+  	     (string-suffix-p ".eml" buffer-file-name))
+      (set-buffer-modified-p nil)
+      (let* ((eml-file buffer-file-name)
+  	   (done-file mr/eml-done-file)
+  	   (body (org-export-as 'ascii nil nil t))
+  	   (eml-content (with-temp-buffer
+  			  (insert-file-contents eml-file)
+  			  (buffer-string)))
+  	   (header-lines (cl-loop for line in (split-string eml-content "\n")
+  				  while (not (string-match-p "^<!DOCTYPE" line))
+  				  collect line))
+  	   (headers (string-join header-lines "\n")))
+        (let ((inhibit-message t))
+  	(write-region (concat headers "\n" body) nil eml-file))
+        (when done-file
+  	(write-region "" nil done-file))
+        (message "Exported to %s" eml-file))))
 
-	(add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
-	(add-hook 'org-mode-hook 'mr/email-org-setup)
-	(add-hook 'server-done-hook 'mr/org-export-to-eml)
+  (add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
+  (add-hook 'org-mode-hook 'mr/email-org-setup)
+  (add-hook 'server-done-hook 'mr/org-export-to-eml)
 #+END_SRC
 *** TODO set cursor position and clean headers
