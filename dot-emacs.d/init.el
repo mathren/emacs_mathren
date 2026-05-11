@@ -721,32 +721,48 @@ lines and comment-only lines are not taken into consideration."
 (global-set-key (kbd "C-c C-l") 'last-line-which-col)
 
 (defun mr/email-org-setup ()
-  "Setup org buffer for email writing."
-  (turn-on-auto-fill)
-  (flyspell-mode 1))
+  "Setup org buffer for email writing with hidden headers."
+  (when (and buffer-file-name (string-suffix-p ".eml" buffer-file-name))
+    (setq-local fill-column 72)
+    (turn-on-auto-fill)
+    (flyspell-mode 1)
 
-(defun mr/org-export-to-eml ()
-  "Export org buffer back to the .eml file, preserving headers."
-  (message "mr/org-export-to-eml fired for %s" buffer-file-name)
-  (when (and buffer-file-name
-	     (string-suffix-p ".eml" buffer-file-name))
-    (set-buffer-modified-p nil)
-    (let* ((eml-file buffer-file-name)
-	   (done-file mr/eml-done-file)
-	   (body (org-export-as 'ascii nil nil t))
-	   (eml-content (with-temp-buffer
-			  (insert-file-contents eml-file)
-			  (buffer-string)))
-	   (header-lines (cl-loop for line in (split-string eml-content "\n")
-				  while (not (string-match-p "^<!DOCTYPE" line))
-				  collect line))
-	   (headers (string-join header-lines "\n")))
-      (let ((inhibit-message t))
-	(write-region (concat headers "\n" body) nil eml-file))
-      (when done-file
-	(write-region "" nil done-file))
-      (message "Exported to %s" eml-file))))
+    ;; Widen first to ensure we are looking at the whole file
+    (widen)
+    (goto-char (point-min))
+
+    ;; RFC822 headers end at the first double newline (empty line)
+    ;; This regex works even if there are MIME boundaries/HTML signatures below
+    (if (re-search-forward "\n\n\\|^\r?$" nil t)
+        (let ((body-start (point)))
+          (narrow-to-region body-start (point-max))
+          ;; Force cursor placement after Org-mode is fully settled
+          (run-with-timer 0.1 nil (lambda (buf)
+                                    (with-current-buffer buf
+                                      (goto-char (point-min))))
+                          (current-buffer)))
+      (message "Could not find header separator"))))
+
+(defun mr/prepare-to-save-eml ()
+  "Ensure headers are included when saving."
+  (when (and buffer-file-name (string-suffix-p ".eml" buffer-file-name))
+    (widen)))
+
+(defun mr/restore-after-save-eml ()
+  "Re-hide headers after save is complete."
+  (when (and buffer-file-name (string-suffix-p ".eml" buffer-file-name))
+    (mr/email-org-setup)
+    (set-buffer-modified-p nil)))
+
+;; --- Configuration ---
 
 (add-to-list 'auto-mode-alist '("\\.eml\\'" . org-mode))
 (add-hook 'org-mode-hook 'mr/email-org-setup)
-(add-hook 'server-done-hook 'mr/org-export-to-eml)
+
+;; The "Widen-Save-Narrow" Sandwich
+(add-hook 'before-save-hook #'mr/prepare-to-save-eml)
+(add-hook 'after-save-hook #'mr/restore-after-save-eml)
+
+;; Crucial: Thunderbird looks for the file to be "Finished"
+;; This ensures server-edit (C-x #) also saves and widens properly
+(add-hook 'server-done-hook #'mr/prepare-to-save-eml)
