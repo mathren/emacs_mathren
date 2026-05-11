@@ -229,22 +229,25 @@ underlining the whole line.
 
 Inspired largely by this [[https://midirus.com/blog/from-ivy-to-vertico][blog post]].
 
+*** Suggestions
 Completion framework: =vertico=.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-      (use-package vertico
-      :custom
-      (vertico-count 20)  ;; limit to a fixed size
-      :bind (:map vertico-map
-        ;; Use page-up/down to scroll vertico buffer, like ivy does by default.
-        ("<prior>" . 'vertico-scroll-down)
-        ("<next>"  . 'vertico-scroll-up))
-      :init
-      ;; Activate vertico
-      (vertico-mode))
+  (use-package vertico
+  :custom
+  (vertico-count 15)  ;; limit to a fixed size
+  (vertico-grid-mode nil)
+  (vertico-mouse-mode 1)
+  :bind (:map vertico-map
+    ;; Use page-up/down to scroll vertico buffer, like ivy does by default.
+    ("<prior>" . 'vertico-scroll-down)
+    ("<next>"  . 'vertico-scroll-up))
+  :init
+  ;; Activate vertico
+  (vertico-mode))
 #+END_SRC
 
-Path selection
+*** Path selection
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package vertico-directory
@@ -256,6 +259,7 @@ Path selection
     )
 #+END_SRC
 
+*** Don't care about order when searching suggestions
 Partial matching doesn't care about order (e.g., =FOO BA= will match
 anything with the string =FOO= and =BA= regardless of their order) with
 =orderless=.
@@ -272,6 +276,7 @@ anything with the string =FOO= and =BA= regardless of their order) with
 
 #+END_SRC
 
+*** Minibuffer suggestions
 Minibuffer/search framework: =consult=. Allows for live preview.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -281,6 +286,7 @@ Minibuffer/search framework: =consult=. Allows for live preview.
    ;; Search files in current project
    ("s-<XF86TouchpadOff>" . consult-find)
 
+   ("C-s" . 'consult-line)          ;; Substitutes I-search
    ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
    ("M-l"   . 'consult-git-grep)    ;; Search inside a project
    ("M-y"   . 'consult-yank-pop)    ;; Paste by selecting the kill-ring
@@ -290,10 +296,10 @@ Minibuffer/search framework: =consult=. Allows for live preview.
   )
 #+END_SRC
 
-More info with =marginalia=.
+
+More info about suggested files with =marginalia.=
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
   ;; available in the *Completions* buffer, add it to the
@@ -308,18 +314,15 @@ More info with =marginalia=.
   (marginalia-mode))
 #+END_SRC
 
-Allow to first select files, then act on them with =embark=.
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package embark
-    :bind
-    (("C-."   . embark-act)         ;; Begin the embark process
-     ("C-;"   . embark-dwim)        ;; good alternative: M-.
-     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-    )
-  (use-package embark-consult)
+#+BEGIN_SRC  emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package all-the-icons-completion
+  :after (marginalia all-the-icons)
+  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+  :init
+  (all-the-icons-completion-mode))
 #+END_SRC
 
+*** Popup inline suggestions
 In line suggestions with popup: =corfu=.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -353,11 +356,24 @@ Quiet minibuffer warnings.
   (dabbrev-quiet t))
 #+END_SRC
 
-Use =prescient= for sorting suggestions.
+*** Use =prescient= for sorting suggestions.
 
 #+BEGIN_SRC   emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package vertico-prescient)
   (use-package corfu-prescient)
+#+END_SRC
+
+** Select buffer first, decide what to do next
+Allow to first select files, then act on them with =embark=.
+
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package embark
+    :bind
+    (("C-."   . embark-act)         ;; Begin the embark process
+     ("C-;"   . embark-dwim)        ;; good alternative: M-.
+     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+    )
+  (use-package embark-consult)
 #+END_SRC
 
 ** Configure recent files handling
@@ -1441,5 +1457,11 @@ I often define it in an included header file that AUCtex doesn't parse
 
 ** TODO minor customization desires
 
-*** Corfu
-Turn off in certain modes
+*** *** =org-comment-dwim=
+This function seems to comment the wrong number of lines inside code blocks
+Try it below, it's bound to =M-;=.
+
+#+BEGIN_SRC elisp
+  (message "works")
+  (message "2")
+#+END_SRC

@@ -79,7 +79,9 @@
 
 (use-package vertico
 :custom
-(vertico-count 20)  ;; limit to a fixed size
+(vertico-count 15)  ;; limit to a fixed size
+(vertico-grid-mode nil)
+(vertico-mouse-mode 1)
 :bind (:map vertico-map
   ;; Use page-up/down to scroll vertico buffer, like ivy does by default.
   ("<prior>" . 'vertico-scroll-down)
@@ -111,6 +113,7 @@
  ;; Search files in current project
  ("s-<XF86TouchpadOff>" . consult-find)
 
+ ("C-s" . 'consult-line)          ;; Substitutes I-search
  ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
  ("M-l"   . 'consult-git-grep)    ;; Search inside a project
  ("M-y"   . 'consult-yank-pop)    ;; Paste by selecting the kill-ring
@@ -119,7 +122,6 @@
  )
 )
 
-;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
   ;; available in the *Completions* buffer, add it to the
@@ -133,13 +135,11 @@
   ;; package.
   (marginalia-mode))
 
-(use-package embark
-  :bind
-  (("C-."   . embark-act)         ;; Begin the embark process
-   ("C-;"   . embark-dwim)        ;; good alternative: M-.
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-  )
-(use-package embark-consult)
+(use-package all-the-icons-completion
+  :after (marginalia all-the-icons)
+  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+  :init
+  (all-the-icons-completion-mode))
 
 (use-package corfu
   :ensure t
@@ -169,6 +169,14 @@
 
 (use-package vertico-prescient)
 (use-package corfu-prescient)
+
+(use-package embark
+  :bind
+  (("C-."   . embark-act)         ;; Begin the embark process
+   ("C-;"   . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  )
+(use-package embark-consult)
 
 ;; Recent buffers in a new Emacs buffer
 (use-package recentf
