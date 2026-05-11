@@ -250,13 +250,14 @@ Completion framework: =vertico=.
 *** Path selection
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package vertico-directory
-    :after vertico
-    :ensure nil  ;; no need to install, it comes with vertico
-    :bind
-    (:map vertico-map
-  	("DEL" . vertico-directory-delete-char))
-    )
+      (use-package vertico-directory
+        :after vertico
+        :ensure nil  ;; no need to install, it comes with vertico
+        :bind
+        (:map vertico-map
+      	    ("DEL" . vertico-directory-delete-char))
+        :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
+  )
 #+END_SRC
 
 *** Don't care about order when searching suggestions
@@ -271,7 +272,7 @@ anything with the string =FOO= and =BA= regardless of their order) with
     ;; Activate orderless completion
     (completion-styles '(orderless basic))
     ;; Enable partial completion for file wildcard support
-    (completion-category-overrides '((file (styles partial-completion))))
+    (completion-category-overrides '((file (styles basic partial-completion))))
     )
 
 #+END_SRC
@@ -363,6 +364,7 @@ Quiet minibuffer warnings.
   (use-package corfu-prescient)
 #+END_SRC
 
+
 ** Select buffer first, decide what to do next
 Allow to first select files, then act on them with =embark=.
 
@@ -376,6 +378,7 @@ Allow to first select files, then act on them with =embark=.
   (use-package embark-consult)
 #+END_SRC
 
+
 ** Configure recent files handling
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -388,6 +391,7 @@ Allow to first select files, then act on them with =embark=.
   	    (recentf-mode t)
   	    :diminish nil)
 #+END_SRC
+
 
 ** =Dired= file manager
 

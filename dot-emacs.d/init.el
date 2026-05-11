@@ -91,12 +91,13 @@
 (vertico-mode))
 
 (use-package vertico-directory
-  :after vertico
-  :ensure nil  ;; no need to install, it comes with vertico
-  :bind
-  (:map vertico-map
-	("DEL" . vertico-directory-delete-char))
-  )
+      :after vertico
+      :ensure nil  ;; no need to install, it comes with vertico
+      :bind
+      (:map vertico-map
+    	    ("DEL" . vertico-directory-delete-char))
+      :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
+)
 
 (use-package orderless
   :demand t
@@ -104,7 +105,7 @@
   ;; Activate orderless completion
   (completion-styles '(orderless basic))
   ;; Enable partial completion for file wildcard support
-  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-overrides '((file (styles basic partial-completion))))
   )
 
 (use-package consult
