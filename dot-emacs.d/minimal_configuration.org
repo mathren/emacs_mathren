@@ -9,7 +9,7 @@ C-v t= which is bound to =org-babel-tangle=). This file is then managed
 using [[https://www.gnu.org/software/stow/][gnu stow]] and hyperlinked to =~/.emacs.d/minimal.el.=
 
 *Note:* this is also loaded at the beginning of the complete
- configuration described in =Emacs_complete_configuration.org=
+configuration described in =Emacs_complete_configuration.org=
 
 * Startup
 
@@ -139,7 +139,6 @@ This hook allows to create the parent directory if non existing:
                 (when (and dir (not (file-exists-p dir)))
                   (make-directory dir t)))))
 #+END_SRC
-
 * editorconfig
 
 Built-in from Emacs 30+
@@ -153,6 +152,7 @@ Also built-in from Emacs 30+
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 (which-key-mode 1)
 #+END_SRC
+
 * Clipboard settings
 
 Save clipboard content from programs other than emacs in the kill ring

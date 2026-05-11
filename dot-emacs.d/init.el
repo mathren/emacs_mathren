@@ -77,11 +77,6 @@
   (setq flymake-show-diagnostics-at-end-of-line nil)
 )
 
-(setq company-minimum-prefix-length 1) ;; start at first characted
-(setq company-idle-delay 0)            ;; no time delay
-(setq company-selection-wrap-around t) ;; wrap around suggestion list
-(company-tng-configure-default)        ;; tab cycles through suggestions
-
 (use-package vertico
 :custom
 (vertico-count 20)  ;; limit to a fixed size
@@ -222,12 +217,6 @@
   indent-bars-color-by-depth nil
   indent-bars-highlight-current-depth '(:face default :blend 0.5))
 )
-
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 1))
 
 (use-package org
   :pin elpa
@@ -557,13 +546,6 @@ Entries are assumed to be separated by empty lines."
 (use-package unfill
   :bind ("M-q" . unfill-toggle))
 
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1)
-					  ; exclude tramp
-  (add-to-list 'editorconfig-exclude-modes 'tramp-mode))
-
 (use-package multiple-cursors
   :ensure t
   :config
@@ -798,6 +780,3 @@ lines and comment-only lines are not taken into consideration."
 (put 'last-line-which-col 'kmacro t)
 
 (global-set-key (kbd "C-c C-l") 'last-line-which-col)
-
-(with-eval-after-load 'latex
-  (TeX-load-style "textpos"))

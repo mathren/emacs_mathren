@@ -225,18 +225,6 @@ underlining the whole line.
 #+END_SRC
 
 
-** In buffer autocompletion with company
-
-I use [[https://company-mode.github.io/][company]] for autocompletion
-
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (setq company-minimum-prefix-length 1) ;; start at first characted
-  (setq company-idle-delay 0)            ;; no time delay
-  (setq company-selection-wrap-around t) ;; wrap around suggestion list
-  (company-tng-configure-default)        ;; tab cycles through suggestions
-#+END_SRC
-
-
 ** Autocompletion framework, minibuffer, and in-line suggestions
 
 Inspired largely by this [[https://midirus.com/blog/from-ivy-to-vertico][blog post]].
@@ -1446,7 +1434,12 @@ from ubuntu repositories is old and yields an error.
 
 I often define it in an included header file that AUCtex doesn't parse
 
-#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+#+BEGIN_SRC
 (with-eval-after-load 'latex
   (TeX-load-style "textpos"))
 #+END_SRC
+
+** TODO minor customization desires
+
+*** Corfu
+Turn off in certain modes
