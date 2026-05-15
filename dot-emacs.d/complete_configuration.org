@@ -289,7 +289,6 @@ anything with the string =FOO= and =BA= regardless of their order) with
     ;; Wire up standard consult bindings *before* the beframe integration below
     :bind (
   	 ("s-<XF86TouchpadOff>" . consult-find) ;; Search files in current project
-
   	 ("C-s" . 'consult-line)          ;; Substitutes I-search
   	 ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
   	 ("M-l"   . 'consult-git-grep)    ;; Search inside a project
@@ -299,6 +298,8 @@ anything with the string =FOO= and =BA= regardless of their order) with
   	 ("C-x b"   . consult-buffer)
            ("C-x 4 b" . consult-buffer-other-window)
            ("C-x 5 b" . consult-buffer-other-frame))
+    :custom
+      	 (consult-narrow-key "`")
 
     :config
     ;; ── add beframed buffers as an *extra* consult-buffer source ──
