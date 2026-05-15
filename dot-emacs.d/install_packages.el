@@ -14,6 +14,7 @@
 		     nerd-icons-dired
 		     auctex
 		     dired-icon
+		     dired-preview
 		     doom-modeline
 		     ein
 		     elpy
@@ -61,6 +62,7 @@
 		     rg
 		     vdiff
 		     unfill
+		     beframe
 		     ))
 
 ;; install the missing packages

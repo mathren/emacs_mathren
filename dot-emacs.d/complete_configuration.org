@@ -65,6 +65,9 @@ lines below instead (note that the block below is not tangled to
 
 * Packages I use
 
+** beframe
+
+
 ** fzf
 
 [[https://github.com/bling/fzf.el][fzf.el]]
@@ -426,6 +429,27 @@ change in a directory
 
   (use-package nerd-icons-dired
     :hook (dired-mode . nerd-icons-dired-mode))
+
+  (use-package dired-preview
+    :ensure t
+    :config
+    (setq dired-preview-delay 0.7)
+    (setq dired-preview-max-size (expt 2 20))
+    (setq dired-preview-ignored-extensions-regexp
+          (concat "\\."
+                  "\\(gz\\|"
+                  "zst\\|"
+                  "tar\\|"
+                  "xz\\|"
+                  "rar\\|"
+                  "zip\\|"
+                  "iso\\|"
+                  "epub"
+                  "\\)"))
+
+    ;; Enable `dired-preview-mode' in a given Dired buffer or do it
+    (dired-preview-global-mode 1)
+    :hook (dired-mode . dired-preview-mode))
 #+END_SRC
 
 
@@ -696,7 +720,7 @@ Entries are assumed to be separated by empty lines."
     (org-bullets-bullet-list '("◉" "●" "○" "●" "○" "●" "○")))
 
   (defun efs/org-mode-visual-fill ()
-    (setq visual-fill-column-width 100
+    (setq visual-fill-column-width 80
 	  visual-fill-column-center-text t)
     ;; (visual-fill-column-mode 1)
     )
