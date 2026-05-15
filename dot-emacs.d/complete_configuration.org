@@ -65,9 +65,6 @@ lines below instead (note that the block below is not tangled to
 
 * Packages I use
 
-** beframe
-
-
 ** fzf
 
 [[https://github.com/bling/fzf.el][fzf.el]]
@@ -284,20 +281,58 @@ anything with the string =FOO= and =BA= regardless of their order) with
 =C-x b= Allows for live preview.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package consult
-  :bind
-  (;; ;; Replace find-file with recursive search from current directory
-   ;; Search files in current project
-   ("s-<XF86TouchpadOff>" . consult-find)
 
-   ("C-s" . 'consult-line)          ;; Substitutes I-search
-   ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
-   ("M-l"   . 'consult-git-grep)    ;; Search inside a project
-   ("M-y"   . 'consult-yank-pop)    ;; Paste by selecting the kill-ring
-   ("M-s"   . 'consult-line)        ;; Search current buffer, like swiper
-   ("M-["   . 'consult-recent-file) ;; rebind recent files
-   )
-  )
+
+  (use-package consult
+    :ensure t
+
+    ;; Wire up standard consult bindings *before* the beframe integration below
+    :bind (
+  	 ("s-<XF86TouchpadOff>" . consult-find) ;; Search files in current project
+
+  	 ("C-s" . 'consult-line)          ;; Substitutes I-search
+  	 ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
+  	 ("M-l"   . 'consult-git-grep)    ;; Search inside a project
+  	 ("M-y"   . 'consult-yank-pop)    ;; Paste by selecting the kill-ring
+  	 ("M-s"   . 'consult-line)        ;; Search current buffer, like swiper
+  	 ("M-["   . 'consult-recent-file) ;; rebind recent files
+  	 ("C-x b"   . consult-buffer)
+           ("C-x 4 b" . consult-buffer-other-window)
+           ("C-x 5 b" . consult-buffer-other-frame))
+
+    :config
+    ;; ── add beframed buffers as an *extra* consult-buffer source ──
+    ;;
+    ;; Narrows with `F` at the consult-buffer prompt.
+    ;; Global buffers and other frames' buffers remain accessible via their
+    ;; own sources, so you can still escape the per-frame view.
+
+    (defvar consult-buffer-sources)          ; silence byte-compiler
+    (declare-function consult--buffer-state "consult")
+
+    (with-eval-after-load 'beframe
+      (defface beframe-buffer
+        '((t :inherit font-lock-string-face))
+        "Face for `consult' framed buffers.")
+
+      (defun my-beframe-buffer-names-sorted (&optional frame)
+        "Return beframed buffer names sorted by visibility.
+  With optional FRAME, return the buffers of that frame instead."
+        (beframe-buffer-names frame :sort #'beframe-buffer-sort-visibility))
+
+      (defvar beframe-consult-source
+        `( :name     "Frame-specific buffers (current frame)"
+           :narrow   ?F
+           :category buffer
+           :face     beframe-buffer
+           :history  beframe-history
+           :items    ,#'my-beframe-buffer-names-sorted
+           :action   ,#'switch-to-buffer
+           :state    ,#'consult--buffer-state))
+
+      (add-to-list 'consult-buffer-sources 'beframe-consult-source))
+    )
+
 #+END_SRC
 
 
@@ -1028,6 +1063,30 @@ Side-by-side diff across references
       ;; vdiff only syncs vertical scrolling, but set explicitly to be safe
       (setq-local vdiff-lock-scrolling t)))
 #+END_SRC
+
+
+** beframe
+#+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(use-package beframe
+  :ensure t
+
+  :bind
+  ;; Author's recommended prefix — C-h after it lists all bindings
+  ("C-c b" . beframe-prefix-map)
+
+  :custom
+  ;; Buffers always available in every frame (matched as regexps)
+  (beframe-global-buffers '("\\*scratch\\*" "\\*Messages\\*" "\\*Backtrace\\*"))
+  ;; Create a per-frame *scratch for <frame-name>* buffer on new frames
+  (beframe-create-frame-scratch-buffer t)
+  ;; Kill that scratch buffer when the frame is deleted
+  (beframe-kill-frame-scratch-buffer t)
+
+  :config
+  (beframe-mode 1))
+
+#+END_SRC
+
 
 ** Fontawesome
 
