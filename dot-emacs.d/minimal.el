@@ -171,8 +171,8 @@
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)
-(setq mesa-default-version "24.08.1")
-(setq mesa-version-mesa-dir "~/Documents/Research/codes/mesa/mesa-24.08.1/")
+(setq mesa-default-version "dev")
+(setq mesa-version-mesa-dir "~/Documents/Research/codes/mesa/mesa-dev/")
 (setq mesa-mode-enforce-formatting-default t)
 
 
