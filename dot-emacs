@@ -43,6 +43,7 @@
      "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
    '("/home/mrenzo/Documents/Research/Todo_research.org"
+     "/home/mrenzo/Documents/Research/Conferences/25/TARDIS_connector_workshop/Notes.org"
      "/home/mrenzo/Documents/Research/Talks/2026/Berkeley/abstract.org"
      "/home/mrenzo/Documents/Research/Bureaucracy/AZ/3rd_yr_retention/notes.org"
      "/home/mrenzo/Documents/Teaching/Todo_teaching.org"
@@ -84,12 +85,12 @@
 	     multiple-cursors nerd-icons-completion nerd-icons-dired
 	     nerd-icons-ibuffer nerd-icons-ivy-rich no-littering
 	     orderless org org-alert org-bullets org-caldav
-	     org-download ox-publish pass pdf-tools python-black
-	     rainbow-delimiters rg ripgrep simple-httpd snake-mode
-	     snakemake-mode sudo-edit super-save tramp treemacs-magit
-	     unfill use-package vdiff vdiff-magit vertico
-	     vertico-prescient which-key which-key-posframe ws-butler
-	     yaml-mode))
+	     org-download ox-publish pass password-store pdf-tools
+	     python-black rainbow-delimiters rg ripgrep simple-httpd
+	     snake-mode snakemake-mode sudo-edit super-save tramp
+	     treemacs-magit unfill use-package vdiff vdiff-magit
+	     vertico vertico-prescient which-key which-key-posframe
+	     ws-butler yaml-mode))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . main.tex)))
  '(send-mail-function 'mailclient-send-it)

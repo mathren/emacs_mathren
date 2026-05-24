@@ -63,6 +63,7 @@
 		     vdiff
 		     unfill
 		     beframe
+		     password-store
 		     ))
 
 ;; install the missing packages

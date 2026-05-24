@@ -2,9 +2,36 @@
 
 (server-start)
 
-(load "~/.emacs.d/install_packages.el")
+(require 'package)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			   ("elpa"  . "https://elpa.gnu.org/packages/")
+			   ("melpa-stable" . "https://stable.melpa.org/packages/")
+			   ("org-contrib" . "https://elpa.nongnu.org/nongnu/")))
+
+(package-initialize)
 
 (require 'use-package)
+
+(use-package auth-source-pass
+:demand t
+:config
+(auth-source-pass-enable)
+(setq auth-source-pass-extra-query-keywords t))
+
+(use-package password-store
+  :commands (password-store-copy
+             password-store-get
+             password-store-edit
+             password-store-list)
+  :bind ("C-c P" . password-store-copy))
+
+;; 3. Fill any minibuffer password prompt by browsing the store
+(defun mr/pass-fill-minibuffer ()
+  "Select a pass entry and insert its password at point in the minibuffer."
+  (interactive)
+  (insert (password-store-get
+           (completing-read "Pass entry: " (password-store-list)))))
+(define-key minibuffer-local-map (kbd "C-c p") #'mr/pass-fill-minibuffer)
 
 (use-package fzf
   :ensure t
@@ -108,19 +135,55 @@
   )
 
 (use-package consult
-:bind
-(;; ;; Replace find-file with recursive search from current directory
- ;; Search files in current project
- ("s-<XF86TouchpadOff>" . consult-find)
+  :ensure t
 
- ("C-s" . 'consult-line)          ;; Substitutes I-search
- ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
- ("M-l"   . 'consult-git-grep)    ;; Search inside a project
- ("M-y"   . 'consult-yank-pop)    ;; Paste by selecting the kill-ring
- ("M-s"   . 'consult-line)        ;; Search current buffer, like swiper
- ("M-["   . 'consult-recent-file) ;; rebind recent files
- )
-)
+  ;; Wire up standard consult bindings *before* the beframe integration below
+  :bind (
+	 ("s-<XF86TouchpadOff>" . consult-find) ;; Search files in current project
+	 ("C-s" . 'consult-line)          ;; Substitutes I-search
+	 ("C-x b" . 'consult-buffer)      ;; Switch buffer, including recentf and bookmarks
+	 ("M-l"   . 'consult-git-grep)    ;; Search inside a project
+	 ("M-y"   . 'consult-yank-pop)    ;; Paste by selecting the kill-ring
+	 ("M-s"   . 'consult-line)        ;; Search current buffer, like swiper
+	 ("M-["   . 'consult-recent-file) ;; rebind recent files
+	 ("C-x b"   . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame))
+  :custom
+    	 (consult-narrow-key "`")
+
+  :config
+  ;; ── add beframed buffers as an *extra* consult-buffer source ──
+  ;;
+  ;; Narrows with `F` at the consult-buffer prompt.
+  ;; Global buffers and other frames' buffers remain accessible via their
+  ;; own sources, so you can still escape the per-frame view.
+
+  (defvar consult-buffer-sources)          ; silence byte-compiler
+  (declare-function consult--buffer-state "consult")
+
+  (with-eval-after-load 'beframe
+    (defface beframe-buffer
+      '((t :inherit font-lock-string-face))
+      "Face for `consult' framed buffers.")
+
+    (defun my-beframe-buffer-names-sorted (&optional frame)
+      "Return beframed buffer names sorted by visibility.
+With optional FRAME, return the buffers of that frame instead."
+      (beframe-buffer-names frame :sort #'beframe-buffer-sort-visibility))
+
+    (defvar beframe-consult-source
+      `( :name     "Frame-specific buffers (current frame)"
+         :narrow   ?F
+         :category buffer
+         :face     beframe-buffer
+         :history  beframe-history
+         :items    ,#'my-beframe-buffer-names-sorted
+         :action   ,#'switch-to-buffer
+         :state    ,#'consult--buffer-state))
+
+    (add-to-list 'consult-buffer-sources 'beframe-consult-source))
+  )
 
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
@@ -146,7 +209,7 @@
   ;; Optional: Enable Corfu globally.
   ;; For ad-hoc completion, use M-x corfu-mode instead.
   :init
-  (global-corfu-mode)
+  (global-corfu-mode 1)
   :custom
   (corfu-auto t)				;; Enable auto completion
   (corfu-auto-prefix 2)			;; Complete after 2 characters
@@ -162,6 +225,12 @@
         ("<escape>" . corfu-quit)
         ("C-n" . corfu-next)
         ("C-p" . corfu-previous)))
+
+(use-package cape
+  :init
+  ;; Extend capf chain: dabbrev (buffer words) + file paths
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
+  (add-to-list 'completion-at-point-functions #'cape-file    t))
 
 (use-package dabbrev
   :custom
@@ -203,6 +272,27 @@
 (use-package nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
 
+(use-package dired-preview
+  :ensure t
+  :config
+  (setq dired-preview-delay 0.7)
+  (setq dired-preview-max-size (expt 2 20))
+  (setq dired-preview-ignored-extensions-regexp
+        (concat "\\."
+                "\\(gz\\|"
+                "zst\\|"
+                "tar\\|"
+                "xz\\|"
+                "rar\\|"
+                "zip\\|"
+                "iso\\|"
+                "epub"
+                "\\)"))
+
+  ;; Enable `dired-preview-mode' in a given Dired buffer or do it
+  (dired-preview-global-mode 1)
+  :hook (dired-mode . dired-preview-mode))
+
 (use-package doom-modeline
   :ensure t
   :custom ((doom-modeline-height 5)
@@ -227,7 +317,7 @@
 )
 
 (use-package org
-  :pin elpa
+  ;; :pin elpa
   :config
   (define-key org-mode-map (kbd "<S-left>") nil)
   (define-key org-mode-map (kbd "<S-right>") nil)
@@ -404,7 +494,7 @@ Entries are assumed to be separated by empty lines."
   (org-bullets-bullet-list '("◉" "●" "○" "●" "○" "●" "○")))
 
 (defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
+  (setq visual-fill-column-width 80
 	  visual-fill-column-center-text t)
   ;; (visual-fill-column-mode 1)
   )
@@ -541,6 +631,24 @@ Entries are assumed to be separated by empty lines."
     ;; After vdiff sets up its windows, disable horizontal scroll sync
     ;; vdiff only syncs vertical scrolling, but set explicitly to be safe
     (setq-local vdiff-lock-scrolling t)))
+
+(use-package beframe
+  :ensure t
+
+  :bind
+  ;; Author's recommended prefix — C-h after it lists all bindings
+  ("C-c b" . beframe-prefix-map)
+
+  :custom
+  ;; Buffers always available in every frame (matched as regexps)
+  (beframe-global-buffers '("\\*scratch\\*" "\\*Messages\\*" "\\*Backtrace\\*"))
+  ;; Create a per-frame *scratch for <frame-name>* buffer on new frames
+  (beframe-create-frame-scratch-buffer t)
+  ;; Kill that scratch buffer when the frame is deleted
+  (beframe-kill-frame-scratch-buffer t)
+
+  :config
+  (beframe-mode 1))
 
 (set-fontset-font "fontset-default" '(#xf000 . #xf23a) "FontAwesome")
 
