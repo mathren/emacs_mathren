@@ -345,9 +345,11 @@ Checks for duplicates and suggests existing keys when found."
          (bibtex-entry (ads-get-bibtex bibcode))
          (original-key (ads-extract-citation-key-from-bibtex bibtex-entry))
          (local-bib-file (citar-bibtool-get-local-bib-file))
-         (local-bib-path (if (string-suffix-p ".bib" local-bib-file)
-                             local-bib-file
-                           (concat local-bib-file ".bib")))
+         (local-bib-path (expand-file-name
+                          (if (string-suffix-p ".bib" local-bib-file)
+                              local-bib-file
+                            (concat local-bib-file ".bib"))
+                          (file-name-directory buffer-file-name)))
          (existing-key (ads-find-duplicate-entry-in-local-bib bibtex-entry local-bib-path))
          (final-key nil)
          (final-bibtex nil))
@@ -362,16 +364,15 @@ Checks for duplicates and suggests existing keys when found."
         (cond
          ((string= choice "use-existing")
           (setq final-key existing-key)
-          (setq final-bibtex nil)) ; Don't add to file
+          (setq final-bibtex nil))
          ((string= choice "rename-existing")
           (let ((new-key (read-string "New key for existing entry: " existing-key)))
-            ;; Replace key in local bib file
             (with-temp-buffer
               (insert-file-contents local-bib-path)
               (goto-char (point-min))
               (when (re-search-forward (concat "@[^{]+{" (regexp-quote existing-key)) nil t)
                 (replace-match (concat "@article{" new-key) nil nil))
-              (write-file local-bib-path))
+              (write-region (point-min) (point-max) local-bib-path))
             (setq final-key new-key)
             (setq final-bibtex nil)))
          ((string= choice "create-new")
@@ -402,11 +403,12 @@ Checks for duplicates and suggests existing keys when found."
         (goto-char (point-max))
         (unless (bobp) (insert "\n\n"))
         (insert final-bibtex)
-        (write-file local-bib-path))
+        (write-region (point-min) (point-max) local-bib-path))
       (message "Added citation %s to %s" final-key local-bib-path))
 
     (when (and existing-key (not final-bibtex))
       (message "Using existing citation %s" final-key))))
+
 
 (defun citar-bibtool-insert-tex-bib (citekeys)
   "Insert CITEKEYS both as citation key in tex and as bibtex entry."
