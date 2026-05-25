@@ -486,4 +486,16 @@ Similar to `citar-insert-citation` but reads from local bib instead of global."
     (error (message "Error inserting citation from local bib: %s" (error-message-string err)))))
 
 
+(defun citar-bibtool--fix-prenote-only-cite (&rest _)
+  "After citation insertion, ensure a prenote-only citation gets an empty postnote bracket.
+Transforms \\cite[prenote]{key} into \\cite[prenote][]{key}."
+  (save-excursion
+    (when (re-search-backward
+           "\\\\cite[a-z*]*\\(\\[[^\]]+\\]\\){"
+           (line-beginning-position) t)
+      (goto-char (match-end 1))
+      (insert "[]"))))
+
+(advice-add 'citar-latex-insert-citation :after #'citar-bibtool--fix-prenote-only-cite)
+
 (provide 'citar-bibtool)
