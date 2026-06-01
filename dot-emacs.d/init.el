@@ -2,6 +2,8 @@
 
 (server-start)
 
+(load "~/.emacs.d/install_packages.el")
+
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("elpa"  . "https://elpa.gnu.org/packages/")
@@ -737,20 +739,30 @@ Entries are assumed to be separated by empty lines."
 
 (use-package tramp
   :custom
-  (tramp-remote-path '(tramp-default-remote-path
-			 tramp-own-remote-path
-			 "/usr/bin/"
-			 "/usr/local/bin"
-			 "/bin"))
-  (tramp-default-remote-shell "/usr/bin/sh")
-  (tramp-persistency-file-name "/tmp/tramp-cache")
-  (remote-file-name-inhibit-locks t)
-  (customize-set-variable 'tramp-connection-timeout 100)
+  ;; Shell / path
+  (tramp-remote-path              '(tramp-default-remote-path
+                                    tramp-own-remote-path
+                                    "/usr/bin/"
+                                    "/usr/local/bin"
+                                    "/bin"))
+  (tramp-default-remote-shell     "/usr/bin/sh")
+  (tramp-shell-prompt-pattern     "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
+  ;; Connection / performance
+  (tramp-connection-timeout       100)
+  (tramp-persistency-file-name    "/tmp/tramp-cache")
   (tramp-use-scp-direct-remote-copying t)
-  (vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
+  ;; Remote file behaviour
+  (remote-file-name-inhibit-locks          t)
   (remote-file-name-inhibit-auto-save-visited t)
-  (tramp-shell-prompt-pattern "\\(?:^\\|\\)[^]#$%>\n]*#?[]#$%>] *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
-  )
+  (vc-ignore-dir-regexp           (format "%s\\|%s"
+                                          vc-ignore-dir-regexp
+                                          tramp-file-name-regexp))
+  :config
+  ;; Redirect remote auto-saves to a local temp dir (avoids reentrant Tramp calls)
+  (setq auto-save-file-name-transforms
+        `(("\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
+           ,(expand-file-name "\\2" temporary-file-directory) t)
+          ,@auto-save-file-name-transforms)))
 
 (defun count-sloc-region (beg end)
   "Count source lines of code in region (or (narrowed part of)

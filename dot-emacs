@@ -26,7 +26,7 @@
  '(custom-safe-themes
    '("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd"
      default))
- '(ein:output-area-inlined-images t t)
+ '(ein:output-area-inlined-images t)
  '(elfeed-goodies/entry-pane-position 'bottom)
  '(elfeed-goodies/entry-pane-size 0.4)
  '(elfeed-goodies/powerline-default-separator 'slant)
@@ -42,7 +42,8 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3"
      "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
-   '("/home/mrenzo/Documents/Research/Todo_research.org"
+   '("/home/mrenzo/Documents/Research/Projects/CHE_jets/CHE_lGRB_progenitors/README.org"
+     "/home/mrenzo/Documents/Research/Todo_research.org"
      "/home/mrenzo/Documents/Research/Conferences/25/TARDIS_connector_workshop/Notes.org"
      "/home/mrenzo/Documents/Research/Talks/2026/Berkeley/abstract.org"
      "/home/mrenzo/Documents/Research/Bureaucracy/AZ/3rd_yr_retention/notes.org"
