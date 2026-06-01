@@ -547,17 +547,21 @@ default, so if using daemon mode (=daemonp= is true) add a hook to set
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package indent-bars
-    ;; :ensure t
-    :config
-      (setq
-    indent-bars-pattern "."
-    indent-bars-width-frac 0.2
-    indent-bars-pad-frac 0.5
-    indent-bars-color-by-depth nil
-    indent-bars-highlight-current-depth '(:face default :blend 0.5))
-  )
+    :hook
+    (prog-mode . indent-bars-mode)
+    :custom
+    (indent-bars-pattern                          ".")
+    (indent-bars-width-frac                       0.2)
+    (indent-bars-pad-frac                         0.5)
+    (indent-bars-color-by-depth                   nil)
+    (indent-bars-highlight-current-depth          '(:face default :blend 0.5))
+    ;; Emacs 30: enable tree-sitter support for *-ts-mode buffers
+    (indent-bars-treesit-support                  t)
+    (indent-bars-treesit-ignore-blank-lines-types '("module"))
+    ;; Uncomment if bars don't appear (terminal or no stipple support)
+    ;; (indent-bars-prefer-character               t)
+    )
 #+END_SRC
-
 
 
 

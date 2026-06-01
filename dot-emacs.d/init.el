@@ -308,15 +308,20 @@ With optional FRAME, return the buffers of that frame instead."
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package indent-bars
-  ;; :ensure t
-  :config
-    (setq
-  indent-bars-pattern "."
-  indent-bars-width-frac 0.2
-  indent-bars-pad-frac 0.5
-  indent-bars-color-by-depth nil
-  indent-bars-highlight-current-depth '(:face default :blend 0.5))
-)
+  :hook
+  (prog-mode . indent-bars-mode)
+  :custom
+  (indent-bars-pattern                          ".")
+  (indent-bars-width-frac                       0.2)
+  (indent-bars-pad-frac                         0.5)
+  (indent-bars-color-by-depth                   nil)
+  (indent-bars-highlight-current-depth          '(:face default :blend 0.5))
+  ;; Emacs 30: enable tree-sitter support for *-ts-mode buffers
+  (indent-bars-treesit-support                  t)
+  (indent-bars-treesit-ignore-blank-lines-types '("module"))
+  ;; Uncomment if bars don't appear (terminal or no stipple support)
+  ;; (indent-bars-prefer-character               t)
+  )
 
 (use-package org
   ;; :pin elpa
