@@ -278,7 +278,7 @@ With optional FRAME, return the buffers of that frame instead."
 (use-package dired-preview
   :ensure t
   :config
-    (setq dired-preview-delay 0.7)
+    (setq dired-preview-delay 1)
     (setq dired-preview-max-size (expt 2 20))
     (setq dired-preview-ignored-extensions-regexp
           (concat "\\."
