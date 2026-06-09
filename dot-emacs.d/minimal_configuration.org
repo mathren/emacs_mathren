@@ -358,7 +358,7 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
 * Auto-revert files on change
 
 #+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-  (global-auto-revert-mode t)
+  (global-auto-revert-mode 1)
   (setq global-auto-revert-non-file-buffers t)
 #+END_SRC
 

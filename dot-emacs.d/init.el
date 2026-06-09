@@ -259,41 +259,44 @@ With optional FRAME, return the buffers of that frame instead."
 	    :diminish nil)
 
 (use-package dired
-  :ensure nil
-  :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
-  :config
-  ;; Enable auto-revert for dired buffers
-  (setq global-auto-revert-non-file-buffers t)
-  (add-hook 'dired-mode-hook 'auto-revert-mode)
+    :ensure nil
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :custom ((dired-listing-switches "-agho --group-directories-first"))
+    :config
+    ;; Enable auto-revert for dired buffers
+    (setq global-auto-revert-non-file-buffers t)
+    (add-hook 'dired-mode-hook 'auto-revert-mode)
 
-  ;; Add FZF integration in dired
-  (define-key dired-mode-map (kbd "C-c C-f") 'fzf))
+    ;; Add FZF integration in dired
+    (define-key dired-mode-map (kbd "C-c C-f") 'fzf))
 
-(use-package nerd-icons-dired
-  :hook (dired-mode . nerd-icons-dired-mode))
+  (use-package nerd-icons-dired
+    :hook (dired-mode . nerd-icons-dired-mode))
+
 
 (use-package dired-preview
   :ensure t
   :config
-  (setq dired-preview-delay 0.7)
-  (setq dired-preview-max-size (expt 2 20))
-  (setq dired-preview-ignored-extensions-regexp
-        (concat "\\."
-                "\\(gz\\|"
-                "zst\\|"
-                "tar\\|"
-                "xz\\|"
-                "rar\\|"
-                "zip\\|"
-                "iso\\|"
-                "epub"
-                "\\)"))
-
-  ;; Enable `dired-preview-mode' in a given Dired buffer or do it
-  (dired-preview-global-mode 1)
-  :hook (dired-mode . dired-preview-mode))
+    (setq dired-preview-delay 0.7)
+    (setq dired-preview-max-size (expt 2 20))
+    (setq dired-preview-ignored-extensions-regexp
+          (concat "\\."
+                  "\\(gz\\|"
+                  "zst\\|"
+                  "tar\\|"
+                  "xz\\|"
+                  "rar\\|"
+                  "zip\\|"
+                  "iso\\|"
+                  "epub"
+                  "\\)"))
+    (defun my/dired-preview-mode-unless-remote ()
+      "Enable `dired-preview-mode' only for local directories."
+      (unless (file-remote-p default-directory)
+        (dired-preview-mode 1)))
+    (dired-preview-global-mode 1)
+    :hook (dired-mode . my/dired-preview-mode-unless-remote))
 
 (use-package doom-modeline
   :ensure t

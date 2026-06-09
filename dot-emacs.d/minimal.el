@@ -165,7 +165,7 @@
 
 (setq vc-follow-symlinks t)
 
-(global-auto-revert-mode t)
+(global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
