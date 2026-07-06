@@ -515,7 +515,8 @@ Entries are assumed to be separated by empty lines."
 (use-package org-download
   :config
   (setq-default org-download-image-dir ".org_notes_figures/")
-  (fmakunbound 'org-download-clipboard)
+  ;; (fmakunbound 'org-download-clipboard)
+  (setq-default org-download-screenshot-method "bash -c 'wl-paste -t image/png > %s'")
   )
 
 (use-package yaml-mode

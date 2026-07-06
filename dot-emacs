@@ -42,8 +42,11 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3"
      "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
-   '("/home/mrenzo/Documents/Research/Projects/CHE_jets/CHE_lGRB_progenitors/README.org"
-     "/home/mrenzo/Documents/Research/Todo_research.org"
+   '("/home/mrenzo/Documents/Research/Todo_research.org"
+     "/home/mrenzo/Documents/Todo.org"
+     "/home/mrenzo/Documents/Teaching/Arizona/170B1/Notes.org"
+     "/home/mrenzo/Documents/Research/Group/PhD/Neev/Neev.org"
+     "/home/mrenzo/Documents/Research/Projects/CHE_jets/CHE_lGRB_progenitors/README.org"
      "/home/mrenzo/Documents/Research/Conferences/25/TARDIS_connector_workshop/Notes.org"
      "/home/mrenzo/Documents/Research/Talks/2026/Berkeley/abstract.org"
      "/home/mrenzo/Documents/Research/Bureaucracy/AZ/3rd_yr_retention/notes.org"
@@ -56,8 +59,7 @@
      "/home/mrenzo/Documents/Teaching/Arizona/stellar_phys_545/README.org"
      "/home/mrenzo/Documents/Outreach/Todo_outreach.org"
      "/home/mrenzo/Documents/Research/Applications/2025/Trinity/notes.org"
-     "/home/mrenzo/Documents/Teaching/Arizona/stellar_phys_545/org-content/lectures.org"
-     "/home/mrenzo/Documents/Todo.org"))
+     "/home/mrenzo/Documents/Teaching/Arizona/stellar_phys_545/org-content/lectures.org"))
  '(org-download-screenshot-method "xclip -selection clipboard -t image/png -o > %s")
  '(org-emphasis-alist
    '(("*" bold) ("/" italic) ("_" underline) ("=" org-verbatim verbatim)

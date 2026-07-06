@@ -777,8 +777,6 @@ Entries are assumed to be separated by empty lines."
       modified)))
 #+END_SRC
 
-
-
 *** Nicer bullets and other eye-candy
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
@@ -810,27 +808,14 @@ want to capture has to be visible on your screen when you type that command.
 I configure this so that the image file is saved in a hidden folder
 =.org_notes_figures= in the same location of the org file the image is
 being pasted in. When moving/sharing the org file, remember to move or
-share that hidden folder content too.
-
-I also use =M-x customize-group org-download= to change the value of
-=org-download-screenshot-method=. By default this is set to
-=gnome-screenshot= and it opens the screenshot tool from within
-emacs, this means you need to already have on screen what you want
-to screenshot, go in emacs and type =M-x org-download-screenshot=
-and then back to what you actually want to capture, which might
-have disappeared behind some other window or pane.
-
-Instead, I use =M-x customize-group= to set
-=org-download-screenshot-method= to =xclip -selection clipboard -t
-image/png -o > %s"= With this I can take a screenshot from outside
-of emacs and then use =M-x org-download-screenshot= to paste it.
-This adds a line in the =~/.emacs= file.
+share that hidden folder content too!
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (use-package org-download
     :config
     (setq-default org-download-image-dir ".org_notes_figures/")
-    (fmakunbound 'org-download-clipboard)
+    ;; (fmakunbound 'org-download-clipboard)
+    (setq-default org-download-screenshot-method "bash -c 'wl-paste -t image/png > %s'")
     )
 #+END_SRC
 
