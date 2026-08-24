@@ -699,9 +699,10 @@ Define headers for latex export:
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
   (setq org-latex-packages-alist '(("left=25mm, right=25mm, top=25mm, bottom=25mm" "geometry" nil)))
   (customize-set-value 'org-latex-hyperref-template
-		       "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true,\n citecolor=blue,\n linkcolor=blue,\n urlcolor=blue\n}\n")
+  		       "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true,\n citecolor=blue,\n linkcolor=blue,\n urlcolor=blue\n}\n")
   (setq org-export-with-toc nil)
   (setq org-export-with-section-numbers nil)
+  (setq org-latex-image-default-width "0.5\\textwidth")
   (setq org-export-headline-levels 4)
 #+END_SRC
 
@@ -819,7 +820,23 @@ share that hidden folder content too!
     )
 #+END_SRC
 
+I also have a function to copy from clipboard a screenshot to a folder
+=./images/= and prompt for a name for writing class notes:
 
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+(defun mr/org-download-screenshot-named ()
+  "Screenshot via `org-download-screenshot', always saved to ./images/,
+prompting for a file name (extension optional, defaults to .png)."
+  (interactive)
+  (let* ((name (read-string "Image name: ")))
+    (when (string-empty-p name)
+      (user-error "Image name cannot be empty"))
+    (let ((org-download-image-dir "./images")        ; force the target dir
+          (org-download-heading-lvl nil)              ; no per-heading subfolders
+          (org-download-file-format-function #'identity)) ; use the name as-is, no timestamp prefix
+      (org-download-screenshot
+       (if (file-name-extension name) name (concat name ".png"))))))
+#+END_SRC
 
 ** =yaml-mode= and =snakemake-mode=
 

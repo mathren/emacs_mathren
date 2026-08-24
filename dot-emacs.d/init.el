@@ -436,6 +436,7 @@ Preserves TODO keywords and other text before dates."
 		       "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true,\n citecolor=blue,\n linkcolor=blue,\n urlcolor=blue\n}\n")
 (setq org-export-with-toc nil)
 (setq org-export-with-section-numbers nil)
+(setq org-latex-image-default-width "0.5\\textwidth")
 (setq org-export-headline-levels 4)
 
 (defun mr/filter-timestamp (trans back _comm)
@@ -518,6 +519,19 @@ Entries are assumed to be separated by empty lines."
   ;; (fmakunbound 'org-download-clipboard)
   (setq-default org-download-screenshot-method "bash -c 'wl-paste -t image/png > %s'")
   )
+
+(defun mr/org-download-screenshot-named ()
+  "Screenshot via `org-download-screenshot', always saved to ./images/,
+prompting for a file name (extension optional, defaults to .png)."
+  (interactive)
+  (let* ((name (read-string "Image name: ")))
+    (when (string-empty-p name)
+      (user-error "Image name cannot be empty"))
+    (let ((org-download-image-dir "./images")        ; force the target dir
+          (org-download-heading-lvl nil)              ; no per-heading subfolders
+          (org-download-file-format-function #'identity)) ; use the name as-is, no timestamp prefix
+      (org-download-screenshot
+       (if (file-name-extension name) name (concat name ".png"))))))
 
 (use-package yaml-mode
   :ensure t)
