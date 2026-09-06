@@ -26,7 +26,7 @@
  '(custom-safe-themes
    '("2ebf3d81b7555f8c8cfc42017b00dc47f1fbe80ffce53439c9401da3989fedcd"
      default))
- '(ein:output-area-inlined-images t t)
+ '(ein:output-area-inlined-images t)
  '(elfeed-goodies/entry-pane-position 'bottom)
  '(elfeed-goodies/entry-pane-size 0.4)
  '(elfeed-goodies/powerline-default-separator 'slant)
@@ -42,7 +42,8 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3"
      "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
-   '("/home/mrenzo/Documents/Teaching/Todo_teaching.org"
+   '("/home/mrenzo/Documents/Research/Group/Group_meetings.org"
+     "/home/mrenzo/Documents/Teaching/Todo_teaching.org"
      "/home/mrenzo/Documents/Research/Group/PhD/Neev/Neev.org"
      "/home/mrenzo/Documents/Research/Todo_research.org"
      "/home/mrenzo/Documents/Todo.org"
@@ -78,7 +79,7 @@
 	     corfu-prescient counsel dashboard deadgrep dired-icon
 	     dired-preview dired-single diredfl diredful doom-modeline
 	     doom-themes editorconfig eglot ein elfeed elfeed-goodies
-	     elfeed-org elpy embark embark-consult eproject
+	     elfeed-org elpy embark embark-consult emjupy eproject
 	     eshell-prompt-extras f flycheck flyspell-popup
 	     fontawesome fzf gh-md helm-org helpful
 	     highlight-indent-guides htmlize indent-bars ivy ivy-fuz
@@ -106,7 +107,7 @@
      (280 . "#6CA0A3") (300 . "#7CB8BB") (320 . "#8CD0D3")
      (340 . "#94BFF3") (360 . "#DC8CC3")))
  '(vc-annotate-very-old-color "#DC8CC3")
- '(warning-suppress-log-types '((comp)))
+ '(warning-suppress-log-types '((native-compiler) (comp)))
  '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

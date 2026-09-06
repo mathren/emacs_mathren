@@ -551,30 +551,8 @@ prompting for a file name (extension optional, defaults to .png)."
 ;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 ;;   (setq elpy-rpc-python-command "python3"))
 
-(use-package ein
-  :config
-  (setq ein:output-area-inlined-images t)  ;; show inline plots
-  (setq ein:worksheet-enable-undo t)
-  ; Enable syntax highlighting for Python cells
-  (setq ein:completion-backend 'ein:use-ac-backend)
-  ;; Set default language mode for cells
-  (add-hook 'ein:notebook-mode-hook
-	      (lambda ()
-		(setq ein:notebook-lang "python")))
-  ;; redefined C-x B conflicts with ein
-  (defun pm--visible-buffer-name ()
-    "Get visible buffer name - compatibility function for EIN"
-    (buffer-name (window-buffer)))
-
-  ;; Enable eglot in Python cells
-  (add-hook 'ein:connect-mode-hook #'eglot-ensure)
-  ;; ;; Alternative: Enable eglot when entering Python cells
-  (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
-  )
-
-; to see latex in ein markdown cells
- (use-package math-preview
-   :ensure t)
+(add-to-list 'load-path "~/Documents/Emacs/emjupy/")
+(require 'emjupy)
 
 (use-package arxiv-mode
   :ensure t
