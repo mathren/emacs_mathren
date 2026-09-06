@@ -551,8 +551,8 @@ prompting for a file name (extension optional, defaults to .png)."
 ;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 ;;   (setq elpy-rpc-python-command "python3"))
 
-(add-to-list 'load-path "~/Documents/Emacs/emjupy/")
-(require 'emjupy)
+;; (add-to-list 'load-path "~/Documents/Emacs/emjupy/")
+;; (require 'emjupy)
 
 (use-package arxiv-mode
   :ensure t
