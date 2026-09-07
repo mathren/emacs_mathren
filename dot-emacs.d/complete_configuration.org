@@ -923,11 +923,13 @@ cluncky. I use my own [[https://github.com/mathren/emjupy][emjupy]], developed w
 still in trial. For now I =install-package-from-file= it.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-(use-package emjupy
-  :vc (:url "https://github.com/mathren/emjupy"
-       :rev :newest) ;; risky!
-  :config
-  (setq emjupy-render-latex t))
+    (use-package emjupy
+      :vc (:url "https://github.com/mathren/emjupy"
+           :rev :newest) ;; risky!
+      :config
+      (setq emjupy-render-latex t)
+      (setq emjupy-latex-scale 1.15)
+      )
 #+END_SRC
 
 ** =arXiv-mode=
