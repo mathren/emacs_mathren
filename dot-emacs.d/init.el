@@ -555,7 +555,10 @@ prompting for a file name (extension optional, defaults to .png)."
   :vc (:url "https://github.com/mathren/emjupy"
        :rev :newest) ;; risky!
   :config
-  (setq emjupy-render-latex t))
+  (setq emjupy-render-latex t)
+  (setq emjupy-latex-scale 1.15)
+  (setq emjupy-box-right-margin 1)
+  )
 
 (use-package arxiv-mode
   :ensure t
