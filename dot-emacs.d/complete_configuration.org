@@ -923,16 +923,12 @@ cluncky. I use my own [[https://github.com/mathren/emjupy][emjupy]], developed w
 still in trial. For now I =install-package-from-file= it.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (unless (package-installed-p 'emjupy)
-    (package-vc-install '(emjupy :url "https://github.com/mathren/emjupy")))
-
-  (use-package emjupy
-    :config
-    (setq emjupy-render-latex t)
-    )
+(use-package emjupy
+  :vc (:url "https://github.com/mathren/emjupy"
+       :rev :newest) ;; risky!
+  :config
+  (setq emjupy-render-latex t))
 #+END_SRC
-
-
 
 # *** OLD Jupyter notebooks with ein
 

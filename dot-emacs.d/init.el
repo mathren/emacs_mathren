@@ -551,13 +551,11 @@ prompting for a file name (extension optional, defaults to .png)."
 ;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 ;;   (setq elpy-rpc-python-command "python3"))
 
-(unless (package-installed-p 'emjupy)
-  (package-vc-install '(emjupy :url "https://github.com/mathren/emjupy")))
-
 (use-package emjupy
+  :vc (:url "https://github.com/mathren/emjupy"
+       :rev :newest) ;; risky!
   :config
-  (setq emjupy-render-latex t)
-  )
+  (setq emjupy-render-latex t))
 
 (use-package arxiv-mode
   :ensure t
