@@ -917,7 +917,7 @@ Use [[https://pypi.org/project/black/][black]] to format code. Unused since usin
     (setq flycheck-display-errors-delay 0.5))
 #+END_SRC
 
-*** Jupyter notebooks
+*** Jupyter notebooks: =emjupy=
 [[https://github.com/millejoh/emacs-ipython-notebook][ein]] exists and was my go-to from 2012 to 2026, but is unmaintained and
 cluncky. I use my own [[https://github.com/mathren/emjupy][emjupy]], developed with lots of LLM help and
 still in trial. For now I =install-package-from-file= it.
@@ -929,74 +929,6 @@ still in trial. For now I =install-package-from-file= it.
   :config
   (setq emjupy-render-latex t))
 #+END_SRC
-
-# *** OLD Jupyter notebooks with ein
-
-# [[https://github.com/millejoh/emacs-ipython-notebook][This package]] allows to run ipython/jupyter notebooks within emacs. It
-# works for remote notebooks too.
-
-# Launch the notebook (within your python environment) with (you can
-# change the port number from =8989= to anything else that is free).
-# #+BEGIN_SRC bash
-#   jupyter notebook --no-browser --port=8989
-# #+END_SRC
-# If you run on a remote machine, the command above should be run
-# remotely to start the notebook there, and then you want to tunnel an
-# =ssh= connection from the local machine:
-# #+BEGIN_SRC bash
-#   ssh -L 8989:remote_host:8989
-# #+END_SRC
-# (the port numbers need not be the same). Finally from within emacs run
-# =M-x ein:notebook-login.=
-
-# #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-#   (use-package ein
-#     :config
-#     (setq ein:output-area-inlined-images t)  ;; show inline plots
-#     (setq ein:worksheet-enable-undo t)
-#     ; Enable syntax highlighting for Python cells
-#     (setq ein:completion-backend 'ein:use-ac-backend)
-#     ;; Set default language mode for cells
-#     (add-hook 'ein:notebook-mode-hook
-# 	      (lambda ()
-# 		(setq ein:notebook-lang "python")))
-#     ;; redefined C-x B conflicts with ein
-#     (defun pm--visible-buffer-name ()
-#       "Get visible buffer name - compatibility function for EIN"
-#       (buffer-name (window-buffer)))
-
-#     ;; Enable eglot in Python cells
-#     (add-hook 'ein:connect-mode-hook #'eglot-ensure)
-#     ;; ;; Alternative: Enable eglot when entering Python cells
-#     (add-hook 'ein:notebook-python-mode-hook #'eglot-ensure)
-#     )
-# #+END_SRC
-
-# **** Latex in markdown ein cells
-
-# To render latex text in markdown cells, install =nodejs= and =npm=
-
-# #+BEGIN_SRC bash
-#   $ sudo apt install nodejs npm
-# #+END_SRC
-
-# Then install [[https://gitlab.com/matsievskiysv/math-preview][math-preview]] and make sure it is in the =PATH=:
-
-# #+BEGIN_SRC bash
-#   $ sudo npm install -g git+https://gitlab.com/matsievskiysv/math-preview
-# #+END_SRC
-
-# Finally, use math-preview
-
-# #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-#   ; to see latex in ein markdown cells
-#    (use-package math-preview
-#      :ensure t)
-# #+END_SRC
-
-# Running =C-c C-c= (bound to =ein:worksheet-execute-cell=) on a
-# =markdown= cell will now try to render latex at the cursor position.
-
 
 ** =arXiv-mode=
 
@@ -1439,7 +1371,7 @@ The way I obtained this is a bit convoluted.
 
 #+BEGIN_SRC  emacs-lisp :tangle no
   ;; to define macro with user interaction
-  (defun my-macro-query (arg)
+  (defun mr/macro-query (arg)
     "Prompt for input using minibuffer during kbd macro execution.
    With prefix argument, allows you to select what prompt string to use.
    If the input is non-empty, it is inserted at point."
@@ -1460,7 +1392,7 @@ The way I obtained this is a bit convoluted.
 Using the macro query above, I defined a way to jump.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (defun go-to-column (column)
+  (defun mr/goto-last-line-column (column)
     (interactive "Column number: ")
     (move-to-column column t))
   (global-set-key (kbd "M-g TAB") 'go-to-column)
@@ -1469,8 +1401,6 @@ Using the macro query above, I defined a way to jump.
 	"\C-[>\C-[OA\C-a\C-[g\C-i\C-u\C-xq[OB")
 
   (put 'last-line-which-col 'kmacro t)
-
-  (global-set-key (kbd "C-c C-l") 'last-line-which-col)
 #+END_SRC
 
 

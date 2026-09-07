@@ -832,7 +832,7 @@ lines and comment-only lines are not taken into consideration."
 (define-key global-map "\C-cr" 'org-capture)
 (define-key global-map "\C-ctl" 'org-todo-list)
 
-(defun go-to-column (column)
+(defun mr/goto-last-line-column (column)
   (interactive "Column number: ")
   (move-to-column column t))
 (global-set-key (kbd "M-g TAB") 'go-to-column)
@@ -841,8 +841,6 @@ lines and comment-only lines are not taken into consideration."
 	"\C-[>\C-[OA\C-a\C-[g\C-i\C-u\C-xq[OB")
 
 (put 'last-line-which-col 'kmacro t)
-
-(global-set-key (kbd "C-c C-l") 'last-line-which-col)
 
 (defun mr/email-org-setup ()
   "Setup org buffer for email writing with hidden headers."
