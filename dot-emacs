@@ -88,12 +88,14 @@
 	     multiple-cursors nerd-icons-completion nerd-icons-dired
 	     nerd-icons-ibuffer nerd-icons-ivy-rich no-littering
 	     orderless org org-alert org-bullets org-caldav
-	     org-download ox-publish pass password-store pdf-tools
-	     python-black rainbow-delimiters rg ripgrep simple-httpd
-	     snake-mode snakemake-mode sudo-edit super-save tramp
-	     treemacs-magit unfill use-package vdiff vdiff-magit
-	     vertico vertico-prescient which-key which-key-posframe
-	     ws-butler yaml-mode))
+	     org-download org-sliced-images ox-publish pass
+	     password-store pdf-tools python-black rainbow-delimiters
+	     rg ripgrep simple-httpd snake-mode snakemake-mode
+	     sudo-edit super-save tramp treemacs-magit ultra-scroll
+	     unfill use-package vdiff vdiff-magit vertico
+	     vertico-prescient which-key which-key-posframe ws-butler
+	     yaml-mode))
+ '(package-vc-selected-packages '((emjupy :url "https://github.com/mathren/emjupy")))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . main.tex)))
  '(send-mail-function 'mailclient-send-it)

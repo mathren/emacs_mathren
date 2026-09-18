@@ -533,6 +533,17 @@ prompting for a file name (extension optional, defaults to .png)."
       (org-download-screenshot
        (if (file-name-extension name) name (concat name ".png"))))))
 
+(use-package ultra-scroll
+  ;:vc (:url "https://github.com/jdtsmith/ultra-scroll")
+  :init
+  (setq scroll-conservatively 101
+        scroll-margin 0
+        ;; Enable interpolation for keyboard/page movements (e.g. PgUp/PgDown)
+        pixel-scroll-precision-interpolate-page t)
+  :config
+  (pixel-scroll-precision-mode 1)
+  (ultra-scroll-mode 1))
+
 (use-package yaml-mode
   :ensure t)
 (use-package snakemake-mode
@@ -550,15 +561,6 @@ prompting for a file name (extension optional, defaults to .png)."
 ;;   ;; (advice-add 'python-mode :before 'elpy-enable))
 ;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 ;;   (setq elpy-rpc-python-command "python3"))
-
-(use-package emjupy
-  :vc (:url "https://github.com/mathren/emjupy"
-       :rev :newest) ;; risky!
-  :config
-  (setq emjupy-render-latex t)
-  (setq emjupy-latex-scale 1.15)
-  (setq emjupy-box-right-margin 1)
-  )
 
 (use-package arxiv-mode
   :ensure t

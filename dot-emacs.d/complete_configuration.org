@@ -734,7 +734,9 @@ Fix exporting of Sun symbol:
 #+END_SRC
 
 Remove entries in bibtex file which have a key that doesn't contain a
-=:=. Open the =*.bib= file in emacs and run =M-x mr/remove-bibtex-entries-without-colon=.
+=:=.
+
+Open the =*.bib= file in emacs and run =M-x mr/remove-bibtex-entries-without-colon=.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
 (defun mr/remove-bibtex-entries-without-colon ()
@@ -838,6 +840,21 @@ prompting for a file name (extension optional, defaults to .png)."
        (if (file-name-extension name) name (concat name ".png"))))))
 #+END_SRC
 
+*** scrolling and inline images
+
+#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
+  (use-package ultra-scroll
+    ;:vc (:url "https://github.com/jdtsmith/ultra-scroll")
+    :init
+    (setq scroll-conservatively 101
+          scroll-margin 0
+          ;; Enable interpolation for keyboard/page movements (e.g. PgUp/PgDown)
+          pixel-scroll-precision-interpolate-page t)
+    :config
+    (pixel-scroll-precision-mode 1)
+    (ultra-scroll-mode 1))
+#+END_SRC
+
 ** =yaml-mode= and =snakemake-mode=
 
 yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
@@ -930,8 +947,10 @@ still in trial. For now I =install-package-from-file= it.
     (setq emjupy-render-latex t)
     (setq emjupy-latex-scale 1.15)
     (setq emjupy-box-right-margin 1)
+    (setq emjupy-shadow-host "/ssh:ua_w:")
+    (setq emjupy-remote-root "/ssh:ua_w:~/") ;; base path on remote, emjupy can't guess that
     )
-#+END_SRC
+#+END_SRCS
 
 ** =arXiv-mode=
 
