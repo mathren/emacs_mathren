@@ -538,10 +538,10 @@ prompting for a file name (extension optional, defaults to .png)."
   :init
   (setq scroll-conservatively 101
         scroll-margin 0
+	scroll-preserve-screen-position t
         ;; Enable interpolation for keyboard/page movements (e.g. PgUp/PgDown)
         pixel-scroll-precision-interpolate-page t)
   :config
-  (pixel-scroll-precision-mode 1)
   (ultra-scroll-mode 1))
 
 (use-package yaml-mode

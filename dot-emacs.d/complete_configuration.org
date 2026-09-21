@@ -848,10 +848,10 @@ prompting for a file name (extension optional, defaults to .png)."
     :init
     (setq scroll-conservatively 101
           scroll-margin 0
+  	scroll-preserve-screen-position t
           ;; Enable interpolation for keyboard/page movements (e.g. PgUp/PgDown)
           pixel-scroll-precision-interpolate-page t)
     :config
-    (pixel-scroll-precision-mode 1)
     (ultra-scroll-mode 1))
 #+END_SRC
 
@@ -937,19 +937,26 @@ Use [[https://pypi.org/project/black/][black]] to format code. Unused since usin
 *** Jupyter notebooks: =emjupy=
 [[https://github.com/millejoh/emacs-ipython-notebook][ein]] exists and was my go-to from 2012 to 2026, but is unmaintained and
 cluncky. I use my own [[https://github.com/mathren/emjupy][emjupy]], developed with lots of LLM help and
-still in trial. For now I =install-package-from-file= it.
+still in trial. For now I point it to my local source because of active development.
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  (use-package emjupy
-    :vc (:url "https://github.com/mathren/emjupy"
-         :rev :newest) ;; risky!
-    :config
-    (setq emjupy-render-latex t)
-    (setq emjupy-latex-scale 1.15)
-    (setq emjupy-box-right-margin 1)
-    (setq emjupy-shadow-host "/ssh:ua_w:")
-    (setq emjupy-remote-root "/ssh:ua_w:~/") ;; base path on remote, emjupy can't guess that
-    )
+ ; (use-package emjupy
+ ;   :vc (:url "https://github.com/mathren/emjupy"
+ ;        :rev :newest) ;; risky!
+ ;   :config
+ ;   (setq emjupy-render-latex t)
+ ;   (setq emjupy-latex-scale 1.15)
+ ;   (setq emjupy-box-right-margin 1)
+ ;   (setq emjupy-shadow-host "/ssh:ua_w:")
+ ;   (setq emjupy-remote-root "/ssh:ua_w:~/") ;; base path on remote, emjupy can't guess that
+ ;   )
+(add-to-list 'load-path "~/Documents/Emacs/emjupy")
+(require 'emjupy)
+(setq emjupy-render-latex t)
+(setq emjupy-latex-scale 1.15)
+(setq emjupy-box-right-margin 1)
+(setq emjupy-shadow-host "/ssh:ua_w:")
+(setq emjupy-remote-root "/ssh:ua_w:~/")
 #+END_SRCS
 
 ** =arXiv-mode=
