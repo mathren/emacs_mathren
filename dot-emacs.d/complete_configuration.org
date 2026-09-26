@@ -877,18 +877,29 @@ these mostly with [[https://github.com/showyourwork/showyourwork][showyourwork]]
 
 
 ** Python
-*** elpy
 
-=elpy= and =eglot= may conflict, don't load the former. See [[https://elpy.readthedocs.io/en/latest/introduction.html][documentation]] for dependencies.
+*** eldoc
 
 #+BEGIN_SRC emacs-lisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/init.el
-  ;; (use-package elpy
-  ;;   :ensure t
-  ;;   :defer t
-  ;;   :init
-  ;;   ;; (advice-add 'python-mode :before 'elpy-enable))
-  ;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-  ;;   (setq elpy-rpc-python-command "python3"))
+(use-package eldoc-box
+  :ensure t
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode))
+#+END_SRC
+
+*** elpy
+
+=elpy= and =eglot= may conflict, don't load the former. See [[https://elpy.readthedocs.io/en/latest/introduction.html][documentation]]
+for dependencies. (the next block is not tangled).
+
+#+BEGIN_SRC elisp
+  (use-package elpy
+    :ensure t
+    :defer t
+    :init
+    ;; (advice-add 'python-mode :before 'elpy-enable))
+    (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+    (setq elpy-rpc-python-command "python3"))
 #+END_SRC
 
 *** Formatting
@@ -913,7 +924,7 @@ Use [[https://pypi.org/project/black/][black]] to format code. Unused since usin
 
 *** Flycheck
 
- Not used since switching to =eglot= (the next block is not tangled).
+Not used since switching to =eglot= (the next block is not tangled).
 
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
