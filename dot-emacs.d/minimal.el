@@ -64,8 +64,10 @@
    (condition-case nil
        (unless (and default-directory
                     (file-directory-p default-directory))
+	 (message "changing default-directory to /tmp/ for this buffer")
          (setq-local default-directory "/tmp/"))
      (error
+      (message "Error: changing default-directory to /tmp/ for this buffer")
       (setq-local default-directory "/tmp/"))))
 
 (add-hook 'buffer-list-update-hook
