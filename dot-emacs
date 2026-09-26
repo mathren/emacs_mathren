@@ -7,10 +7,10 @@
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
  '(TeX-view-predicate-list '((nil nil)))
- '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)) t)
+ '(TeX-view-program-list '(("Okular" ("okular --unique %o#src:%n%b") nil)))
  '(TeX-view-program-selection
    '((output-pdf "Okular") (output-pdf "dvips and gv")
-     (output-dvi "Evince") (output-html "xdg-open")) t)
+     (output-dvi "Evince") (output-html "xdg-open")))
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3"
     "#DCDCCC"])
@@ -42,7 +42,8 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3"
      "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
-   '("/home/mrenzo/Documents/Research/Group/Group_meetings.org"
+   '("~/Documents/Research/Projects/LMXRB/Project_LMXRB.org"
+     "/home/mrenzo/Documents/Research/Group/Group_meetings.org"
      "/home/mrenzo/Documents/Teaching/Todo_teaching.org"
      "/home/mrenzo/Documents/Research/Group/PhD/Neev/Neev.org"
      "/home/mrenzo/Documents/Research/Todo_research.org"

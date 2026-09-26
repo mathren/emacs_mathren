@@ -124,7 +124,30 @@ Avoid syntax highlighting as you type
 (setq redisplay-skip-fontification-on-input t)
 #+END_SRC
 
-* Create parent directory if not existing for new files
+* Directory safety
+
+** Check on parent directory
+
+Move to =/tmp= if buffer parent directory is not set. Prevents
+minibuffer from getting stuck.
+#+BEGIN_SRC elisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+    (defun mr/ensure-valid-default-directory ()
+     "Ensure the current buffer has a usable `default-directory'."
+     (condition-case nil
+         (unless (and default-directory
+                      (file-directory-p default-directory))
+           (setq-local default-directory "/tmp/"))
+       (error
+        (setq-local default-directory "/tmp/"))))
+
+  (add-hook 'buffer-list-update-hook
+            #'mr/ensure-valid-default-directory)
+
+   (add-hook 'after-change-major-mode-hook
+             #'mr/ensure-valid-default-directory)
+#+END_SRC
+
+** Create parent directory for new files
 A common situation: I am in folder =/foo= and I want to create a
 subfolder =bar/= and inside it a text file =file-name=. I do =C-x C-f= to
 launch =find-file=, type =bar/file-name= which gets appended to the local

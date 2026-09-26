@@ -361,6 +361,9 @@ With optional FRAME, return the buffers of that frame instead."
 	    ("g" "General Random" entry
 	     (file+headline "~/Documents/Todo.org" "General Todo")
 	     "* %?\n %T")
+	    ("e" "emjupy dev" entry
+	     (file+headline "~/Documents/Emacs/emjupy/README.org" "Emjupy dev")
+	     "* %?\n %T")
 	    ))
   (setq org-latex-with-hyperref nil)
   )

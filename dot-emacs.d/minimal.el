@@ -59,6 +59,21 @@
 
 (setq redisplay-skip-fontification-on-input t)
 
+(defun mr/ensure-valid-default-directory ()
+   "Ensure the current buffer has a usable `default-directory'."
+   (condition-case nil
+       (unless (and default-directory
+                    (file-directory-p default-directory))
+         (setq-local default-directory "/tmp/"))
+     (error
+      (setq-local default-directory "/tmp/"))))
+
+(add-hook 'buffer-list-update-hook
+          #'mr/ensure-valid-default-directory)
+
+ (add-hook 'after-change-major-mode-hook
+           #'mr/ensure-valid-default-directory)
+
 (advice-add 'find-file :before
             (lambda (filename &optional wildcards)
               (let ((dir (file-name-directory (expand-file-name filename))))
