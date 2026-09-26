@@ -557,13 +557,10 @@ prompting for a file name (extension optional, defaults to .png)."
 (add-to-list 'auto-mode-alist '("/Snakefile[^/]*$" . snakemake-mode))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-;; (use-package elpy
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   ;; (advice-add 'python-mode :before 'elpy-enable))
-;;   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-;;   (setq elpy-rpc-python-command "python3"))
+(use-package eldoc-box
+  :ensure t
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode))
 
 (use-package arxiv-mode
   :ensure t
