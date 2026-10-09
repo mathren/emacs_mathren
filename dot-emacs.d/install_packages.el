@@ -64,6 +64,7 @@
 		     unfill
 		     beframe
 		     password-store
+		     slurm-mode
 		     ))
 
 ;; install the missing packages

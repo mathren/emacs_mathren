@@ -42,11 +42,11 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3"
      "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
-   '("~/Documents/Research/Projects/LMXRB/Project_LMXRB.org"
+   '("/home/mrenzo/Documents/Research/Todo_research.org"
+     "/home/mrenzo/Documents/Research/Projects/LMXRB/Project_LMXRB.org"
      "/home/mrenzo/Documents/Research/Group/Group_meetings.org"
      "/home/mrenzo/Documents/Teaching/Todo_teaching.org"
      "/home/mrenzo/Documents/Research/Group/PhD/Neev/Neev.org"
-     "/home/mrenzo/Documents/Research/Todo_research.org"
      "/home/mrenzo/Documents/Todo.org"
      "/home/mrenzo/Documents/Research/Projects/CHE_jets/CHE_lGRB_progenitors/README.org"
      "/home/mrenzo/Documents/Research/Conferences/25/TARDIS_connector_workshop/Notes.org"
@@ -79,10 +79,10 @@
 	     company-fuzzy company-prescient consult corfu
 	     corfu-prescient counsel dashboard deadgrep dired-icon
 	     dired-preview dired-single diredfl diredful doom-modeline
-	     doom-themes editorconfig eglot ein elfeed elfeed-goodies
-	     elfeed-org elpy embark embark-consult emjupy eproject
-	     eshell-prompt-extras f flycheck flyspell-popup
-	     fontawesome fzf gh-md helm-org helpful
+	     doom-themes editorconfig eglot ein eldoc-box elfeed
+	     elfeed-goodies elfeed-org elpy embark embark-consult
+	     emjupy eproject eshell-prompt-extras f flycheck
+	     flyspell-popup fontawesome fzf gh-md helm-org helpful
 	     highlight-indent-guides htmlize indent-bars ivy ivy-fuz
 	     ivy-pass ivy-prescient jedi jedi-core magit magit-lfs
 	     marginalia markdown-mode math-preview mu4e
@@ -91,12 +91,13 @@
 	     orderless org org-alert org-bullets org-caldav
 	     org-download org-sliced-images ox-publish pass
 	     password-store pdf-tools python-black rainbow-delimiters
-	     rg ripgrep simple-httpd snake-mode snakemake-mode
-	     sudo-edit super-save tramp treemacs-magit ultra-scroll
-	     unfill use-package vdiff vdiff-magit vertico
+	     rg ripgrep simple-httpd slurm-mode snake-mode
+	     snakemake-mode sudo-edit super-save tramp treemacs-magit
+	     ultra-scroll unfill use-package vdiff vdiff-magit vertico
 	     vertico-prescient which-key which-key-posframe ws-butler
 	     yaml-mode))
- '(package-vc-selected-packages '((emjupy :url "https://github.com/mathren/emjupy")))
+ '(package-vc-selected-packages
+   '((emjupy :url "https://github.com/mathren/emjupy" :lisp-dir "src")))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values '((TeX-master . main.tex)))
  '(send-mail-function 'mailclient-send-it)

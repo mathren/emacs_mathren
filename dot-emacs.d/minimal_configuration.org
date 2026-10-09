@@ -1,4 +1,5 @@
 #+TITLE: Emacs minimal configuration
+#+PROPERTY: header-args:emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
 
 This is the minimal Emacs configuration that I use (typically with
 =-nw=) for quickly looking up things in the terminal.
@@ -15,7 +16,7 @@ configuration described in =Emacs_complete_configuration.org=
 
 These are self-explanatory: hide startup message.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message t)
 (setq initial-scratch-message nil)
@@ -29,7 +30,7 @@ menus).
 
 I always want line and column numbers.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
   (setq frame-title-format '("Emacs %@ %*" (:eval (if (buffer-name)(abbreviate-file-name (buffer-name)) "%b %*"))))
   (setq ring-bell-function 'ignore)
   (tool-bar-mode -1)
@@ -47,7 +48,7 @@ I always want line and column numbers.
 Disable bidirectional text scanning (I don't use scripts that are
 written left-to-right very often):
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
 (setq bidi-inhibit-bpa t)
@@ -55,7 +56,7 @@ written left-to-right very often):
 
 Auto select help buffer if opened:
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq help-window-select t)
 #+END_SRC
 
@@ -66,7 +67,7 @@ Default light theme is =adwaita=. If =gsettings= is not available, or if
 it fails, defaults to the dark theme =wombat=. Both themes are part of
 Emacs default installation and can easily be changed
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
   (defvar mr/current-theme-mode nil
     "Track the last applied GNOME theme mode to avoid redundant reloading.")
 
@@ -112,7 +113,7 @@ unzip JetBrainsMono.zip
 fc-cache -fv
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
 		      :family "JetBrainsMono Nerd Font Mono"
 		      :height 120) ;; 120 = 12pt
@@ -120,7 +121,7 @@ fc-cache -fv
 
 Avoid syntax highlighting as you type
 
-#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC  emacs-lisp
 (setq redisplay-skip-fontification-on-input t)
 #+END_SRC
 
@@ -130,7 +131,7 @@ Avoid syntax highlighting as you type
 
 Move to =/tmp= if buffer parent directory is not set. Prevents
 minibuffer from getting stuck.
-#+BEGIN_SRC elisp  :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
     (defun mr/ensure-valid-default-directory ()
      "Ensure the current buffer has a usable `default-directory'."
      (condition-case nil
@@ -157,7 +158,7 @@ path =/foo=, and emacs opens a new buffer. But because =bar= doesn't
 exist, this leads to many errors.
 
 This hook allows to create the parent directory if non existing:
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (advice-add 'find-file :before
             (lambda (filename &optional wildcards)
               (let ((dir (file-name-directory (expand-file-name filename))))
@@ -167,13 +168,13 @@ This hook allows to create the parent directory if non existing:
 * editorconfig
 
 Built-in from Emacs 30+
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (editorconfig-mode 1)
 #+END_SRC
 
 * which-key
 Also built-in from Emacs 30+
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (which-key-mode 1)
 #+END_SRC
 
@@ -181,41 +182,53 @@ Also built-in from Emacs 30+
 
 Save clipboard content from programs other than emacs in the kill ring
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq save-interprogram-paste-before-kill t)
 #+END_SRC
 
 Prevent duplicates in kill ring
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq kill-do-not-save-duplicates t)
 #+END_SRC
 
 * Make scripts executable
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (add-hook 'after-save-hook
           #'executable-make-buffer-file-executable-if-script-p)
 #+END_SRC
 * Append folder when two buffers have the same name
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 #+END_SRC
 
 * Remove trailing white spaces when saving
 
-Except for markdown.
+Except for markdown, and except where =ws-butler-mode= is active (loaded in the
+complete configuration for =prog-mode=): =ws-butler= exists precisely so that
+untouched lines are left alone, and a blanket =delete-trailing-whitespace= would
+undo that and produce noisy diffs.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
-(add-hook 'before-save-hook (lambda()
-                              (when (not (or (derived-mode-p 'markdown-mode)))
-                                (delete-trailing-whitespace))))
+Named function rather than a lambda so it can be inspected and removed with
+=remove-hook=.
+
+#+BEGIN_SRC emacs-lisp
+(defun mr/delete-trailing-whitespace-maybe ()
+  "Delete trailing whitespace, unless another mechanism owns it.
+Skips `markdown-mode' (trailing spaces are significant) and any buffer
+where `ws-butler-mode' is active."
+  (unless (or (derived-mode-p 'markdown-mode)
+              (bound-and-true-p ws-butler-mode))
+    (delete-trailing-whitespace)))
+
+(add-hook 'before-save-hook #'mr/delete-trailing-whitespace-maybe)
 #+END_SRC
 
 * Save with =sudo=
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (when (fboundp 'sudo-edit-indicator-mode)
   (sudo-edit-indicator-mode 1))
 #+END_SRC
@@ -230,7 +243,7 @@ Use =C-pgUp/Pgdown= to cycle buffers.
 
 Finally, to kill the current buffer I use =M-super-k=.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (when (fboundp 'windmove-default-keybindings)
    (windmove-default-keybindings))
 
@@ -241,7 +254,7 @@ Finally, to kill the current buffer I use =M-super-k=.
 
  Prefer to reuse existing windows, especially those showing a buffer
  of the same mode
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq display-buffer-base-action
   '((display-buffer-reuse-window
      display-buffer-reuse-mode-window
@@ -252,13 +265,13 @@ Finally, to kill the current buffer I use =M-super-k=.
 When creating a new buffer (e.g., with =C-x 2= or =C-x 3=) I want to resize
 all buffers
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq window-combination-resize t)
 #+END_SRC
 
 Make focusing on current buffer with =C-x 1= reversible:
 
-#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC  emacs-lisp
 (winner-mode +1)
 
 (defun toggle-delete-other-windows ()
@@ -279,7 +292,7 @@ configuration. Since it requires packages and I want this config to be
 usable with a brand new install I split the parenthesis handling
 configuration between here and there.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
 #+END_SRC
@@ -287,7 +300,7 @@ configuration between here and there.
 
   =dot-*= files in =shell-script-mode=
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("/\.bash[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/dot-bash[^/]*$" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("/\.zsh[^/]*$" . shell-script-mode))
@@ -296,7 +309,7 @@ configuration between here and there.
 
    configuration files in =conf-mode=
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("/rc[^/]*$" . conf-mode))
 (add-to-list 'auto-mode-alist '("/\.par[^/]*$" . conf-mode))
 #+END_SRC
@@ -307,7 +320,7 @@ configuration between here and there.
  these are available?). Per buffer zoom in/out can be achieved with the
  defaults =C-x C-+= and =C-x C--=.
 
- #+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+ #+BEGIN_SRC emacs-lisp
    (defun zoom-in ()
      (interactive)
      (let ((x (+ (face-attribute 'default :height)
@@ -331,25 +344,25 @@ configuration between here and there.
 
 ** =Esc= quits prompts
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+END_SRC
 
 ** Indent on new line
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
  (define-key global-map (kbd "RET") 'newline-and-indent)
 #+END_SRC
 
 ** Search & replace
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
  (define-key global-map (kbd "M-s-c") 'replace-string)
 #+END_SRC
 
 ** Revert buffer
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>")
                 (lambda ()
                   (interactive)
@@ -357,7 +370,7 @@ configuration between here and there.
 #+END_SRC
 
 ** Use =ibuffer= instead of =list-buffers=
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+END_SRC
 
@@ -366,7 +379,7 @@ configuration between here and there.
 Allow up to 25Mb of garbage before collecting, and put temporary files
 where they belong, i.e. =/tmp=, wich I mount on my RAM.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq gc-cons-threshold 25000000)
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -376,13 +389,13 @@ where they belong, i.e. =/tmp=, wich I mount on my RAM.
 
 * Follow symlinks
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
 (setq vc-follow-symlinks t)
 #+END_SRC
 
 * Auto-revert files on change
 
-#+BEGIN_SRC  emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC  emacs-lisp
   (global-auto-revert-mode 1)
   (setq global-auto-revert-non-file-buffers t)
 #+END_SRC
@@ -393,7 +406,7 @@ I often handle [[http://mesa.sourceforge.net/][MESA]] related files on remote ma
 so I have muscle memory for that. These settings would fit better in
 the complete configuration, but I want them here because of this.
 
-#+BEGIN_SRC emacs-lisp :tangle ~/Documents/dotfiles/emacs_mathren/dot-emacs.d/minimal.el
+#+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
   (require 'mesa-mode)
   (require 'run-star-extras)

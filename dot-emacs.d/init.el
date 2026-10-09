@@ -127,6 +127,10 @@
       :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
 )
 
+;; `vertico-directory-tidy' deletes the region covered by `rfn-eshadow-overlay',
+;; so the overlay has to exist.  On by default; made explicit here.
+(file-name-shadow-mode 1)
+
 (use-package orderless
   :demand t
   :custom
@@ -221,6 +225,7 @@ With optional FRAME, return the buffers of that frame instead."
   (corfu-quit-no-match t)			;; Automatically quit if no match is found
   (corfu-preselect 'prompt)                   ;; Preselect the prompt, making it easier to exit
   (corfu-on-at-pt-timer-die nil)              ;; Don't leave artifacts if the timer dies
+  (global-corfu-minibuffer nil)               ;; Vertico owns the minibuffer
   :bind
   (:map corfu-map
         ("SPC" . corfu-insert-separator)      ;; Essential for Orderless
@@ -230,9 +235,14 @@ With optional FRAME, return the buffers of that frame instead."
 
 (use-package cape
   :init
-  ;; Extend capf chain: dabbrev (buffer words) + file paths
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
-  (add-to-list 'completion-at-point-functions #'cape-file    t))
+  ;; Add these buffer-locally.  Pushing them onto the GLOBAL value of
+  ;; `completion-at-point-functions' gives every minibuffer a capf, which makes
+  ;; Corfu pop up inside `find-file' and fight with Vertico.
+  (defun mr/capf-setup ()
+    (add-hook 'completion-at-point-functions #'cape-file -10 t)
+    (add-hook 'completion-at-point-functions #'cape-dabbrev 10 t))
+  (add-hook 'prog-mode-hook #'mr/capf-setup)
+  (add-hook 'text-mode-hook #'mr/capf-setup))
 
 (use-package dabbrev
   :custom
@@ -561,6 +571,24 @@ prompting for a file name (extension optional, defaults to .png)."
   :ensure t
   :config
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode))
+
+; (use-package emjupy
+ ;   :vc (:url "https://github.com/mathren/emjupy"
+ ;        :rev :newest) ;; risky!
+ ;   :config
+ ;   (setq emjupy-render-latex t)
+ ;   (setq emjupy-latex-scale 1.15)
+ ;   (setq emjupy-box-right-margin 1)
+ ;   (setq emjupy-shadow-host "/ssh:ua_w:")
+ ;   (setq emjupy-remote-root "/ssh:ua_w:~/") ;; base path on remote, emjupy can't guess that
+ ;   )
+(add-to-list 'load-path "~/Documents/Emacs/emjupy")
+(require 'emjupy)
+(setq emjupy-render-latex t)
+(setq emjupy-latex-scale 1.15)
+(setq emjupy-box-right-margin 1)
+(setq emjupy-shadow-host "/ssh:ua_w:")
+(setq emjupy-remote-root "/ssh:ua_w:~/")
 
 (use-package arxiv-mode
   :ensure t

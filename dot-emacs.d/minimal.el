@@ -96,9 +96,15 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
-(add-hook 'before-save-hook (lambda()
-                              (when (not (or (derived-mode-p 'markdown-mode)))
-                                (delete-trailing-whitespace))))
+(defun mr/delete-trailing-whitespace-maybe ()
+  "Delete trailing whitespace, unless another mechanism owns it.
+Skips `markdown-mode' (trailing spaces are significant) and any buffer
+where `ws-butler-mode' is active."
+  (unless (or (derived-mode-p 'markdown-mode)
+              (bound-and-true-p ws-butler-mode))
+    (delete-trailing-whitespace)))
+
+(add-hook 'before-save-hook #'mr/delete-trailing-whitespace-maybe)
 
 (when (fboundp 'sudo-edit-indicator-mode)
   (sudo-edit-indicator-mode 1))
