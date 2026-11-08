@@ -572,23 +572,20 @@ prompting for a file name (extension optional, defaults to .png)."
   :config
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode))
 
-; (use-package emjupy
- ;   :vc (:url "https://github.com/mathren/emjupy"
- ;        :rev :newest) ;; risky!
- ;   :config
- ;   (setq emjupy-render-latex t)
- ;   (setq emjupy-latex-scale 1.15)
- ;   (setq emjupy-box-right-margin 1)
- ;   (setq emjupy-shadow-host "/ssh:ua_w:")
- ;   (setq emjupy-remote-root "/ssh:ua_w:~/") ;; base path on remote, emjupy can't guess that
- ;   )
-(add-to-list 'load-path "~/Documents/Emacs/emjupy")
-(require 'emjupy)
-(setq emjupy-render-latex t)
-(setq emjupy-latex-scale 1.15)
-(setq emjupy-box-right-margin 1)
-(setq emjupy-shadow-host "/ssh:ua_w:")
-(setq emjupy-remote-root "/ssh:ua_w:~/")
+;; (add-to-list 'load-path "~/Documents/Emacs/emjupy")
+;; (require 'emjupy)
+;; (setq emjupy-render-latex t)
+;; (setq emjupy-latex-scale 1.15)
+;; (setq emjupy-box-right-margin 1)
+(use-package emjupy
+  :vc (:url "https://github.com/mathren/emjupy"
+	    :lisp-dir "src"
+	    :rev :newest)
+  :config
+  (setq emjupy-render-latex t)
+  (setq emjupy-latex-scale 1.15)
+  (setq emjupy-box-right-margin 1)
+  )
 
 (use-package arxiv-mode
   :ensure t

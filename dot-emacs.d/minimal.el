@@ -194,6 +194,7 @@ where `ws-butler-mode' is active."
 (add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)
+(load "~/.emacs.d/emacs_tools/mesa-major-mode/mesa-fortitude.el")
 (setq mesa-default-version "dev")
 (setq mesa-version-mesa-dir "~/Documents/Research/codes/mesa/mesa-dev/")
 (setq mesa-mode-enforce-formatting-default t)
@@ -212,3 +213,19 @@ where `ws-butler-mode' is active."
 	      (local-set-key (kbd "\M-ss") 'hs-show-block)
 	      (local-set-key (kbd "\M-sh") 'hs-hide-block)
 	      (hs-minor-mode t)))
+
+(defun mr/mesa-fortitude (&optional fix)
+  "Run fortitude on the current file from the MESA root.
+With prefix argument FIX, apply safe fixes (save first; revert buffer after)."
+  (interactive "P")
+  (let* ((root (or (locate-dominating-file buffer-file-name ".fortitude.toml")
+                   (getenv "MESA_DIR")))
+         (default-directory (file-name-as-directory root))
+         (file (file-relative-name buffer-file-name root)))
+    (save-buffer)
+    (compile (format "NO_COLOR=1 fortitude check --output-format concise %s%s"
+                     (if fix "--fix " "")
+                     (shell-quote-argument file)))))
+
+(add-hook 'f90-mode-hook
+          (lambda () (local-set-key (kbd "C-c l") #'mesa-fortitude)))
