@@ -191,10 +191,10 @@ where `ws-butler-mode' is active."
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 
-(add-to-list 'load-path "~/.emacs.d/emacs_tools/mesa-major-mode/")
+(add-to-list 'load-path "~/.emacs.d/user-lisp/mesa-major-mode/")
 (require 'mesa-mode)
 (require 'run-star-extras)
-(load "~/.emacs.d/emacs_tools/mesa-major-mode/mesa-fortitude.el")
+(load "~/.emacs.d/user-lisp/mesa-major-mode/mesa-fortitude.el")
 (setq mesa-default-version "dev")
 (setq mesa-version-mesa-dir "~/Documents/Research/codes/mesa/mesa-dev/")
 (setq mesa-mode-enforce-formatting-default t)

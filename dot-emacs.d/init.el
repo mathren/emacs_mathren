@@ -698,12 +698,12 @@ prompting for a file name (extension optional, defaults to .png)."
 (use-package simple-httpd
   :ensure t)
 
-(add-to-list 'load-path "~/.emacs.d/emacs_tools/okular/")
+(add-to-list 'load-path "~/.emacs.d/user-lisp/okular/")
 (require 'okular-search)
 (add-hook 'LaTeX-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
 (add-hook 'tex-mode-hook (lambda () (local-set-key "\C-x\C-j" 'okular-jump-to-line)))
 
-;; (load "~/.emacs.d/emacs_tools/okular/okular-latex.el") --------------------
+;; (load "~/.emacs.d/user-lisp/okular/okular-latex.el") --------------------
 ;; ;; only start server for okular comms when in latex mode
 ;; (add-hook 'LaTeX-mode-hook 'server-start)
 (setq TeX-PDF-mode t) ;; use pdflatex instead of latex
@@ -737,7 +737,7 @@ prompting for a file name (extension optional, defaults to .png)."
 	    (lambda ()
 	      (add-to-list 'fill-nobreak-predicate 'texmathp)))
 
-(load "~/.emacs.d/emacs_tools/citar-bibtool/citar-bibtool.el")
+(load "~/.emacs.d/user-lisp/citar-bibtool/citar-bibtool.el")
 (use-package citar
   :bind (("C-c i o" . citar-open-link))
   :custom
@@ -751,7 +751,7 @@ prompting for a file name (extension optional, defaults to .png)."
 
   (setq citar-open-always-create-notes nil)
   ;; load NASA/ADS token -- fail silently
-  (load "~/.emacs.d/emacs_tools/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not part of the repo
+  (load "~/.emacs.d/user-lisp/citar-bibtool/ADS_API_TOKEN.el") ;; this file is not part of the repo
 
   ;; Configure variables -- overwrites default in citar-bibtool.el
   (setq citar-bibtool-master-bibliography "~/Documents/Research/Biblio_papers/bibtex/master_bibtex.bib")
@@ -834,7 +834,7 @@ lines and comment-only lines are not taken into consideration."
   (ispell-hunspell-add-multi-dic "en_US,en_GB,fr_FR,it_IT")
   ;; For saving words to the personal dictionary, don't infer it from
   ;; the locale
-  (setq ispell-personal-dictionary "~/.emacs.d/emacs_tools/hunspell_personal"))
+  (setq ispell-personal-dictionary "~/.emacs.d/user-lisp/hunspell_personal"))
 
 ;; (unless (file-exists-p ispell-personal-dictionary)
 ;; (write-region " " nil ispell-personal-dictionary nil 0))
