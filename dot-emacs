@@ -75,9 +75,9 @@
  '(package-selected-packages
    '(ac-html all-the-icons all-the-icons-completion
 	     all-the-icons-nerd-fonts arxiv-mode auctex
-	     auto-complete-auctex beframe blacken cape chronometer
-	     citar company-auctex company-bibtex company-box
-	     company-fuzzy company-prescient consult corfu
+	     auto-complete-auctex beamer-gui beframe blacken cape
+	     chronometer citar company-auctex company-bibtex
+	     company-box company-fuzzy company-prescient consult corfu
 	     corfu-prescient counsel dashboard deadgrep dired-icon
 	     dired-preview dired-single diredfl diredful doom-modeline
 	     doom-themes editorconfig eglot ein eldoc-box elfeed
@@ -98,7 +98,9 @@
 	     vertico-prescient which-key which-key-posframe ws-butler
 	     yaml-mode))
  '(package-vc-selected-packages
-   '((emjupy :url "https://github.com/mathren/emjupy" :lisp-dir "src")))
+   '((beamer-gui :url "https://github.com/mathren/beamer-gui-emacs"
+		 :branch "main")
+     (emjupy :url "https://github.com/mathren/emjupy" :lisp-dir "src")))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(safe-local-variable-values
    '((package-lint-main-file . "emjupy.el") (TeX-master . main.tex)))

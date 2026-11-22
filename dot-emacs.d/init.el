@@ -771,6 +771,16 @@ prompting for a file name (extension optional, defaults to .png)."
   (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
   )
 
+(use-package beamer-gui
+:vc (:url "https://github.com/mathren/beamer-gui-emacs"
+     :branch "main"
+     :rev :newest)
+;; C-c + opens the frame at point in the GUI.
+:hook ((LaTeX-mode latex-mode) . beamer-gui-mode)
+:custom
+(beamer-gui-python
+ "/home/mrenzo/Documents/Research/codes/envs/beamer-gui/bin/python3"))
+
 (use-package tramp
   :custom
   ;; Shell / path

@@ -556,6 +556,7 @@ default, so if using daemon mode (=daemonp= is true) add a hook to set
     :hook (prog-mode . rainbow-delimiters-mode))
 #+END_SRC
 
+
 ** Highlight code indentation
 
 #+BEGIN_SRC emacs-lisp
@@ -575,6 +576,7 @@ default, so if using daemon mode (=daemonp= is true) add a hook to set
     ;; (indent-bars-prefer-character               t)
     )
 #+END_SRC
+
 
 ** Org mode related stuff
 
@@ -868,6 +870,7 @@ prompting for a file name (extension optional, defaults to .png)."
     (ultra-scroll-mode 1))
 #+END_SRC
 
+
 ** =yaml-mode= and =snakemake-mode=
 
 yaml files in =yaml-mode= and snakefile in =snakemake-mode=. I use
@@ -979,6 +982,7 @@ use my own [[https://github.com/mathren/emjupy][emjupy]], developed with lots of
     )
 #+END_SRC
 
+
 ** =arXiv-mode=
 
 #+BEGIN_SRC emacs-lisp
@@ -1004,6 +1008,7 @@ use my own [[https://github.com/mathren/emjupy][emjupy]], developed with lots of
     )
 #+END_SRC
 
+
 ** Unfill
 To work sanely with files with infinite lines
 
@@ -1011,6 +1016,7 @@ To work sanely with files with infinite lines
 (use-package unfill
   :bind ("M-q" . unfill-toggle))
 #+END_SRC
+
 
 ** multiple cursors
 
@@ -1266,6 +1272,25 @@ the full setup:
     (add-hook 'latex-mode-hook #'citar-bibtool-setup-local-workflow)
     (add-hook 'LaTeX-mode-hook #'citar-bibtool-setup-local-workflow)
     )
+#+END_SRC
+
+*** A GUI editor for beamer
+
+I vibe-coded a minimal GUI editor (move around stuff, add circles and
+arrows), see [[https://github.com/mathren/beamer-gui-emacs][here]]. It requires a python with =PySide6= and =PyMuPDF= for
+the GUI, se =environment.txt= in the beamer-gui repo.
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package beamer-gui
+  :vc (:url "https://github.com/mathren/beamer-gui-emacs"
+       :branch "main"
+       :rev :newest)
+  ;; C-c + opens the frame at point in the GUI.
+  :hook ((LaTeX-mode latex-mode) . beamer-gui-mode)
+  :custom
+  (beamer-gui-python
+   "/home/mrenzo/Documents/Research/codes/envs/beamer-gui/bin/python3"))
 #+END_SRC
 
 

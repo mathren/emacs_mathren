@@ -1,6 +1,6 @@
 * Emacs configuration
 
-Tested and currently working with emacs =29.2=, the most up-to-date
+Tested and currently working with emacs ==30.1=, the most up-to-date
 branch is =t14=.
 
 See [[./dot-emacs.d/README.org][README.org]] inside =dot-emacs.d/= for the description of the
@@ -10,6 +10,8 @@ configuration itself, which is described in literate org file.
 I manage my emacs configuration with GNU stow, see [[file:dot-emacs.d/README.org::*File management][here]].
 
 ** Screenshot
+
+  ⚠️ Out of date ⚠️: I now use [[https://github.com/mathren/emjupy][emjupy]] instead of =ein= and plain =term= for terminal.
 
    Wombat theme, [[https://github.com/seagle0128/doom-modeline][doom line]]. [[https://github.com/millejoh/emacs-ipython-notebook][ein]] Ipython notebook running on remote
    server showing inline plot with matplotlib, [[https://www.emacswiki.org/emacs/TrampMode][TRAMP]] remote folder,
