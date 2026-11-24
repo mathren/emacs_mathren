@@ -193,10 +193,10 @@ With prefix ARG, insert citation without copying to local bib."
         (insert ", ")))))
 
 
-;; NASA/ADS search
+;; sciexplorer search
 ;; Helper functions for ADS API
 (defun ads-search-papers (query &optional max-results)
-  "Search NASA/ADS for papers matching QUERY. Returns list of papers."
+  "Search sciexplorer for papers matching QUERY. Returns list of papers."
   (let* ((max-results (or max-results 20))
          (url "https://api.adsabs.harvard.edu/v1/search/query")
          (params `(("q" . ,query)
@@ -230,7 +230,7 @@ With prefix ARG, insert citation without copying to local bib."
 
 
 (defun ads-get-bibtex (bibcode)
-  "Retrieve BibTeX entry for given BIBCODE from NASA/ADS."
+  "Retrieve BibTeX entry for given BIBCODE from sciexplorer."
   (let* ((url "https://api.adsabs.harvard.edu/v1/export/bibtex")
          (url-request-method "POST")
          (url-request-extra-headers
@@ -335,10 +335,10 @@ Returns the existing citation key if found, nil otherwise."
 
 
 (defun ads-search-and-insert-citation ()
-  "Search NASA/ADS, select paper, and insert citation with bibtex entry.
+  "Search sciexplorer, select paper, and insert citation with bibtex entry.
 Checks for duplicates and suggests existing keys when found."
   (interactive)
-  (let* ((query (read-string "Search NASA/ADS: "))
+  (let* ((query (read-string "Search sciexplorer: "))
          (papers (ads-search-papers query))
          (selected-paper (ads-select-paper papers))
          (bibcode (nth 0 selected-paper))
